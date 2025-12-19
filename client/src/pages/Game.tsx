@@ -7,7 +7,7 @@ import { PitchCard } from "@/components/game/PitchCard";
 import { InvestControls } from "@/components/game/InvestControls";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
 import { Button } from "@/components/ui/button";
-import { Loader2, DollarSign, Wallet, RotateCcw, Home as HomeIcon } from "lucide-react";
+import { Loader2, Wallet, RotateCcw, Home as HomeIcon } from "lucide-react";
 import type { Pitch } from "@shared/routes";
 
 type GameState = "loading" | "playing" | "revealing" | "finished";
@@ -15,8 +15,10 @@ type GameState = "loading" | "playing" | "revealing" | "finished";
 type Investment = {
   pitch: Pitch;
   amount: number;
-  outcome: number; // 0 if bust, or multiplier amount
+  ownership: number; // percentage
+  outcome: number;
   isWin: boolean;
+  narrative: string;
 };
 
 export default function Game() {
@@ -27,11 +29,9 @@ export default function Game() {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [currentPitch, setCurrentPitch] = useState<Pitch | null>(null);
   
-  // Hooks
   const generatePitch = useGeneratePitch();
   const saveResult = useSaveResult();
 
-  // Load first pitch on mount
   useEffect(() => {
     loadNextPitch();
   }, []);
@@ -44,7 +44,6 @@ export default function Game() {
         setGameState("playing");
       },
       onError: () => {
-        // Retry or show error - minimal handling for now
         setTimeout(loadNextPitch, 1000);
       }
     });
@@ -53,20 +52,23 @@ export default function Game() {
   const handleDecision = (investAmount: number) => {
     if (!currentPitch) return;
 
-    // Calculate outcome immediately but hide it
-    // Logic: if random > risk, multiply by upside. Else 0.
     const isWin = Math.random() > currentPitch.startup.risk;
     const outcome = isWin ? investAmount * currentPitch.startup.upside : 0;
+    const ownership = currentPitch.startup.valuation 
+      ? (investAmount / currentPitch.startup.valuation) * 100 
+      : 0;
 
     const newInvestment: Investment = {
       pitch: currentPitch,
       amount: investAmount,
+      ownership: Math.round(ownership * 100) / 100,
       outcome,
-      isWin
+      isWin,
+      narrative: ""
     };
 
     setInvestments([...investments, newInvestment]);
-    setCapital(prev => prev - investAmount); // Deduct immediately
+    setCapital(prev => prev - investAmount);
 
     if (round < 10) {
       setRound(prev => prev + 1);
@@ -76,134 +78,124 @@ export default function Game() {
     }
   };
 
-  // Reveal sequence logic
   const [revealIndex, setRevealIndex] = useState(0);
-  const [displayedCapital, setDisplayedCapital] = useState(0); // For end game
+  const [displayedCapital, setDisplayedCapital] = useState(0);
 
-  // Initialize displayed capital when entering reveal phase
   useEffect(() => {
     if (gameState === "revealing") {
-      setDisplayedCapital(capital); // Start with remaining cash
+      setDisplayedCapital(capital);
       
       const interval = setInterval(() => {
         setRevealIndex(prev => {
-          if (prev >= 9) { // 10 rounds (0-9)
+          if (prev >= investments.length - 1) {
             clearInterval(interval);
             setTimeout(() => finishGame(), 2000);
             return prev;
           }
           return prev + 1;
         });
-      }, 2500); // Time per reveal
+      }, 3000);
 
       return () => clearInterval(interval);
     }
   }, [gameState]);
 
-  // Effect to update capital during reveal
   useEffect(() => {
     if (gameState === "revealing" && revealIndex < investments.length) {
       const inv = investments[revealIndex];
-      // Add the outcome to displayed capital
-      // We need to delay this slightly to match the animation of the card flip if we had one
-      // For now, simple addition
       setDisplayedCapital(prev => prev + inv.outcome);
     }
   }, [revealIndex, gameState]);
 
   const finishGame = () => {
-    // Calculate final stats
     const finalScore = investments.reduce((acc, inv) => acc + inv.outcome, capital);
     
-    // Determine Archetype
-    let archetype = "The Conservative";
+    let archetype = "The Angel Investor";
     const totalInvested = investments.reduce((acc, inv) => acc + inv.amount, 0);
-    const riskTakerScore = investments.filter(i => i.amount > 10000).length;
+    const wins = investments.filter(i => i.isWin).length;
+    const avgOwnership = investments.length > 0 
+      ? investments.reduce((sum, i) => sum + i.ownership, 0) / investments.length 
+      : 0;
     
     if (finalScore > 500000) archetype = "The Visionary";
-    else if (finalScore > 200000) archetype = "The Shark";
-    else if (riskTakerScore > 5) archetype = "The Gambler";
-    else if (finalScore < 50000) archetype = "The Bag Holder"; // funny fallback
+    else if (finalScore > 300000) archetype = "The Shark";
+    else if (wins >= 5) archetype = "The Golden Touch";
+    else if (avgOwnership > 10) archetype = "The Concentrated Player";
+    else if (finalScore < 50000) archetype = "The Learning Investor";
 
     saveResult.mutate({
       score: Math.round(finalScore),
       archetype,
-      details: JSON.stringify(investments.map(i => ({ name: i.pitch.startup.name, win: i.isWin, gain: i.outcome }))),
+      details: JSON.stringify(investments.map(i => ({ 
+        name: i.pitch.startup.name, 
+        win: i.isWin, 
+        gain: i.outcome,
+        invested: i.amount
+      }))),
       createdAt: new Date().toISOString()
     });
 
     if (finalScore > 150000) {
       confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.5 }
       });
     }
 
     setGameState("finished");
-    setDisplayedCapital(finalScore); // Ensure consistency
+    setDisplayedCapital(finalScore);
   };
-
-  // -- RENDER HELPERS --
 
   if (gameState === "loading" && !currentPitch) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center">
         <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
-        <p className="text-muted-foreground animate-pulse">Scouting deal flow...</p>
+        <p className="text-muted-foreground animate-pulse">Analyzing opportunity...</p>
       </div>
     );
   }
 
-  // HEADER (Always visible except maybe final screen)
   const Header = () => (
-    <div className="fixed top-0 left-0 w-full p-4 z-50 flex justify-between items-center bg-background/80 backdrop-blur-md border-b border-white/5">
-      <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/20">
-          <span className="font-bold text-primary text-sm">{round}/10</span>
-        </div>
-        <span className="hidden md:inline text-sm font-medium text-muted-foreground uppercase tracking-wider">Round</span>
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-gradient-to-b from-background to-transparent">
+      <div className="flex items-center gap-3 bg-blue-100 px-4 py-2 rounded-full border border-blue-200">
+        <span className="text-sm font-bold text-blue-700">{round}/10</span>
+        <span className="text-xs font-medium text-blue-600 uppercase">Round</span>
       </div>
       
-      <div className="flex items-center gap-3 bg-secondary/30 px-4 py-2 rounded-full border border-white/10">
-        <Wallet className="w-4 h-4 text-emerald-400" />
-        <span className="font-mono font-bold text-xl text-emerald-400">
+      <div className="flex items-center gap-2 bg-emerald-100 px-6 py-3 rounded-full border border-emerald-200">
+        <Wallet className="w-5 h-5 text-emerald-600" />
+        <span className="font-mono font-bold text-lg text-emerald-700">
           ${(gameState === "revealing" || gameState === "finished" ? displayedCapital : capital).toLocaleString()}
         </span>
       </div>
     </div>
   );
 
-  // PLAYING STATE
   if (gameState === "loading" || gameState === "playing") {
     return (
-      <div className="min-h-screen bg-background pt-24 pb-32 px-4 relative overflow-hidden">
+      <div className="min-h-screen bg-background pt-32 pb-32">
         <Header />
         
-        {/* Background blobs */}
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -z-10" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -z-10" />
-
-        <div className="max-w-2xl mx-auto relative min-h-[600px]">
+        <div className="max-w-7xl mx-auto px-4">
           <AnimatePresence mode="wait">
             {gameState === "loading" ? (
-               <motion.div 
-                 key="loader"
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 exit={{ opacity: 0 }}
-                 className="absolute inset-0 flex items-center justify-center z-20"
-               >
-                 <Loader2 className="w-16 h-16 text-primary animate-spin" />
-               </motion.div>
+              <motion.div 
+                key="loader"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex items-center justify-center h-96"
+              >
+                <Loader2 className="w-16 h-16 text-primary animate-spin" />
+              </motion.div>
             ) : (
               <motion.div
                 key={currentPitch?.startup.name}
-                initial={{ x: 300, opacity: 0, rotate: 5 }}
-                animate={{ x: 0, opacity: 1, rotate: 0 }}
-                exit={{ x: -300, opacity: 0, rotate: -5 }}
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -300, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                className="w-full"
               >
                 {currentPitch && <PitchCard pitch={currentPitch} round={round} />}
               </motion.div>
@@ -211,9 +203,10 @@ export default function Game() {
           </AnimatePresence>
         </div>
 
-        <div className="fixed bottom-0 left-0 w-full p-4 z-50">
+        <div className="fixed bottom-0 left-0 w-full z-50 bg-gradient-to-t from-background to-transparent pt-8 pb-6 px-4">
           <InvestControls 
             maxInvest={capital} 
+            pitch={currentPitch}
             onInvest={handleDecision} 
             onPass={() => handleDecision(0)}
             disabled={gameState === "loading"}
@@ -223,54 +216,55 @@ export default function Game() {
     );
   }
 
-  // REVEAL STATE
   if (gameState === "revealing") {
     const currentReveal = investments[revealIndex];
-    if (!currentReveal) return null; // Should not happen
+    if (!currentReveal) return null;
 
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32">
         <Header />
         <motion.div 
           key={revealIndex}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="text-center max-w-xl w-full"
+          initial={{ scale: 0.8, opacity: 0, rotateY: 90 }}
+          animate={{ scale: 1, opacity: 1, rotateY: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-2xl w-full"
         >
-          <h2 className="text-sm text-muted-foreground uppercase tracking-widest mb-4">3 Years Later...</h2>
-          <div className="bg-card border border-white/10 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
-            {/* Background flash based on win/loss */}
-            <div className={`absolute inset-0 opacity-10 ${currentReveal.isWin ? 'bg-emerald-500' : 'bg-red-500'}`} />
-            
-            <h3 className="text-3xl font-bold mb-2 font-display">{currentReveal.pitch.startup.name}</h3>
+          <h2 className="text-sm text-muted-foreground uppercase tracking-widest mb-8 font-bold">3 Years Later...</h2>
+          
+          <div className={`p-12 rounded-2xl border-2 ${
+            currentReveal.isWin 
+              ? 'bg-emerald-50 border-emerald-300' 
+              : 'bg-red-50 border-red-300'
+          }`}>
+            <h3 className="text-4xl font-bold mb-2 text-foreground">{currentReveal.pitch.startup.name}</h3>
             <p className="text-muted-foreground mb-8">
-              You invested <span className="text-white font-mono">${currentReveal.amount.toLocaleString()}</span>
+              You invested <span className="font-bold text-foreground">${currentReveal.amount.toLocaleString()}</span>
+              {currentReveal.ownership > 0 && (
+                <> for {currentReveal.ownership.toFixed(2)}% equity</>
+              )}
             </p>
 
-            <div className="py-8 border-t border-white/5 border-b mb-8">
-              <div className="text-5xl font-bold font-mono tracking-tighter">
+            <div className="py-8 border-t border-t-black/10 border-b border-b-black/10 mb-8">
+              <div className="text-6xl font-bold font-mono tracking-tighter mb-3">
                 {currentReveal.isWin ? (
-                  <span className="text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]">
-                    +${currentReveal.outcome.toLocaleString()}
-                  </span>
+                  <span className="text-emerald-600">+${currentReveal.outcome.toLocaleString()}</span>
                 ) : (
-                  <span className="text-red-400 drop-shadow-[0_0_15px_rgba(248,113,113,0.5)]">
-                    $0
-                  </span>
+                  <span className="text-red-600">-${currentReveal.amount.toLocaleString()}</span>
                 )}
               </div>
-              <p className="mt-2 text-sm font-medium">
-                {currentReveal.isWin 
-                  ? "MASSIVE SUCCESS! IPO LAUNCHED." 
+              <p className="text-sm font-semibold text-foreground">
+                {currentReveal.narrative || (currentReveal.isWin 
+                  ? "MASSIVE SUCCESS!" 
                   : currentReveal.amount === 0 
-                    ? "You passed. (Good call?)" 
-                    : "BANKRUPT. FOUNDER FLED COUNTRY."}
+                    ? "Passed on this opportunity." 
+                    : "The company failed to execute.")}
               </p>
             </div>
             
-            <div className="flex justify-between text-xs text-muted-foreground uppercase">
-              <span>{revealIndex + 1} / 10 Revealed</span>
-              <span>Net Worth Updating...</span>
+            <div className="flex justify-between text-xs text-muted-foreground uppercase font-bold">
+              <span>{revealIndex + 1} / {investments.length} Revealed</span>
+              <span>Portfolio Updating...</span>
             </div>
           </div>
         </motion.div>
@@ -278,32 +272,40 @@ export default function Game() {
     );
   }
 
-  // FINISHED STATE
   if (gameState === "finished") {
-    // We already calculated archetype in finishGame, but for simplicity let's rely on server response or recalculate slightly for display if needed. 
-    // Since we called mutate, we could use data from there, but we have local state.
-    // Let's reuse the local calc logic or just pass props.
-    
-    // Quick recalc for display
-    let archetype = "The Conservative";
+    let archetype = "The Angel Investor";
     const score = displayedCapital;
+    const wins = investments.filter(i => i.isWin).length;
+    const avgOwnership = investments.length > 0 
+      ? investments.reduce((sum, i) => sum + i.ownership, 0) / investments.length 
+      : 0;
+    
     if (score > 500000) archetype = "The Visionary";
-    else if (score > 200000) archetype = "The Shark";
-    else if (investments.some(i => i.amount > 10000)) archetype = "The Gambler";
-    else if (score < 50000) archetype = "The Bag Holder";
+    else if (score > 300000) archetype = "The Shark";
+    else if (wins >= 5) archetype = "The Golden Touch";
+    else if (avgOwnership > 10) archetype = "The Concentrated Player";
+    else if (score < 50000) archetype = "The Learning Investor";
 
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        {/* Victory BG */}
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden pt-24">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-background pointer-events-none" />
         
         <ArchetypeBadge archetype={archetype} score={displayedCapital} />
         
-        <div className="mt-12 flex gap-4">
-          <Button variant="outline" size="lg" onClick={() => setLocation("/")}>
+        <div className="mt-12 flex flex-col sm:flex-row gap-4">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={() => setLocation("/")}
+            className="border-2 border-foreground/20 hover:border-foreground/40 hover:bg-gray-100"
+          >
             <HomeIcon className="mr-2 w-5 h-5" /> Home
           </Button>
-          <Button size="lg" onClick={() => window.location.reload()}>
+          <Button 
+            size="lg" 
+            onClick={() => window.location.reload()}
+            className="bg-primary hover:bg-primary/90 text-white"
+          >
             <RotateCcw className="mr-2 w-5 h-5" /> Play Again
           </Button>
         </div>

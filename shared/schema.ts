@@ -32,14 +32,16 @@ export const startupSchema = z.object({
     monthlyGrowth: z.number(),
     revenue: z.number(),
   }),
-  risk: z.number(),   // 0-1, hidden from player in UI but sent to client for game logic
-  upside: z.number(), // multiplier, hidden from player in UI
+  risk: z.number(),   // 0-1
+  upside: z.number(), // multiplier
+  valuation: z.number().optional(), // Company valuation
 });
 
 export const pitchSchema = z.object({
   founder: founderSchema,
   startup: startupSchema,
   ask: z.number(),
+  minimumInvestment: z.number().optional(), // Minimum to invest
 });
 
 export type Pitch = z.infer<typeof pitchSchema>;

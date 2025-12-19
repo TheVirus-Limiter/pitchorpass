@@ -1,9 +1,8 @@
 import { motion } from "framer-motion";
 import { type Pitch } from "@shared/routes";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge"; // We'll create a simple badge inline if needed or update later. Let's assume standard badge exists or use div.
-import { Users, TrendingUp, DollarSign, MapPin } from "lucide-react";
-
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Users, TrendingUp, DollarSign, MapPin, Zap } from "lucide-react";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -19,7 +18,7 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
       opacity: 1,
       scale: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.08
       }
     }
   };
@@ -29,80 +28,156 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
     show: { opacity: 1, y: 0 }
   };
 
+  const riskLevel = startup.risk > 0.6 ? "High Risk" : startup.risk > 0.3 ? "Medium Risk" : "Low Risk";
+  const riskColor = startup.risk > 0.6 ? "bg-red-100 text-red-800" : startup.risk > 0.3 ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800";
+
   return (
-    <Card className="w-full max-w-2xl mx-auto overflow-hidden bg-card/80 backdrop-blur-sm border-white/5 relative z-10 min-h-[500px] flex flex-col">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto lg:min-h-[600px]">
+      {/* Left Sidebar - Founder Profile */}
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="flex-1 flex flex-col"
+        className="lg:col-span-1 flex flex-col"
       >
-        {/* Header - Startup Identity */}
-        <div className="bg-gradient-to-r from-primary/10 to-transparent p-6 border-b border-border/50">
-          <div className="flex justify-between items-start mb-2">
-            <motion.div variants={item}>
-              <h4 className="text-sm font-medium text-primary uppercase tracking-wider mb-1">Round {round}/10</h4>
-              <CardTitle className="text-4xl text-gradient-primary">{startup.name}</CardTitle>
-            </motion.div>
-            <motion.div variants={item} className="text-right">
-               <Badge className="bg-primary/20 text-primary border border-primary/20">
-                 Seeking ${ask.toLocaleString()}
-               </Badge>
-            </motion.div>
-          </div>
-          <motion.p variants={item} className="text-lg text-muted-foreground font-medium leading-relaxed">
-            "{startup.pitch}"
-          </motion.p>
-        </div>
-
-        <CardContent className="p-6 space-y-8 flex-1">
-          {/* Founder Section */}
-          <motion.div variants={item} className="flex items-center gap-4 bg-secondary/30 p-4 rounded-xl border border-white/5">
-            <div className="relative">
-              <img 
-                src={founder.photo || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&q=80"} 
-                alt={founder.name}
-                className="w-16 h-16 rounded-full object-cover border-2 border-primary/50 shadow-lg"
-              />
-              <div className="absolute -bottom-1 -right-1 bg-background rounded-full p-1 border border-border">
-                <MapPin className="w-3 h-3 text-muted-foreground" />
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-gray-200">
+          <CardContent className="p-6 flex flex-col flex-1">
+            {/* Founder Photo */}
+            <motion.div variants={item} className="mb-6">
+              <div className="relative mb-4">
+                <img 
+                  src={founder.photo} 
+                  alt={founder.name}
+                  className="w-full aspect-square rounded-2xl object-cover border-4 border-primary/20"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop&q=80";
+                  }}
+                />
+                <div className="absolute -bottom-3 -right-3 bg-primary rounded-full p-3 border-4 border-white shadow-lg">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
               </div>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider">Founder</p>
-              <h3 className="text-xl font-bold">{founder.name}</h3>
-              <p className="text-sm text-muted-foreground">{founder.country}</p>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          {/* Metrics Grid */}
-          <motion.div variants={item} className="grid grid-cols-3 gap-4">
-            <div className="bg-secondary/20 p-4 rounded-xl text-center border border-white/5 hover:bg-secondary/30 transition-colors">
-              <Users className="w-5 h-5 mx-auto mb-2 text-blue-400" />
-              <div className="text-xl font-bold font-mono">{startup.traction.users.toLocaleString()}</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wider">Active Users</div>
-            </div>
-            <div className="bg-secondary/20 p-4 rounded-xl text-center border border-white/5 hover:bg-secondary/30 transition-colors">
-              <TrendingUp className="w-5 h-5 mx-auto mb-2 text-emerald-400" />
-              <div className="text-xl font-bold font-mono">+{startup.traction.monthlyGrowth}%</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wider">MoM Growth</div>
-            </div>
-            <div className="bg-secondary/20 p-4 rounded-xl text-center border border-white/5 hover:bg-secondary/30 transition-colors">
-              <DollarSign className="w-5 h-5 mx-auto mb-2 text-yellow-400" />
-              <div className="text-xl font-bold font-mono">${(startup.traction.revenue / 1000).toFixed(0)}k</div>
-              <div className="text-xs text-muted-foreground uppercase tracking-wider">MRR</div>
-            </div>
-          </motion.div>
+            {/* Founder Info */}
+            <motion.div variants={item} className="space-y-2">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Founder</p>
+              <h3 className="text-2xl font-bold text-foreground font-display">{founder.name}</h3>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4" />
+                {founder.country}
+              </div>
+            </motion.div>
 
-          {/* Market Context */}
-          <motion.div variants={item} className="bg-accent/5 border border-accent/10 p-5 rounded-xl">
-             <h5 className="text-sm font-semibold text-accent mb-2 uppercase tracking-wider">Market Opportunity</h5>
-             <p className="text-muted-foreground text-sm leading-relaxed">
-               {startup.market}
-             </p>
-          </motion.div>
-        </CardContent>
+            {/* Traction Metrics */}
+            <motion.div variants={item} className="mt-8 space-y-4 flex-1">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Traction</p>
+              
+              <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
+                <div className="text-2xl font-bold text-blue-700 font-mono">{startup.traction.users.toLocaleString()}</div>
+                <div className="text-xs text-blue-600 font-medium">Active Users</div>
+              </div>
+
+              <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+                <div className="text-2xl font-bold text-emerald-700 font-mono">+{startup.traction.monthlyGrowth}%</div>
+                <div className="text-xs text-emerald-600 font-medium">MoM Growth</div>
+              </div>
+
+              <div className="bg-purple-50 p-3 rounded-lg border border-purple-200">
+                <div className="text-2xl font-bold text-purple-700 font-mono">${(startup.traction.revenue / 1000).toFixed(0)}k</div>
+                <div className="text-xs text-purple-600 font-medium">MRR</div>
+              </div>
+            </motion.div>
+          </CardContent>
+        </Card>
       </motion.div>
-    </Card>
+
+      {/* Center - Pitch Card */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="lg:col-span-2"
+      >
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white">
+          <CardContent className="p-8 flex flex-col flex-1">
+            {/* Header */}
+            <motion.div variants={item} className="mb-8">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Round {round}/10</p>
+                  <h2 className="text-4xl font-bold font-display text-foreground">{startup.name}</h2>
+                </div>
+              </div>
+              <Badge className="bg-blue-600 text-white border-0 text-base py-2 px-4">
+                Seeking {pitch.minimumInvestment ? `$${pitch.minimumInvestment.toLocaleString()}+` : ''} ${ask.toLocaleString()}
+              </Badge>
+            </motion.div>
+
+            {/* Pitch Text */}
+            <motion.p variants={item} className="text-lg leading-relaxed text-foreground mb-8 italic flex-1">
+              "{startup.pitch}"
+            </motion.p>
+
+            {/* Market & Risk */}
+            <motion.div variants={item} className="space-y-4">
+              <div className="bg-white p-4 rounded-xl border-2 border-gray-200">
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Market Opportunity</p>
+                <p className="text-foreground font-medium">{startup.market}</p>
+              </div>
+
+              <div className={`p-4 rounded-xl border-2 ${riskColor}`}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-2">Risk Assessment</p>
+                <p className="font-bold">{riskLevel}</p>
+              </div>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Right Sidebar - Ask & Details */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="lg:col-span-1 flex flex-col"
+      >
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white">
+          <CardContent className="p-6 flex flex-col flex-1">
+            {/* Ask Amount */}
+            <motion.div variants={item} className="mb-8">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">They're Asking</p>
+              <div className="text-4xl font-bold font-mono text-emerald-600">
+                ${ask.toLocaleString()}
+              </div>
+            </motion.div>
+
+            {/* Company Valuation */}
+            <motion.div variants={item} className="mb-8 bg-white p-4 rounded-lg border border-gray-200">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Valuation</p>
+              <p className="text-2xl font-bold font-mono text-foreground">
+                ${(startup.valuation ? startup.valuation / 1000000 : 1).toFixed(1)}M
+              </p>
+            </motion.div>
+
+            {/* Upside Potential */}
+            <motion.div variants={item} className="mb-8 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg border-2 border-yellow-300">
+              <p className="text-xs font-bold text-yellow-800 uppercase tracking-widest mb-2">Upside Potential</p>
+              <p className="text-2xl font-bold text-yellow-800">
+                {startup.upside.toFixed(1)}x
+              </p>
+            </motion.div>
+
+            {/* Info Box */}
+            <motion.div variants={item} className="mt-auto bg-blue-50 p-4 rounded-lg border border-blue-200 text-sm">
+              <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">💡 Tip</p>
+              <p className="text-blue-800 text-sm">
+                High upside usually means higher risk. Balance conviction with diversification.
+              </p>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
   );
 }

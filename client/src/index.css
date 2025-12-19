@@ -8,45 +8,45 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
 
-  /* Dark Fintech Theme */
-  --background: 224 71% 4%;
-  --foreground: 210 40% 98%;
+  /* Light Silicon Valley Tech Theme */
+  --background: 0 0% 99%;
+  --foreground: 0 0% 10%;
 
-  --card: 222 47% 11%;
-  --card-foreground: 210 40% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 15%;
 
-  --popover: 222 47% 11%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 15%;
 
-  /* Electric Blue Primary */
-  --primary: 217 91% 60%;
-  --primary-foreground: 222 47% 11%;
+  /* Vibrant Tech Primary */
+  --primary: 210 100% 50%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 217 19% 27%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 0 0% 95%;
+  --secondary-foreground: 0 0% 20%;
 
-  --muted: 217 19% 27%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 0 0% 85%;
+  --muted-foreground: 0 0% 45%;
 
-  --accent: 217 91% 60%;
-  --accent-foreground: 222 47% 11%;
+  --accent: 280 85% 55%;
+  --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive-foreground: 0 0% 100%;
 
   /* Success/Profit Green */
   --profit: 142 71% 45%;
   
-  --border: 217 19% 27%;
-  --input: 217 19% 27%;
-  --ring: 217 91% 60%;
+  --border: 0 0% 90%;
+  --input: 0 0% 96%;
+  --ring: 210 100% 50%;
 
   --radius: 0.75rem;
 }
 
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    @apply bg-background text-foreground antialiased selection:bg-primary/10;
     font-family: var(--font-sans);
   }
 
@@ -58,18 +58,22 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
   }
   
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-400 to-indigo-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-accent;
   }
 
   .glass-card {
-    @apply bg-card/50 backdrop-blur-md border border-white/10 shadow-2xl;
+    @apply bg-white/50 backdrop-blur-md border border-black/5 shadow-lg;
   }
 
-  .neon-shadow {
-    box-shadow: 0 0 20px -5px theme('colors.primary.DEFAULT');
+  .button-invest {
+    @apply bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white border-0;
+  }
+
+  .button-pass {
+    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 border-0;
   }
 }

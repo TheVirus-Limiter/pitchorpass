@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
-import { generatePitch } from "./lib/openai";
+import { generatePitch, generateOutcome } from "./lib/openai";
 import { z } from "zod";
 
 export async function registerRoutes(
@@ -16,23 +16,7 @@ export async function registerRoutes(
       res.json(pitch);
     } catch (error) {
       console.error("Pitch generation error:", error);
-      // Fallback pitch if AI fails
-      res.json({
-        founder: {
-          name: "Alex Rivera",
-          country: "United States",
-          photo: "https://randomuser.me/api/portraits/men/32.jpg"
-        },
-        startup: {
-          name: "Fallback Tech",
-          pitch: "We are revolutionizing the way you handle API errors by providing a fallback mechanism. It's not flashy, but it works.",
-          market: "DevTools",
-          traction: { users: 1000, monthlyGrowth: 5, revenue: 500 },
-          risk: 0.2,
-          upside: 2
-        },
-        ask: 1000000
-      });
+      res.status(500).json({ message: "Failed to generate pitch" });
     }
   });
 
@@ -44,6 +28,18 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Save result error:", error);
       res.status(500).json({ message: "Failed to save result" });
+    }
+  });
+
+  // Generate outcome narrative for reveal sequence
+  app.post("/api/game/outcome", async (req, res) => {
+    try {
+      const { pitch, invested, outcome, isWin } = req.body;
+      const narrative = await generateOutcome(pitch, invested, outcome, isWin);
+      res.json({ narrative });
+    } catch (error) {
+      console.error("Outcome narrative error:", error);
+      res.json({ narrative: isWin ? "Great success!" : "Things didn't work out." });
     }
   });
 
