@@ -1,0 +1,194 @@
+Role:
+You are a senior frontend engineer and game designer building a browser-based simulation game using HTML, CSS, and vanilla JavaScript.
+
+Goal:
+Design and implement a single-page web game called “10 Pitches”, where the player acts as a startup investor evaluating 10 startup pitches and deciding whether to invest.
+
+🔹 Core Gameplay Requirements
+
+The player starts with $100,000 in capital.
+
+Exactly 10 founders appear one at a time.
+
+Each founder:
+
+Has a business-card style profile (photo, name, country).
+
+Presents a short startup pitch (3–4 sentences).
+
+Shows traction metrics (users, growth %, revenue).
+
+The player must choose:
+
+INVEST or PASS.
+
+If INVEST, optionally choose an amount (slider or preset).
+
+Decisions are final. No going back.
+
+🔹 APIs to Use
+
+Random User API for founder identity:
+
+Name
+
+Headshot
+
+Country
+
+ChatGPT API for startup generation:
+
+Startup name
+
+Pitch
+
+Market category
+
+Traction metrics
+
+Hidden risk and upside values (not shown to player)
+
+⚠️ The OpenAI API key must not be exposed in frontend code.
+Assume a simple backend proxy or serverless function exists.
+
+🔹 Data Model (Must Be Used)
+
+Each pitch must be stored as an object with this structure:
+
+{
+  founder: {
+    name: string,
+    photo: string,
+    country: string
+  },
+  startup: {
+    name: string,
+    pitch: string,
+    market: string,
+    traction: {
+      users: number,
+      monthlyGrowth: number,
+      revenue: number
+    },
+    risk: number,     // 0–1, hidden from player
+    upside: number    // multiplier, hidden from player
+  },
+  ask: number,
+  decision: "invest" | "pass",
+  investedAmount: number,
+  outcome: null | number
+}
+
+🔹 ROI Simulation Logic
+
+After all 10 pitches are completed:
+
+Simulate outcomes using hidden risk and upside
+
+Each invested startup results in:
+
+Total failure
+
+Break-even
+
+Moderate return
+
+Rare large win
+
+Example logic (can be refined but must exist):
+
+finalReturn = investedAmount * upside * (1 - risk) * randomVariance
+
+🔹 Ending Experience (CRITICAL)
+
+❌ Do NOT end with a numeric score only
+✅ Must be interactive, animated, and story-driven
+
+Required ending sequence:
+
+“3 Years Later…” transition
+
+Startups resolve one by one, each with:
+
+Narrative event (e.g., “acquired”, “pivoted”, “shut down”)
+
+Animated gain/loss applied to total capital
+
+Final animated net-worth counter
+
+Reveal an Investor Archetype, based on behavior:
+
+Risk tolerance
+
+Diversification
+
+Capital efficiency
+
+Examples:
+
+“The Visionary”
+
+“The Cautious Operator”
+
+“The Degenerate Angel”
+
+“The Accidental Genius”
+
+Display a shareable summary screen with:
+
+Final capital
+
+Archetype
+
+Notable wins/losses
+
+🔹 UI / UX Expectations
+
+Business-card layout for founders
+
+Smooth transitions between pitches
+
+Clear INVEST / PASS actions
+
+Visual feedback on decisions (stamp, color, animation)
+
+Timeline or card-based reveal for ending
+
+Replayable without page refresh
+
+🔹 Technical Constraints
+
+HTML + CSS + vanilla JavaScript only
+
+No frameworks
+
+Use modern ES6 syntax
+
+Clean separation of:
+
+Data
+
+Game state
+
+UI rendering
+
+Code must be readable and modular
+
+🔹 Output Instructions
+
+When responding:
+
+Explain the architecture briefly
+
+Provide folder structure
+
+Provide key JS modules
+
+Include sample prompts for the ChatGPT API
+
+Do NOT skip the ending logic
+
+🔹 Tone
+
+Treat this as a real portfolio project, not a tutorial toy.
+Assume the developer is capable and wants best practices.
