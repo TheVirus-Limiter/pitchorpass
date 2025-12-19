@@ -1,18 +1,45 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const games = pgTable("games", {
+  id: serial("id").primaryKey(),
+  score: integer("score").notNull(), // Final capital
+  archetype: text("archetype").notNull(), // "The Visionary", etc.
+  details: jsonb("details").notNull(), // Store summary of wins/losses for sharing
+  createdAt: text("created_at").notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const insertGameSchema = createInsertSchema(games).omit({ id: true });
+
+export type Game = typeof games.$inferSelect;
+export type InsertGame = z.infer<typeof insertGameSchema>;
+
+// === Game Data Types (Not DB tables, but shared API types) ===
+
+export const founderSchema = z.object({
+  name: z.string(),
+  photo: z.string(),
+  country: z.string(),
 });
 
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export const startupSchema = z.object({
+  name: z.string(),
+  pitch: z.string(),
+  market: z.string(),
+  traction: z.object({
+    users: z.number(),
+    monthlyGrowth: z.number(),
+    revenue: z.number(),
+  }),
+  risk: z.number(),   // 0-1, hidden from player in UI but sent to client for game logic
+  upside: z.number(), // multiplier, hidden from player in UI
+});
+
+export const pitchSchema = z.object({
+  founder: founderSchema,
+  startup: startupSchema,
+  ask: z.number(),
+});
+
+export type Pitch = z.infer<typeof pitchSchema>;
