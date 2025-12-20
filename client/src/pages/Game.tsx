@@ -4,18 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useGeneratePitch, useSaveResult } from "@/hooks/use-game-api";
 import { PitchCard } from "@/components/game/PitchCard";
-import { InvestControls } from "@/components/game/InvestControls";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Wallet, RotateCcw, Home as HomeIcon } from "lucide-react";
-import type { Pitch } from "@shared/routes";
+import type { Pitch } from "@shared/schema";
 
 type GameState = "loading" | "playing" | "revealing" | "finished";
 
 type Investment = {
   pitch: Pitch;
   amount: number;
-  ownership: number; // percentage
+  ownership: number;
   outcome: number;
   isWin: boolean;
   narrative: string;
@@ -174,7 +173,7 @@ export default function Game() {
 
   if (gameState === "loading" || gameState === "playing") {
     return (
-      <div className="min-h-screen bg-background pt-32 pb-32">
+      <div className="min-h-screen bg-background pt-32 pb-6">
         <Header />
         
         <div className="max-w-7xl mx-auto px-4">
@@ -197,20 +196,19 @@ export default function Game() {
                 exit={{ x: -300, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
               >
-                {currentPitch && <PitchCard pitch={currentPitch} round={round} />}
+                {currentPitch && (
+                  <PitchCard 
+                    pitch={currentPitch} 
+                    round={round}
+                    maxInvest={capital}
+                    onInvest={handleDecision}
+                    onPass={() => handleDecision(0)}
+                    disabled={gameState === "loading"}
+                  />
+                )}
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-
-        <div className="fixed bottom-0 left-0 w-full z-50 bg-gradient-to-t from-background to-transparent pt-8 pb-6 px-4">
-          <InvestControls 
-            maxInvest={capital} 
-            pitch={currentPitch}
-            onInvest={handleDecision} 
-            onPass={() => handleDecision(0)}
-            disabled={gameState === "loading"}
-          />
         </div>
       </div>
     );

@@ -1,16 +1,33 @@
 import { motion } from "framer-motion";
-import { type Pitch } from "@shared/routes";
+import { type Pitch } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Users, TrendingUp, DollarSign, MapPin, Zap } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
+import { Users, TrendingUp, DollarSign, MapPin, Zap, Check, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface PitchCardProps {
   pitch: Pitch;
   round: number;
+  maxInvest: number;
+  onInvest: (amount: number) => void;
+  onPass: () => void;
+  disabled: boolean;
 }
 
-export function PitchCard({ pitch, round }: PitchCardProps) {
+export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
   const { founder, startup, ask } = pitch;
+  const [investAmount, setInvestAmount] = useState(5000);
+  const minimumInvest = pitch.minimumInvestment || 1000;
+  const maxAllowed = Math.min(maxInvest, 50000);
+  const company_valuation = pitch.startup.valuation || 1000000;
+  const ownership = (investAmount / company_valuation) * 100;
+  const canInvest = investAmount >= minimumInvest && investAmount <= maxInvest;
+
+  useEffect(() => {
+    setInvestAmount(Math.max(minimumInvest, 5000));
+  }, [pitch, minimumInvest]);
 
   const container = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -30,6 +47,14 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
 
   const riskLevel = startup.risk > 0.6 ? "High Risk" : startup.risk > 0.3 ? "Medium Risk" : "Low Risk";
   const riskColor = startup.risk > 0.6 ? "bg-red-100 text-red-800" : startup.risk > 0.3 ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800";
+
+  const formatMoney = (val: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0
+    }).format(val);
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto lg:min-h-[600px]">
@@ -135,7 +160,7 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
         </Card>
       </motion.div>
 
-      {/* Right Sidebar - Ask & Details */}
+      {/* Right Sidebar - Investment Controls */}
       <motion.div
         variants={container}
         initial="hidden"
@@ -153,7 +178,7 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
             </motion.div>
 
             {/* Company Valuation */}
-            <motion.div variants={item} className="mb-8 bg-white p-4 rounded-lg border border-gray-200">
+            <motion.div variants={item} className="mb-6 bg-white p-4 rounded-lg border border-gray-200">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Valuation</p>
               <p className="text-2xl font-bold font-mono text-foreground">
                 ${(startup.valuation ? startup.valuation / 1000000 : 1).toFixed(1)}M
@@ -161,19 +186,72 @@ export function PitchCard({ pitch, round }: PitchCardProps) {
             </motion.div>
 
             {/* Upside Potential */}
-            <motion.div variants={item} className="mb-8 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg border-2 border-yellow-300">
+            <motion.div variants={item} className="mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg border-2 border-yellow-300">
               <p className="text-xs font-bold text-yellow-800 uppercase tracking-widest mb-2">Upside Potential</p>
               <p className="text-2xl font-bold text-yellow-800">
                 {startup.upside.toFixed(1)}x
               </p>
             </motion.div>
 
-            {/* Info Box */}
-            <motion.div variants={item} className="mt-auto bg-blue-50 p-4 rounded-lg border border-blue-200 text-sm">
-              <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">💡 Tip</p>
-              <p className="text-blue-800 text-sm">
-                High upside usually means higher risk. Balance conviction with diversification.
-              </p>
+            {/* Investment Slider */}
+            <motion.div variants={item} className="mb-6 space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-bold text-foreground uppercase tracking-widest">Invest</label>
+                <span className="text-2xl font-bold font-mono text-primary">{formatMoney(investAmount)}</span>
+              </div>
+              <Slider
+                value={[investAmount]}
+                onValueChange={(val) => setInvestAmount(val[0])}
+                max={maxAllowed}
+                min={minimumInvest}
+                step={1000}
+                disabled={disabled}
+              />
+              <div className="text-xs text-muted-foreground font-mono text-center">
+                {formatMoney(minimumInvest)} — {formatMoney(maxAllowed)}
+              </div>
+            </motion.div>
+
+            {/* Equity Display */}
+            <motion.div variants={item} className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">Your Equity</p>
+              <p className="text-xl font-bold text-blue-700">{ownership.toFixed(2)}%</p>
+            </motion.div>
+
+            {/* Error States */}
+            {minimumInvest > 1000 && (
+              <div className="mb-4 bg-yellow-50 border border-yellow-300 p-2 rounded-lg text-xs text-yellow-800 font-medium">
+                Min: {formatMoney(minimumInvest)}
+              </div>
+            )}
+
+            {!canInvest && (
+              <div className="mb-4 bg-red-50 border border-red-300 p-2 rounded-lg text-xs text-red-800 font-medium">
+                Invalid amount
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-auto">
+              <Button 
+                size="sm"
+                onClick={onPass}
+                disabled={disabled}
+                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 border-0 font-bold text-xs"
+              >
+                <X className="w-4 h-4 mr-1" />
+                PASS
+              </Button>
+              
+              <Button 
+                size="sm"
+                onClick={() => onInvest(investAmount)}
+                disabled={disabled || !canInvest}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white border-0 font-bold text-xs"
+              >
+                <Check className="w-4 h-4 mr-1" />
+                INVEST
+              </Button>
             </motion.div>
           </CardContent>
         </Card>

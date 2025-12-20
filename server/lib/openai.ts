@@ -10,21 +10,21 @@ const openai = new OpenAI({
 });
 
 const STARTUP_IDEAS = [
-  { name: "food delivery", description: "An on-demand food delivery platform", market: "Food Tech" },
-  { name: "fitness tracking wearable", description: "Smart device for workout monitoring", market: "Health Tech" },
-  { name: "ride sharing", description: "Peer-to-peer transportation network", market: "Mobility" },
-  { name: "social commerce", description: "Buy products directly from social streams", market: "E-Commerce" },
-  { name: "AI customer service", description: "Automated support with natural language", market: "AI/SaaS" },
-  { name: "vertical farming", description: "Indoor automated crop production", market: "AgriTech" },
-  { name: "crypto payment", description: "Blockchain-based payment system", market: "FinTech" },
-  { name: "drone logistics", description: "Autonomous last-mile delivery", market: "Logistics" },
-  { name: "mental health app", description: "AI-powered therapy and meditation", market: "HealthTech" },
-  { name: "gaming NFT platform", description: "Play-to-earn gaming ecosystem", market: "Gaming" },
-  { name: "HR software", description: "AI recruitment and talent management", market: "Enterprise SaaS" },
-  { name: "sustainable fashion", description: "Eco-friendly clothing marketplace", market: "Fashion Tech" },
-  { name: "autonomous vehicles", description: "Self-driving car technology", market: "Mobility" },
-  { name: "data analytics", description: "Real-time business intelligence dashboard", market: "Enterprise SaaS" },
-  { name: "plant-based meat", description: "Alternative protein manufacturing", market: "Food Tech" },
+  { idea: "food delivery", description: "An on-demand food delivery platform", market: "Food Tech" },
+  { idea: "fitness tracking", description: "Smart device for workout monitoring", market: "Health Tech" },
+  { idea: "ride sharing", description: "Peer-to-peer transportation network", market: "Mobility" },
+  { idea: "social commerce", description: "Buy products directly from social streams", market: "E-Commerce" },
+  { idea: "AI customer service", description: "Automated support with natural language", market: "AI/SaaS" },
+  { idea: "vertical farming", description: "Indoor automated crop production", market: "AgriTech" },
+  { idea: "crypto payment", description: "Blockchain-based payment system", market: "FinTech" },
+  { idea: "drone logistics", description: "Autonomous last-mile delivery", market: "Logistics" },
+  { idea: "mental health app", description: "AI-powered therapy and meditation", market: "HealthTech" },
+  { idea: "gaming NFT platform", description: "Play-to-earn gaming ecosystem", market: "Gaming" },
+  { idea: "HR software", description: "AI recruitment and talent management", market: "Enterprise SaaS" },
+  { idea: "sustainable fashion", description: "Eco-friendly clothing marketplace", market: "Fashion Tech" },
+  { idea: "autonomous vehicles", description: "Self-driving car technology", market: "Mobility" },
+  { idea: "data analytics", description: "Real-time business intelligence dashboard", market: "Enterprise SaaS" },
+  { idea: "plant-based meat", description: "Alternative protein manufacturing", market: "Food Tech" },
 ];
 
 const FOUNDER_LOCATIONS = [
@@ -42,8 +42,10 @@ export async function generatePitch() {
   const prompt = `
     Generate a realistic startup pitch for a game. Create a JSON response ONLY.
     
-    Startup idea: "${idea.description}"
+    Startup idea category: "${idea.idea}"
+    Idea description: "${idea.description}"
     Founder location: ${location}
+    Market: ${idea.market}
     
     Return ONLY valid JSON (no markdown, no explanation):
     {
@@ -53,39 +55,40 @@ export async function generatePitch() {
         "gender": "male|female"
       },
       "startup": {
-        "name": "${idea.name.toUpperCase().replace(/\s/g, "")}",
+        "name": "A creative, catchy startup name (2-3 words, NOT just category name). Examples: Uber, Airbnb, Stripe, Figma, Discord",
         "pitch": "2-3 sentence compelling pitch. Make it sound like a real startup pitch.",
         "market": "${idea.market}",
         "traction": {
-          "users": 5000 to 500000,
-          "monthlyGrowth": 5 to 50,
-          "revenue": 0 to 200000
+          "users": (generate random between 5000 and 500000),
+          "monthlyGrowth": (generate random between 5 and 50),
+          "revenue": (generate random between 0 and 200000)
         },
-        "risk": 0.2 to 0.8,
-        "upside": 2 to 50,
-        "valuation": 500000 to 20000000
+        "risk": (generate random between 0.2 and 0.8),
+        "upside": (generate random between 2 and 50),
+        "valuation": (generate random between 500000 and 20000000)
       },
-      "ask": 100000 to 3000000,
-      "minimumInvestment": ${hasMinInvestment ? '50000 to 500000' : 0}
+      "ask": (generate random between 100000 and 3000000),
+      "minimumInvestment": ${hasMinInvestment ? '(generate random between 50000 and 500000)' : 0}
     }
     
     Rules:
+    - **IMPORTANT**: Name must be creative and memorable, NOT generic (bad: "FOODDELIVERY", good: "TasteFlow", "FreshBite", "QuickMeal")
     - High upside (>30) should correlate with high risk (>0.6)
     - Low upside (<5) should be lower risk (<0.3)
     - If revenue is high (>100k), upside should be reasonable (5-15)
-    - Names should sound real and fit the location
+    - Names should sound real and fit the location culture
     - Make the pitch compelling and specific
   `;
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5.1",
+      model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a creative game engine generating realistic startup pitches. Return ONLY valid JSON." },
+        { role: "system", content: "You are a creative game engine generating realistic startup pitches. Return ONLY valid JSON. Generate creative, memorable startup names that sound like real companies." },
         { role: "user", content: prompt }
       ],
       response_format: { type: "json_object" },
-      max_completion_tokens: 500
+      max_completion_tokens: 600
     });
 
     const content = response.choices[0].message.content || "{}";
@@ -129,7 +132,7 @@ export async function generateOutcome(pitch: any, invested: boolean, outcome: nu
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5.1",
+      model: "gpt-4o",
       messages: [
         { role: "system", content: "You are a storyteller. Generate 1-sentence startup outcomes. Be creative and realistic." },
         { role: "user", content: prompt }
