@@ -77,6 +77,31 @@
     @apply bg-gray-400 hover:bg-gray-500 text-white border-0 font-semibold;
   }
 
+  /* Wood texture base */
+  .wood-card {
+    background: linear-gradient(180deg, #f5f1eb 0%, #ede9e0 50%, #e8dfd4 100%);
+    background-image: 
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+      repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 0, 0, 0.02) 1px, rgba(0, 0, 0, 0.02) 2px);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.05);
+  }
+
+  .wood-card-center {
+    background: linear-gradient(180deg, #faf8f3 0%, #f5f1eb 50%, #ede9e0 100%);
+    background-image: 
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.02) 2px, rgba(0, 0, 0, 0.02) 4px),
+      repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 0, 0, 0.01) 1px, rgba(0, 0, 0, 0.01) 2px);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .wood-card-right {
+    background: linear-gradient(180deg, #f5f1eb 0%, #ede9e0 50%, #e8dfd4 100%);
+    background-image: 
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px),
+      repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0, 0, 0, 0.02) 1px, rgba(0, 0, 0, 0.02) 2px);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+  }
+
   /* Paper/notecard aesthetic */
   .card-note {
     @apply bg-white border-2 border-gray-300 shadow-md hover:shadow-lg transition-shadow;
@@ -87,8 +112,45 @@
     @apply p-4 bg-yellow-100 border-l-4 border-yellow-400 shadow;
   }
 
+  .sticky-note-news {
+    @apply p-3 bg-yellow-50 border-2 border-yellow-300 rounded shadow-md;
+    background: linear-gradient(45deg, #fefce8 0%, #fef08a 100%);
+    transform: rotate(-1deg);
+  }
+
   .stamp {
     @apply inline-block px-3 py-1 border-2 border-current font-bold text-sm tracking-widest;
     transform: rotate(-15deg);
+  }
+
+  /* Hand-drawn doodle accents */
+  .doodle-underline {
+    position: relative;
+    text-decoration: none;
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.2);
+  }
+
+  .hand-drawn {
+    font-family: 'Playwrite US Modern', cursive;
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+  }
+
+  /* Tape effect */
+  .tape-corner {
+    position: relative;
+  }
+
+  .tape-corner::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 10px;
+    width: 40px;
+    height: 20px;
+    background: rgba(255, 255, 200, 0.5);
+    transform: rotate(5deg);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
   }
 }

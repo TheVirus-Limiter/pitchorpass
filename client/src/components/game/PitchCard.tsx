@@ -19,9 +19,9 @@ interface PitchCardProps {
 export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
   const { founder, startup, ask } = pitch;
   const [investAmount, setInvestAmount] = useState(5000);
-  const [showNews, setShowNews] = useState(false);
   const [askedQuestion, setAskedQuestion] = useState(false);
   const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
   const maxAllowed = Math.min(maxInvest, 50000);
   const company_valuation = pitch.startup.valuation || 100000;
   let ownership = (investAmount / company_valuation) * 100;
@@ -60,6 +60,20 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
     }).format(val);
   };
 
+  const askQuestion = () => {
+    if (question.trim()) {
+      // Simulate AI response based on traction and pitch
+      const responses = [
+        `We're currently focused on ${startup.market.toLowerCase()} and have strong traction with ${startup.traction.users.toLocaleString()} users growing at ${startup.traction.monthlyGrowth}% monthly.`,
+        `Our unit economics work well - we're generating ${startup.traction.revenue > 0 ? `$${(startup.traction.revenue / 1000).toFixed(0)}k MRR` : "initial revenue"} and the market opportunity is massive in ${startup.market.toLowerCase()}.`,
+        `We've been heads-down on product for 18 months and found product-market fit. The next round is about scaling what's already working.`,
+        `Our competitive advantage is our team and our deep understanding of customer pain in this space. We're uniquely positioned to win.`,
+      ];
+      setAnswer(responses[Math.floor(Math.random() * responses.length)]);
+      setAskedQuestion(true);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto lg:min-h-[600px]">
       {/* Left Sidebar - Founder Profile */}
@@ -69,7 +83,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
         animate="show"
         className="lg:col-span-1 flex flex-col"
       >
-        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-gray-200">
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-gray-300 wood-card">
           <CardContent className="p-6 flex flex-col flex-1">
             {/* Founder Photo */}
             <motion.div variants={item} className="mb-6">
@@ -117,25 +131,50 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <div className="text-xs text-purple-600 font-medium">MRR</div>
               </div>
 
-              {/* Question Button */}
-              <Button 
-                size="sm"
-                variant="outline"
-                onClick={() => setShowNews(!showNews)}
-                disabled={askedQuestion}
-                className="w-full mt-4 text-xs font-bold"
-              >
-                {showNews ? "Hide News" : "Recent News"}
-              </Button>
-
-              {/* News Display */}
-              {showNews && pitch.news && pitch.news.length > 0 && (
-                <motion.div variants={item} className="bg-gray-50 p-3 rounded-lg border border-gray-300 space-y-2">
+              {/* Recent News - Always Visible */}
+              {pitch.news && pitch.news.length > 0 && (
+                <motion.div variants={item} className="sticky-note-news space-y-2 mt-4">
+                  <p className="text-xs font-bold text-gray-700 uppercase">Recent News</p>
                   {pitch.news.map((snippet, idx) => (
-                    <p key={idx} className="text-xs text-gray-700 italic border-b border-gray-200 pb-1 last:border-0">
+                    <p key={idx} className="text-xs text-gray-600 italic border-b border-yellow-300 pb-1 last:border-0">
                       "{snippet}"
                     </p>
                   ))}
+                </motion.div>
+              )}
+
+              {/* One Question Mechanic */}
+              {!askedQuestion && (
+                <motion.div variants={item} className="mt-4 space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Ask one question..."
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && askQuestion()}
+                    className="w-full px-3 py-2 text-xs border border-gray-400 rounded bg-white text-foreground placeholder-muted-foreground"
+                  />
+                  <Button
+                    size="sm"
+                    onClick={askQuestion}
+                    disabled={!question.trim()}
+                    className="w-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white border-0"
+                  >
+                    Ask
+                  </Button>
+                </motion.div>
+              )}
+
+              {/* Answer Display */}
+              {answer && (
+                <motion.div 
+                  variants={item}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded text-xs text-gray-700"
+                >
+                  <p className="font-semibold text-blue-900 mb-1">Founder responds:</p>
+                  <p>{answer}</p>
                 </motion.div>
               )}
             </motion.div>
@@ -150,7 +189,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
         animate="show"
         className="lg:col-span-2"
       >
-        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white">
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-blue-300 wood-card-center">
           <CardContent className="p-8 flex flex-col flex-1">
             {/* Header */}
             <motion.div variants={item} className="mb-8">
@@ -193,7 +232,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
         animate="show"
         className="lg:col-span-1 flex flex-col"
       >
-        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-emerald-200 bg-gradient-to-br from-emerald-50 to-white">
+        <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-emerald-300 wood-card-right">
           <CardContent className="p-6 flex flex-col flex-1">
             {/* Ask Amount */}
             <motion.div variants={item} className="mb-8">
