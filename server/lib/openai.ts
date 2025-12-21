@@ -10,21 +10,21 @@ const openai = new OpenAI({
 });
 
 const STARTUP_IDEAS = [
-  { idea: "food delivery", description: "An on-demand food delivery platform", market: "Food Tech" },
-  { idea: "fitness tracking", description: "Smart device for workout monitoring", market: "Health Tech" },
-  { idea: "ride sharing", description: "Peer-to-peer transportation network", market: "Mobility" },
-  { idea: "social commerce", description: "Buy products directly from social streams", market: "E-Commerce" },
-  { idea: "AI customer service", description: "Automated support with natural language", market: "AI/SaaS" },
-  { idea: "vertical farming", description: "Indoor automated crop production", market: "AgriTech" },
-  { idea: "crypto payment", description: "Blockchain-based payment system", market: "FinTech" },
-  { idea: "drone logistics", description: "Autonomous last-mile delivery", market: "Logistics" },
-  { idea: "mental health app", description: "AI-powered therapy and meditation", market: "HealthTech" },
-  { idea: "gaming NFT platform", description: "Play-to-earn gaming ecosystem", market: "Gaming" },
-  { idea: "HR software", description: "AI recruitment and talent management", market: "Enterprise SaaS" },
-  { idea: "sustainable fashion", description: "Eco-friendly clothing marketplace", market: "Fashion Tech" },
-  { idea: "autonomous vehicles", description: "Self-driving car technology", market: "Mobility" },
-  { idea: "data analytics", description: "Real-time business intelligence dashboard", market: "Enterprise SaaS" },
-  { idea: "plant-based meat", description: "Alternative protein manufacturing", market: "Food Tech" },
+  { idea: "hyperlocal meals", description: "Ghost kitchen delivering restaurant-quality meals in 15 mins", market: "Food Tech", riskProfile: "medium" },
+  { idea: "sleep tech", description: "AI sleep coach that optimizes your bedroom environment", market: "Health Tech", riskProfile: "low" },
+  { idea: "micro-mobility", description: "Electric scooter sharing with ML-based station placement", market: "Mobility", riskProfile: "medium" },
+  { idea: "influencer marketplace", description: "Automated brand partnerships for micro-influencers", market: "E-Commerce", riskProfile: "medium" },
+  { idea: "API analytics", description: "Real-time monitoring and optimization for API performance", market: "Enterprise SaaS", riskProfile: "low" },
+  { idea: "vertical farming automation", description: "Robotics + AI for indoor crop management at scale", market: "AgriTech", riskProfile: "high" },
+  { idea: "instant checkout", description: "Cashierless payment for retail using computer vision", market: "FinTech", riskProfile: "high" },
+  { idea: "autonomous delivery", description: "Sidewalk robots for last-mile food and package delivery", market: "Logistics", riskProfile: "high" },
+  { idea: "precision meditation", description: "Meditation app using biometric feedback (heart rate, breathing)", market: "HealthTech", riskProfile: "low" },
+  { idea: "web3 gaming", description: "Play-to-earn with real-world tournament prizes in crypto", market: "Gaming", riskProfile: "high" },
+  { idea: "recruiter AI", description: "AI that finds hidden talent for hard-to-fill tech roles", market: "Enterprise SaaS", riskProfile: "medium" },
+  { idea: "sustainable packaging", description: "Edible, compostable packaging that dissolves in water", market: "Fashion Tech", riskProfile: "high" },
+  { idea: "flying taxi", description: "Urban air mobility for next-gen commuting", market: "Mobility", riskProfile: "high" },
+  { idea: "carbon credit trading", description: "Blockchain-based marketplace for verified carbon offsets", market: "Enterprise SaaS", riskProfile: "high" },
+  { idea: "cultured meat", description: "Lab-grown meat at price parity with conventional beef", market: "Food Tech", riskProfile: "high" },
 ];
 
 const FOUNDER_LOCATIONS = [
@@ -39,44 +39,49 @@ export async function generatePitch() {
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
   
   const prompt = `
-    Generate a realistic startup pitch for a game. Create a JSON response ONLY.
+    Generate a realistic startup pitch for an investment game. Create a JSON response ONLY.
     
-    Startup idea category: "${idea.idea}"
-    Idea description: "${idea.description}"
+    Startup idea: "${idea.idea}"
+    Description: "${idea.description}"
     Founder location: ${location}
     Market: ${idea.market}
+    Risk profile: ${idea.riskProfile}
     
-    Return ONLY valid JSON (no markdown, no explanation):
+    For ${idea.riskProfile}-risk startups:
+    - LOW-RISK: conservative metrics, steady growth (2-8x upside)
+    - MEDIUM-RISK: balanced growth, moderate opportunity (8-20x upside)
+    - HIGH-RISK: moonshot potential, high failure rate (30x+ upside but 60%+ failure chance)
+    
+    Return ONLY valid JSON (no markdown):
     {
       "founder": {
-        "name": "First Last (realistic name matching location culture)",
+        "name": "First Last (name matching ${location})",
         "country": "United States",
         "gender": "male|female"
       },
       "startup": {
-        "name": "A creative, catchy startup name (2-3 words, NOT just category name). Examples: Uber, Airbnb, Stripe, Figma, Discord",
-        "pitch": "2-3 sentence compelling pitch. Make it sound like a real startup pitch.",
+        "name": "Creative startup name (NOT generic)",
+        "pitch": "2-3 compelling sentences with specific details",
         "market": "${idea.market}",
         "traction": {
-          "users": (generate random between 5000 and 500000),
-          "monthlyGrowth": (generate random between 5 and 50),
-          "revenue": (generate random between 0 and 200000)
+          "users": (integer, scale to risk: low=10k-50k, medium=50k-200k, high=1k-100k),
+          "monthlyGrowth": (integer 2-60%, correlate to risk),
+          "revenue": (integer, 0-150000, or 0 for some high-risk startups)
         },
-        "risk": (generate random between 0.2 and 0.8),
-        "upside": (generate random between 2 and 50),
-        "valuation": (generate random between 250000 and 1000000)
+        "risk": (${idea.riskProfile === 'low' ? '0.15-0.35' : idea.riskProfile === 'medium' ? '0.35-0.60' : '0.60-0.85'}),
+        "upside": (${idea.riskProfile === 'low' ? '2-8' : idea.riskProfile === 'medium' ? '8-20' : '25-100'}),
+        "valuation": (random between 100000 and 400000 - THIS IS SEED STAGE)
       },
-      "ask": (generate random between 25000 and 500000)
+      "ask": (random 10% to 25% of valuation),
+      "news": ["headline1", "headline2", "headline3"]
     }
     
     Rules:
-    - **IMPORTANT**: Name must be creative and memorable, NOT generic (bad: "FOODDELIVERY", good: "TasteFlow", "FreshBite", "QuickMeal")
-    - High upside (>30) should correlate with high risk (>0.6)
-    - Low upside (<5) should be lower risk (<0.3)
-    - If revenue is high (>100k), upside should be reasonable (5-15)
-    - Names should sound real and fit the location culture
-    - Make the pitch compelling and specific
-    - This is SEED/PRE-SEED stage, so keep valuations under $1M
+    - Valuation MUST be $100k-$400k (not higher - this is seed/pre-seed)
+    - Traction must match risk level
+    - Ask should be 10-25% of valuation
+    - News should be 2-3 short snippets like: "Forbes: 'Raising $X for food delivery automation'" or "TechCrunch: 'Early traction shows 40% MoM growth'"
+    - Names must sound real and creative
   `;
 
   try {
@@ -98,6 +103,9 @@ export async function generatePitch() {
     const randomId = Math.floor(Math.random() * 99);
     data.founder.photo = `https://randomuser.me/api/portraits/${gender === 'female' ? 'women' : 'men'}/${randomId}.jpg`;
 
+    // Ensure news array exists
+    data.news = data.news || [];
+
     return data;
   } catch (error) {
     console.error("Pitch generation error:", error);
@@ -106,42 +114,47 @@ export async function generatePitch() {
 }
 
 // Generate outcome narratives based on company data
-export async function generateOutcome(pitch: any, invested: boolean, outcome: number, isWin: boolean) {
-  if (!invested) {
-    return "You passed on this deal. Smart move or missed opportunity?";
+export async function generateOutcome(pitch: any, invested: boolean, investmentAmount: number, equity: number, isWin: boolean) {
+  if (!invested || investmentAmount === 0) {
+    return "You passed on this deal.";
   }
 
+  const exitValue = isWin ? investmentAmount * pitch.startup.upside : 0;
+  const payout = isWin ? Math.round(exitValue * (equity / 100)) : 0;
+  const loss = isWin ? 0 : investmentAmount;
+
   const prompt = `
-    Generate a 1-sentence outcome narrative for a startup game.
+    Generate a 1-sentence case-specific outcome for a startup investment outcome.
     
     Company: ${pitch.startup.name} (${pitch.startup.market})
-    Risk Level: ${pitch.startup.risk > 0.6 ? "High" : pitch.startup.risk > 0.3 ? "Medium" : "Low"}
-    Outcome: ${isWin ? "SUCCESS" : "FAILURE"}
-    Return amount: $${outcome.toLocaleString()}
+    Risk: ${pitch.startup.risk > 0.6 ? "HIGH" : pitch.startup.risk > 0.35 ? "MEDIUM" : "LOW"}
+    Success: ${isWin}
+    Invested: $${investmentAmount.toLocaleString()} for ${equity.toFixed(1)}% equity
+    ${isWin ? `Exit value: $${exitValue.toLocaleString()}, Your payout: $${payout.toLocaleString()}` : "Total loss: $" + investmentAmount.toLocaleString()}
     
-    Create a fun, realistic narrative outcome. Be specific and creative.
+    Create a specific, realistic outcome. Mix of: acquisition, down-round, pivot success, regulatory block, viral then churn, etc.
     Examples:
-    - SUCCESS: "Acquired by Google for $50M. You made 10x!"
-    - SUCCESS: "Series C funding at 5x valuation. Strong growth trajectory."
-    - FAILURE: "Pivot didn't work. Shut down after burning through runway."
-    - FAILURE: "CEO drama. Founder conflict tanked investor confidence."
+    - "Acquired by DoorDash for $80M. Great exit."
+    - "Series B at lower valuation, down-round. Investors diluted."
+    - "Market saturation + high churn. Shut down after Series A."
+    - "Regulatory approval blocked in EU. Pivoted to B2B, survived."
     
-    Return ONLY the narrative sentence (no JSON, no quotes, no explanation).
+    Return ONLY the short narrative (1 sentence, no quotes, no explanation).
   `;
 
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a storyteller. Generate 1-sentence startup outcomes. Be creative and realistic." },
+        { role: "system", content: "You are a startup storyteller. Generate specific, realistic 1-sentence outcomes." },
         { role: "user", content: prompt }
       ],
       max_completion_tokens: 100
     });
 
-    return response.choices[0].message.content?.trim() || (isWin ? "Great success!" : "Things didn't work out.");
+    return response.choices[0].message.content?.trim() || (isWin ? "Successful exit!" : "Failed to execute.");
   } catch (error) {
     console.error("Outcome generation error:", error);
-    return isWin ? "Great success!" : "Things didn't work out.";
+    return isWin ? "Successful exit!" : "Failed to execute.";
   }
 }

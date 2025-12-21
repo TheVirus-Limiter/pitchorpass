@@ -20,8 +20,10 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
   const { founder, startup, ask } = pitch;
   const [investAmount, setInvestAmount] = useState(5000);
   const maxAllowed = Math.min(maxInvest, 50000);
-  const company_valuation = pitch.startup.valuation || 1000000;
-  const ownership = (investAmount / company_valuation) * 100;
+  const company_valuation = pitch.startup.valuation || 100000;
+  let ownership = (investAmount / company_valuation) * 100;
+  // Cap equity offered at 49%
+  ownership = Math.min(ownership, 49);
   const canInvest = investAmount <= maxInvest && investAmount > 0;
 
   useEffect(() => {
@@ -180,7 +182,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             <motion.div variants={item} className="mb-6 bg-white p-4 rounded-lg border border-gray-200">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Valuation</p>
               <p className="text-2xl font-bold font-mono text-foreground">
-                ${(startup.valuation ? startup.valuation / 1000000 : 1).toFixed(1)}M
+                ${(startup.valuation ? (startup.valuation / 1000).toFixed(0) : "100") }k
               </p>
             </motion.div>
 
@@ -215,6 +217,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             <motion.div variants={item} className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
               <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">Your Equity</p>
               <p className="text-xl font-bold text-blue-700">{ownership.toFixed(2)}%</p>
+              {ownership === 49 && <p className="text-xs text-blue-600 mt-1">Max equity capped at 49%</p>}
             </motion.div>
 
             {/* Error States */}

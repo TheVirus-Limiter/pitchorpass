@@ -41,7 +41,9 @@ export const pitchSchema = z.object({
   founder: founderSchema,
   startup: startupSchema,
   ask: z.number(),
-  minimumInvestment: z.number().optional(), // Minimum to invest
+  news: z.array(z.string()).optional(), // Simulated press snippets
+  outcomeSummary: z.string().optional(), // Case-specific outcome snippet
+  equityPercentage: z.number().optional(), // For display on invest
 });
 
 export type Pitch = z.infer<typeof pitchSchema>;
