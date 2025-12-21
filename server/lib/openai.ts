@@ -37,7 +37,6 @@ export async function generatePitch() {
   const ideaIndex = Math.floor(Math.random() * STARTUP_IDEAS.length);
   const idea = STARTUP_IDEAS[ideaIndex];
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
-  const hasMinInvestment = Math.random() > 0.7; // 30% have minimums
   
   const prompt = `
     Generate a realistic startup pitch for a game. Create a JSON response ONLY.
@@ -65,10 +64,9 @@ export async function generatePitch() {
         },
         "risk": (generate random between 0.2 and 0.8),
         "upside": (generate random between 2 and 50),
-        "valuation": (generate random between 500000 and 20000000)
+        "valuation": (generate random between 250000 and 1000000)
       },
-      "ask": (generate random between 100000 and 3000000),
-      "minimumInvestment": ${hasMinInvestment ? '(generate random between 50000 and 500000)' : 0}
+      "ask": (generate random between 25000 and 500000)
     }
     
     Rules:
@@ -78,6 +76,7 @@ export async function generatePitch() {
     - If revenue is high (>100k), upside should be reasonable (5-15)
     - Names should sound real and fit the location culture
     - Make the pitch compelling and specific
+    - This is SEED/PRE-SEED stage, so keep valuations under $1M
   `;
 
   try {

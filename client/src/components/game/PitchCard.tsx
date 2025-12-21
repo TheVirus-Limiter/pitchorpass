@@ -19,15 +19,14 @@ interface PitchCardProps {
 export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
   const { founder, startup, ask } = pitch;
   const [investAmount, setInvestAmount] = useState(5000);
-  const minimumInvest = pitch.minimumInvestment || 1000;
   const maxAllowed = Math.min(maxInvest, 50000);
   const company_valuation = pitch.startup.valuation || 1000000;
   const ownership = (investAmount / company_valuation) * 100;
-  const canInvest = investAmount >= minimumInvest && investAmount <= maxInvest;
+  const canInvest = investAmount <= maxInvest && investAmount > 0;
 
   useEffect(() => {
-    setInvestAmount(Math.max(minimumInvest, 5000));
-  }, [pitch, minimumInvest]);
+    setInvestAmount(Math.min(5000, maxInvest));
+  }, [pitch, maxInvest]);
 
   const container = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -135,7 +134,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 </div>
               </div>
               <Badge className="bg-blue-600 text-white border-0 text-base py-2 px-4">
-                Seeking {pitch.minimumInvestment ? `$${pitch.minimumInvestment.toLocaleString()}+` : ''} ${ask.toLocaleString()}
+                Seeking ${ask.toLocaleString()}
               </Badge>
             </motion.div>
 
@@ -203,12 +202,12 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 value={[investAmount]}
                 onValueChange={(val) => setInvestAmount(val[0])}
                 max={maxAllowed}
-                min={minimumInvest}
+                min={1000}
                 step={1000}
                 disabled={disabled}
               />
               <div className="text-xs text-muted-foreground font-mono text-center">
-                {formatMoney(minimumInvest)} — {formatMoney(maxAllowed)}
+                $1,000 — {formatMoney(maxAllowed)}
               </div>
             </motion.div>
 
@@ -219,12 +218,6 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             </motion.div>
 
             {/* Error States */}
-            {minimumInvest > 1000 && (
-              <div className="mb-4 bg-yellow-50 border border-yellow-300 p-2 rounded-lg text-xs text-yellow-800 font-medium">
-                Min: {formatMoney(minimumInvest)}
-              </div>
-            )}
-
             {!canInvest && (
               <div className="mb-4 bg-red-50 border border-red-300 p-2 rounded-lg text-xs text-red-800 font-medium">
                 Invalid amount

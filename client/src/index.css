@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,74 +6,74 @@
 
 :root {
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-display: 'Inter', sans-serif;
 
-  /* Light Silicon Valley Tech Theme */
-  --background: 0 0% 99%;
-  --foreground: 0 0% 10%;
+  /* Warm, Human-Friendly Color Palette */
+  --background: 40 20% 97%;
+  --foreground: 20 30% 15%;
 
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 15%;
+  --card-foreground: 20 30% 20%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 15%;
+  --popover-foreground: 20 30% 20%;
 
-  /* Vibrant Tech Primary */
-  --primary: 210 100% 50%;
+  /* Warm Primary (Muted Blue-Green) */
+  --primary: 200 40% 45%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 95%;
-  --secondary-foreground: 0 0% 20%;
+  --secondary: 40 20% 93%;
+  --secondary-foreground: 20 30% 30%;
 
-  --muted: 0 0% 85%;
-  --muted-foreground: 0 0% 45%;
+  --muted: 40 15% 85%;
+  --muted-foreground: 20 15% 50%;
 
-  --accent: 280 85% 55%;
+  --accent: 25 75% 50%;
   --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84% 60%;
+  --destructive: 0 75% 55%;
   --destructive-foreground: 0 0% 100%;
 
-  /* Success/Profit Green */
-  --profit: 142 71% 45%;
+  /* Natural Green for Success */
+  --profit: 120 50% 45%;
   
-  --border: 0 0% 90%;
-  --input: 0 0% 96%;
-  --ring: 210 100% 50%;
+  --border: 40 20% 88%;
+  --input: 40 20% 95%;
+  --ring: 200 40% 45%;
 
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 }
 
 @layer base {
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/10;
+    @apply bg-background text-foreground antialiased selection:bg-primary/15;
     font-family: var(--font-sans);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    @apply tracking-tight font-bold;
+    font-family: var(--font-sans);
+    @apply font-bold;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+    @apply text-primary;
   }
   
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-accent;
+    @apply text-primary;
   }
 
   .glass-card {
-    @apply bg-white/50 backdrop-blur-md border border-black/5 shadow-lg;
+    @apply bg-white border border-gray-200 shadow;
   }
 
   .button-invest {
-    @apply bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white border-0;
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white border-0;
   }
 
   .button-pass {
-    @apply bg-gray-200 hover:bg-gray-300 text-gray-800 border-0;
+    @apply bg-gray-300 hover:bg-gray-400 text-gray-900 border-0;
   }
 }
