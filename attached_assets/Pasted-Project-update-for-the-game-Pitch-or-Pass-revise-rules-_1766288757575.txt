@@ -1,0 +1,70 @@
+Project update for the game “Pitch or Pass” — revise rules, content, and UI.
+
+1) Valuations / equity / investment math (must be realistic and consistent)
+- Startup valuations must be under $500,000, preferably around $100,000 (e.g., $60k–$400k range, most clustered near $100k–$200k).
+- Founders will never offer more than 49% of their company total.
+- When the player invests, equity % should be based on valuation: equity = investedAmount / valuation, capped so total equity offered never exceeds 49%.
+- ROI must be proportional to equity. Example: invest $30k at $100k valuation = 30% equity. If exit = $10M, payout = $3M.
+- Show equity clearly on-screen at decision time: valuation, ask, offered equity, post-money implied, etc.
+- If the player runs out of money at any point, immediately skip to the “3 Years Later…” ending sequence (no more pitches).
+
+2) Risk / volatility / outcomes (more variety)
+- Do NOT make all startups “medium risk.” Each company must have its own risk level and volatility.
+- Include a spectrum:
+  - low-risk / modest return (steady businesses)
+  - medium-risk / mixed outcomes
+  - high-risk moonshots with huge upside but high failure chance (flying cars, meals-in-a-pill, etc.)
+  - obviously terrible deals (e.g., 10 active users, no revenue, incoherent model)
+- Outcomes should feel volatile and story-driven, not just a bland score. Failure should be common for high-risk.
+
+3) Pitch content (more captivating)
+- Startup ideas must be more eye-grabbing than generic “AI for X.”
+- Include:
+  - a few “crazy, probably impossible” moonshots with massive potential
+  - several compelling, plausible startups with interesting twists
+  - a few clearly bad startups the player should reject
+- Pitches should be short but punchy (3–5 sentences), with strong hooks and memorable details.
+- Traction must match the story (moonshots might have prototypes + hype; terrible ones have tiny traction).
+
+4) One-question mechanic (interactive)
+- Under each founder’s profile, give the player exactly ONE question to ask the entrepreneur.
+- Implement as a simple chat input with a single message allowed.
+- The AI response must be short and direct (1–2 sentences) and must only use the startup’s known pitch/traction info (no hallucinated “new facts”).
+- After one question is used, disable it for that pitch.
+
+5) “Recent news” tab (snippets per company)
+- Add a “Recent News” tab for each startup with 2–4 short snippets/headlines about that company.
+- Style it like press coverage from sites like Forbes, TechCrunch, BBC, etc.
+Important constraint: do not scrape real websites in the client. Generate these snippets via the ChatGPT API to resemble those outlets’ tone, but clearly treat them as simulated/in-game press (avoid implying they are real links or real articles). Do not use real logos.
+
+6) Ending sequence (much richer + case-specific)
+- The ending should be an interactive “portfolio timeline” reveal, one company at a time, with animated money changes.
+- Each company must have a specific outcome message (not only “massive success” or “failed”).
+  Examples: “great product, failed execution,” “acquired but down-round,” “regulatory blocked,” “viral hype then churn,” “pivot saved them,” etc.
+- Each company’s ending popup should include:
+  - the outcome narrative
+  - simulated news snippets referencing the outcome
+  - your investment amount, equity %, exit value, and your payout (or loss)
+- Add a “missed opportunity” insight line:
+  - “If you had invested $X in [Company], you would have made $Y more.”
+  - This should be computed from the simulated final outcomes.
+
+7) Archetypes / success levels (more variety)
+- Expand beyond a few archetypes. Include many archetypes and multiple success tiers.
+- Archetype assignment should be based on actual behavior:
+  - risk tolerance, diversification, capital efficiency, concentration, timing, etc.
+- Provide a final “Investor Profile” screen with:
+  - archetype name + short description
+  - final capital vs starting capital
+  - biggest win, biggest loss, best missed opportunity
+  - replay button
+
+8) Visual design (avoid “generic AI app look”)
+- The UI should NOT look like a standard AI dashboard with the usual icons/colors.
+- Theme it like a creative “wood + whiteboards + startup garage” space:
+  - warm wood textures, paper notes, hand-drawn doodle accents, whiteboard panels
+  - sticky notes for traction, stamps for “INVESTED” / “PASS”
+  - subtle imperfections (tape, pins, marker strokes)
+- Keep it readable and modern, but with personality and tactile feel.
+- Avoid the typical neon gradients, generic flat icons, and repetitive AI color palettes.
+
