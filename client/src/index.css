@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playwrite+US+Modern:wght@400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,38 +8,38 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Inter', sans-serif;
 
-  /* Warm, Human-Friendly Color Palette */
-  --background: 40 20% 97%;
-  --foreground: 20 30% 15%;
+  /* Warm, Human-Friendly Paper/Desk Theme */
+  --background: 45 35% 94%;
+  --foreground: 30 40% 12%;
 
   --card: 0 0% 100%;
-  --card-foreground: 20 30% 20%;
+  --card-foreground: 30 40% 18%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 20 30% 20%;
+  --popover-foreground: 30 40% 18%;
 
-  /* Warm Primary (Muted Blue-Green) */
-  --primary: 200 40% 45%;
+  /* Warm Earthy Primary */
+  --primary: 210 45% 50%;
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 40 20% 93%;
-  --secondary-foreground: 20 30% 30%;
+  --secondary: 45 25% 92%;
+  --secondary-foreground: 30 40% 25%;
 
-  --muted: 40 15% 85%;
-  --muted-foreground: 20 15% 50%;
+  --muted: 40 20% 82%;
+  --muted-foreground: 25 15% 48%;
 
-  --accent: 25 75% 50%;
+  --accent: 35 85% 55%;
   --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 75% 55%;
+  --destructive: 0 75% 60%;
   --destructive-foreground: 0 0% 100%;
 
   /* Natural Green for Success */
-  --profit: 120 50% 45%;
+  --profit: 120 55% 48%;
   
   --border: 40 20% 88%;
-  --input: 40 20% 95%;
-  --ring: 200 40% 45%;
+  --input: 45 25% 96%;
+  --ring: 210 45% 50%;
 
   --radius: 0.5rem;
 }
@@ -66,14 +66,29 @@
   }
 
   .glass-card {
-    @apply bg-white border border-gray-200 shadow;
+    @apply bg-white border border-gray-200 shadow-md;
   }
 
   .button-invest {
-    @apply bg-emerald-600 hover:bg-emerald-700 text-white border-0;
+    @apply bg-emerald-600 hover:bg-emerald-700 text-white border-0 font-semibold;
   }
 
   .button-pass {
-    @apply bg-gray-300 hover:bg-gray-400 text-gray-900 border-0;
+    @apply bg-gray-400 hover:bg-gray-500 text-white border-0 font-semibold;
+  }
+
+  /* Paper/notecard aesthetic */
+  .card-note {
+    @apply bg-white border-2 border-gray-300 shadow-md hover:shadow-lg transition-shadow;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .sticky-note {
+    @apply p-4 bg-yellow-100 border-l-4 border-yellow-400 shadow;
+  }
+
+  .stamp {
+    @apply inline-block px-3 py-1 border-2 border-current font-bold text-sm tracking-widest;
+    transform: rotate(-15deg);
   }
 }

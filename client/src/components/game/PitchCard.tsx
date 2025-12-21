@@ -19,6 +19,9 @@ interface PitchCardProps {
 export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
   const { founder, startup, ask } = pitch;
   const [investAmount, setInvestAmount] = useState(5000);
+  const [showNews, setShowNews] = useState(false);
+  const [askedQuestion, setAskedQuestion] = useState(false);
+  const [question, setQuestion] = useState("");
   const maxAllowed = Math.min(maxInvest, 50000);
   const company_valuation = pitch.startup.valuation || 100000;
   let ownership = (investAmount / company_valuation) * 100;
@@ -113,6 +116,28 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <div className="text-2xl font-bold text-purple-700 font-mono">${(startup.traction.revenue / 1000).toFixed(0)}k</div>
                 <div className="text-xs text-purple-600 font-medium">MRR</div>
               </div>
+
+              {/* Question Button */}
+              <Button 
+                size="sm"
+                variant="outline"
+                onClick={() => setShowNews(!showNews)}
+                disabled={askedQuestion}
+                className="w-full mt-4 text-xs font-bold"
+              >
+                {showNews ? "Hide News" : "Recent News"}
+              </Button>
+
+              {/* News Display */}
+              {showNews && pitch.news && pitch.news.length > 0 && (
+                <motion.div variants={item} className="bg-gray-50 p-3 rounded-lg border border-gray-300 space-y-2">
+                  {pitch.news.map((snippet, idx) => (
+                    <p key={idx} className="text-xs text-gray-700 italic border-b border-gray-200 pb-1 last:border-0">
+                      "{snippet}"
+                    </p>
+                  ))}
+                </motion.div>
+              )}
             </motion.div>
           </CardContent>
         </Card>

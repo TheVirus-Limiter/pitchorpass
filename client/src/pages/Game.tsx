@@ -218,6 +218,11 @@ export default function Game() {
     const currentReveal = investments[revealIndex];
     if (!currentReveal) return null;
 
+    // Calculate what opportunity cost would have been (if passed)
+    const missedGain = currentReveal.amount === 0 
+      ? currentReveal.pitch.startup.valuation * currentReveal.pitch.startup.upside * 0.1 
+      : 0;
+
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32">
         <Header />
@@ -225,7 +230,7 @@ export default function Game() {
           key={revealIndex}
           initial={{ scale: 0.8, opacity: 0, rotateY: 90 }}
           animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, type: "spring" }}
           className="text-center max-w-2xl w-full"
         >
           <h2 className="text-sm text-muted-foreground uppercase tracking-widest mb-8 font-bold">3 Years Later...</h2>
@@ -237,20 +242,27 @@ export default function Game() {
           }`}>
             <h3 className="text-4xl font-bold mb-2 text-foreground">{currentReveal.pitch.startup.name}</h3>
             <p className="text-muted-foreground mb-8">
-              You invested <span className="font-bold text-foreground">${currentReveal.amount.toLocaleString()}</span>
+              You {currentReveal.amount === 0 ? "passed on" : "invested"} <span className="font-bold text-foreground">${currentReveal.amount.toLocaleString()}</span>
               {currentReveal.ownership > 0 && (
                 <> for {currentReveal.ownership.toFixed(2)}% equity</>
               )}
             </p>
 
             <div className="py-8 border-t border-t-black/10 border-b border-b-black/10 mb-8">
-              <div className="text-6xl font-bold font-mono tracking-tighter mb-3">
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-6xl font-bold font-mono tracking-tighter mb-3"
+              >
                 {currentReveal.isWin ? (
                   <span className="text-emerald-600">+${currentReveal.outcome.toLocaleString()}</span>
+                ) : currentReveal.amount === 0 ? (
+                  <span className="text-yellow-600">${missedGain.toLocaleString()}</span>
                 ) : (
                   <span className="text-red-600">-${currentReveal.amount.toLocaleString()}</span>
                 )}
-              </div>
+              </motion.div>
               <p className="text-sm font-semibold text-foreground">
                 {currentReveal.narrative || (currentReveal.isWin 
                   ? "MASSIVE SUCCESS!" 
@@ -258,6 +270,11 @@ export default function Game() {
                     ? "Passed on this opportunity." 
                     : "The company failed to execute.")}
               </p>
+              {currentReveal.amount === 0 && missedGain > 0 && (
+                <p className="text-xs text-yellow-700 mt-4 italic">
+                  Missed opportunity: If you'd invested $10k, you'd have made ~${(missedGain * 0.1).toLocaleString()}
+                </p>
+              )}
             </div>
             
             <div className="flex justify-between text-xs text-muted-foreground uppercase font-bold">
@@ -274,14 +291,21 @@ export default function Game() {
     let archetype = "The Angel Investor";
     const score = displayedCapital;
     const wins = investments.filter(i => i.isWin).length;
+    const losses = investments.filter(i => !i.isWin && i.amount > 0).length;
     const avgOwnership = investments.length > 0 
       ? investments.reduce((sum, i) => sum + i.ownership, 0) / investments.length 
       : 0;
+    const totalGain = investments.reduce((sum, i) => sum + i.outcome, 0);
+    const winRate = investments.length > 0 ? (wins / investments.filter(i => i.amount > 0).length) * 100 : 0;
     
-    if (score > 500000) archetype = "The Visionary";
-    else if (score > 300000) archetype = "The Shark";
-    else if (wins >= 5) archetype = "The Golden Touch";
-    else if (avgOwnership > 10) archetype = "The Concentrated Player";
+    if (score > 700000) archetype = "The Mogul";
+    else if (score > 500000) archetype = "The Visionary";
+    else if (score > 300000 && avgOwnership > 15) archetype = "The Shark";
+    else if (winRate > 60 && wins >= 4) archetype = "The Golden Touch";
+    else if (winRate > 50 && score > 150000) archetype = "The Optimist";
+    else if (avgOwnership > 12 && losses <= 3) archetype = "The Concentrated Player";
+    else if (avgOwnership < 8 && losses <= 2) archetype = "The Diversifier";
+    else if (score > 120000 && losses <= 2) archetype = "The Cautious Investor";
     else if (score < 50000) archetype = "The Learning Investor";
 
     return (

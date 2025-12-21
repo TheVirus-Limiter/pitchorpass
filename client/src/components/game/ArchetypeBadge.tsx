@@ -8,6 +8,11 @@ interface ArchetypeBadgeProps {
 }
 
 const archetypeDetails: Record<string, { icon: any; color: string; description: string }> = {
+  "The Mogul": {
+    icon: Trophy,
+    color: "from-yellow-500 to-orange-600",
+    description: "Legendary investor. You've achieved unicorn-tier returns and mastered portfolio management."
+  },
   "The Visionary": {
     icon: Trophy,
     color: "from-yellow-400 to-orange-500",
@@ -23,15 +28,30 @@ const archetypeDetails: Record<string, { icon: any; color: string; description: 
     color: "from-emerald-400 to-teal-500",
     description: "Your winner-picking ratio is exceptional. Most of your bets paid off."
   },
+  "The Diversifier": {
+    icon: Target,
+    color: "from-teal-400 to-cyan-500",
+    description: "Balanced portfolio, risk management pro. Steady, intelligent investing."
+  },
   "The Concentrated Player": {
     icon: Target,
     color: "from-purple-500 to-pink-500",
-    description: "You bet big on select opportunities. High conviction investor."
+    description: "You bet big on select opportunities. High conviction, all-in investor."
   },
   "The Angel Investor": {
     icon: Target,
     color: "from-gray-400 to-blue-400",
     description: "Balanced approach. You spread risk across diverse opportunities."
+  },
+  "The Optimist": {
+    icon: Zap,
+    color: "from-green-400 to-emerald-500",
+    description: "Mostly winners. You have a knack for spotting potential before others."
+  },
+  "The Cautious Investor": {
+    icon: Zap,
+    color: "from-orange-400 to-amber-500",
+    description: "Conservative bets, smaller risk. Not all wins, but stable returns."
   },
   "The Learning Investor": {
     icon: Zap,
