@@ -14,9 +14,12 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
     let value = startValue;
     
     for (let i = -12; i <= 0; i++) {
-      const growthRate = 0.08 + (Math.random() * 0.1); // 8-18% monthly growth
-      value = value * growthRate;
-      if (i === 0) value = currentValuation; // Ensure current month is accurate
+      if (i === 0) {
+        value = currentValuation; // Ensure current month is accurate
+      } else {
+        const growthRate = 1.08 + (Math.random() * 0.08); // 8-16% monthly growth
+        value = value * growthRate;
+      }
       
       data.push({
         month: i === 0 ? 'Now' : `M${i}`,
@@ -30,7 +33,6 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
 
   // Generate future projections
   const generateProjections = () => {
-    const historicalData = generateHistoricalData();
     const baseVal = currentValuation;
     
     // Three scenarios
@@ -42,7 +44,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       const month = `M+${i}`;
       
       // Conservative: low growth
-      const conservativeGrowth = 1.05 + (riskProfile * 0.02);
+      const conservativeGrowth = 1.04 + (riskProfile * 0.01);
       conservative.push({
         month,
         value: Math.round(baseVal * Math.pow(conservativeGrowth, i)),
@@ -50,15 +52,19 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       });
       
       // Realistic: moderate growth  
-      const realisticGrowth = 1.12 + (riskProfile * 0.05);
+      const realisticGrowth = 1.10 + (riskProfile * 0.04);
       realistic.push({
         month,
         value: Math.round(baseVal * Math.pow(realisticGrowth, i)),
         type: 'realistic'
       });
       
-      // Optimistic: high growth
-      const optimisticGrowth = 1.20 + (riskProfile * 0.15);
+      // Optimistic: high growth - exponential for high risk
+      let optimisticGrowth = 1.15 + (riskProfile * 0.10);
+      if (riskProfile > 0.6) {
+        // High risk moonshots - crazy upside
+        optimisticGrowth = 1.30 + (riskProfile * 0.40);
+      }
       optimistic.push({
         month,
         value: Math.round(baseVal * Math.pow(optimisticGrowth, i)),
@@ -90,7 +96,11 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
     }))
   ];
 
-  const formatCurrency = (val: number) => {
+  const formatCurrency = (val: number | undefined) => {
+    if (val === undefined || val === null) return '';
+    if (val >= 1000000) {
+      return `$${(val / 1000000).toFixed(1)}M`;
+    }
     return `$${(val / 1000).toFixed(0)}k`;
   };
 
@@ -109,14 +119,17 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <YAxis 
             fontSize={12}
             tick={{ fill: '#6b7280' }}
-            tickFormatter={formatCurrency}
+            tickFormatter={(value) => formatCurrency(value)}
+            domain={['dataMin * 0.9', 'dataMax * 1.1']}
           />
           <Tooltip 
             formatter={(value) => value ? formatCurrency(value) : null}
+            labelFormatter={(label) => `Month: ${label}`}
             contentStyle={{ 
               backgroundColor: '#f9fafb', 
               border: '1px solid #d1d5db',
-              borderRadius: '6px'
+              borderRadius: '6px',
+              padding: '8px'
             }}
           />
           

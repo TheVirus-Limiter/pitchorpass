@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Users, TrendingUp, DollarSign, MapPin, Zap, Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ValuationGraph } from "./ValuationGraph";
+import { FounderConviction } from "./FounderConviction";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -295,6 +296,11 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">Your Equity</p>
               <p className="text-xl font-bold text-blue-700">{ownership.toFixed(2)}%</p>
               {ownership === 49 && <p className="text-xs text-blue-600 mt-1">Max equity capped at 49%</p>}
+            </motion.div>
+
+            {/* Founder Conviction */}
+            <motion.div variants={item} className="mb-6">
+              <FounderConviction pitch={pitch} />
             </motion.div>
 
             {/* Error States */}

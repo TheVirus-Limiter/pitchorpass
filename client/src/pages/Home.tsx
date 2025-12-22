@@ -46,7 +46,7 @@ export default function Home() {
           <br />
           10 Startup pitches. 10 Investment decisions.
           <br />
-          <span className="text-orange-700 font-bold">This is your chance to become a millionaire.</span>
+          <span className="text-orange-700 font-bold">Can you call the shots on 10 startups?</span>
         </p>
 
         {/* CTA Button - Wood styled */}
