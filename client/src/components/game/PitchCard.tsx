@@ -8,6 +8,7 @@ import { Users, TrendingUp, DollarSign, MapPin, Zap, Check, X } from "lucide-rea
 import { useState, useEffect } from "react";
 import { ValuationGraph } from "./ValuationGraph";
 import { FounderConviction } from "./FounderConviction";
+import { ExitMath } from "./ExitMath";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -301,6 +302,11 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             {/* Founder Conviction */}
             <motion.div variants={item} className="mb-6">
               <FounderConviction pitch={pitch} />
+            </motion.div>
+
+            {/* Exit Math */}
+            <motion.div variants={item} className="mb-6">
+              <ExitMath investAmount={investAmount} valuation={startup.valuation} />
             </motion.div>
 
             {/* Error States */}
