@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
-import { generatePitch, generateOutcome } from "./lib/openai";
+import { generatePitch, generateOutcome, answerFounderQuestion } from "./lib/openai";
 import { z } from "zod";
 
 export async function registerRoutes(
@@ -40,6 +40,21 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Outcome narrative error:", error);
       res.json({ narrative: isWin ? "Great success!" : "Things didn't work out." });
+    }
+  });
+
+  // Answer founder question with AI
+  app.post("/api/game/answer-question", async (req, res) => {
+    try {
+      const { pitch, question } = req.body;
+      if (!question || !pitch) {
+        return res.status(400).json({ message: "Missing pitch or question" });
+      }
+      const answer = await answerFounderQuestion(pitch, question);
+      res.json({ answer });
+    } catch (error) {
+      console.error("Answer question error:", error);
+      res.json({ answer: "We're focused on execution and expect strong results soon." });
     }
   });
 

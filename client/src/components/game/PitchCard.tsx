@@ -60,17 +60,22 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
     }).format(val);
   };
 
-  const askQuestion = () => {
+  const askQuestion = async () => {
     if (question.trim()) {
-      // Simulate AI response based on traction and pitch
-      const responses = [
-        `We're currently focused on ${startup.market.toLowerCase()} and have strong traction with ${startup.traction.users.toLocaleString()} users growing at ${startup.traction.monthlyGrowth}% monthly.`,
-        `Our unit economics work well - we're generating ${startup.traction.revenue > 0 ? `$${(startup.traction.revenue / 1000).toFixed(0)}k MRR` : "initial revenue"} and the market opportunity is massive in ${startup.market.toLowerCase()}.`,
-        `We've been heads-down on product for 18 months and found product-market fit. The next round is about scaling what's already working.`,
-        `Our competitive advantage is our team and our deep understanding of customer pain in this space. We're uniquely positioned to win.`,
-      ];
-      setAnswer(responses[Math.floor(Math.random() * responses.length)]);
-      setAskedQuestion(true);
+      try {
+        const res = await fetch("/api/game/answer-question", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ pitch, question })
+        });
+        const data = await res.json();
+        setAnswer(data.answer || "We're focused on execution and expect strong results soon.");
+        setAskedQuestion(true);
+      } catch (error) {
+        console.error("Failed to get answer:", error);
+        setAnswer("We're focused on execution and expect strong results soon.");
+        setAskedQuestion(true);
+      }
     }
   };
 

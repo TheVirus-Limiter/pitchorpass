@@ -158,3 +158,38 @@ export async function generateOutcome(pitch: any, invested: boolean, investmentA
     return isWin ? "Successful exit!" : "Failed to execute.";
   }
 }
+
+// Answer investor questions about the startup
+export async function answerFounderQuestion(pitch: any, question: string) {
+  const prompt = `
+    You are a founder answering an investor's question during a pitch meeting.
+    
+    Company: ${pitch.startup.name}
+    Market: ${pitch.startup.market}
+    Pitch: "${pitch.startup.pitch}"
+    Users: ${pitch.startup.traction.users.toLocaleString()}
+    Monthly Growth: ${pitch.startup.traction.monthlyGrowth}%
+    MRR: $${pitch.startup.traction.revenue.toLocaleString()}
+    
+    Investor question: "${question}"
+    
+    Respond as the founder would - authentic, confident, and specific to the startup's actual metrics.
+    Keep it to 1-2 sentences. Be direct and address the question head-on.
+  `;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "You are a startup founder responding authentically to investor questions. Keep responses concise and data-driven." },
+        { role: "user", content: prompt }
+      ],
+      max_completion_tokens: 150
+    });
+
+    return response.choices[0].message.content?.trim() || "Great question - we're excited about the potential here.";
+  } catch (error) {
+    console.error("Question answer error:", error);
+    return "We're focused on execution and expect strong results soon.";
+  }
+}
