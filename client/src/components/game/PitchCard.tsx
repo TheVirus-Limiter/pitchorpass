@@ -6,6 +6,7 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Users, TrendingUp, DollarSign, MapPin, Zap, Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { ValuationGraph } from "./ValuationGraph";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -225,6 +226,13 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <p className="text-xs font-bold uppercase tracking-wider mb-2">Risk Assessment</p>
                 <p className="font-bold">{riskLevel}</p>
               </div>
+
+              {/* Valuation Graph */}
+              <ValuationGraph 
+                currentValuation={startup.valuation}
+                riskProfile={startup.risk}
+                upside={startup.upside}
+              />
             </motion.div>
           </CardContent>
         </Card>

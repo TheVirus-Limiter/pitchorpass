@@ -42,11 +42,11 @@ export default function Home() {
         
         {/* Subheading */}
         <p className="text-lg md:text-xl text-amber-800 mb-12 max-w-2xl mx-auto leading-relaxed font-serif">
-          You have <span className="font-bold text-emerald-700 bg-yellow-100 px-2 py-1 rounded stamp">$100,000</span>.
+          You have <span className="font-bold text-emerald-700 bg-yellow-100 px-2 py-1 rounded">$100,000</span>.
           <br />
           10 Startup pitches. 10 Investment decisions.
           <br />
-          <span className="text-orange-700 font-bold">Can you build a unicorn portfolio?</span>
+          <span className="text-orange-700 font-bold">This is your chance to become a millionaire.</span>
         </p>
 
         {/* CTA Button - Wood styled */}
