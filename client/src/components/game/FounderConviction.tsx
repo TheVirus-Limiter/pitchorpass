@@ -57,7 +57,7 @@ export function FounderConviction({ pitch }: FounderConvictionProps) {
 
   return (
     <div className="text-left">
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-sm text-gray-700 italic font-semibold">
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg text-gray-700 italic font-semibold">
         {conviction.label}
       </p>
     </div>

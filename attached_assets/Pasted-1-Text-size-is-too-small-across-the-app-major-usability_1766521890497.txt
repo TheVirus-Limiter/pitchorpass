@@ -1,0 +1,201 @@
+1. Text size is too small across the app (major usability failure)
+
+Problem
+
+Pitch text, metrics, labels, and notes are all too small.
+
+The app feels dense and uncomfortable to read.
+
+This is a game, not a financial terminal.
+
+Fix
+
+Increase base font size globally.
+
+Target:
+
+Pitch body text: 16–18px
+
+Key numbers (users, revenue, equity): 18–22px
+
+Section headers: 14–16px
+
+Prioritize breathing room over fitting everything on screen.
+
+If it looks “too big,” that’s usually correct for this style.
+
+2. Color system is still wrong (stop using green / blue / purple)
+
+Problem
+
+Green (risk, growth, buttons), blue (outlines, chips), and purple (MRR) are still present.
+
+These colors directly contradict the physical, analog theme.
+
+It looks like a fintech SaaS UI pasted onto a paper background.
+
+Fix (non-negotiable)
+
+Remove all semantic colors:
+
+No green = good
+
+No red = danger (except stamps)
+
+No blue = information
+
+Use:
+
+Paper tones (off-white / manila / light gray)
+
+Ink tones (charcoal / graphite)
+
+Muted red only for stamps and subtle warnings
+
+Numbers should be black/graphite.
+Risk should be communicated with words, not color blocks.
+
+3. Risk Assessment should not be a colored panel
+
+Problem
+
+“Low Risk” in green is visually loud and misleading.
+
+It reads like a recommendation.
+
+Fix
+
+Remove the colored background entirely.
+
+Present risk as simple text:
+
+Risk Assessment: Low
+
+Optionally add a pencil underline or margin note.
+
+Risk should feel informational, not advisory.
+
+4. Graph is unreadable and incoherent
+
+Problems
+
+All projection lines are the same color.
+
+No visual distinction between scenarios.
+
+Graph dominates attention without clarity.
+
+Fix
+
+De-emphasize the graph visually:
+
+Thinner strokes
+
+Muted graphite tones
+
+Differentiate scenarios by line style, not color:
+
+Solid = historical
+
+Dashed = conservative
+
+Dotted = optimistic
+
+Reduce opacity so it feels like a whiteboard sketch, not analytics software.
+
+The graph should support the pitch, not compete with it.
+
+5. Buttons still look like modern UI buttons
+
+Problem
+
+Green INVEST button feels like a call-to-action banner.
+
+PASS button feels like a danger/secondary action.
+
+Fix
+
+Remove green and blue button styles.
+
+Buttons should look like:
+
+Paper tabs
+
+Pencil-labeled actions
+
+The stamp should be the emotional feedback, not the button color.
+
+6. Founder Conviction & Exposure are still visually weak
+
+Problem
+
+Conviction text is small and visually buried.
+
+Exposure warning does not stand out as a “pause and think” moment.
+
+Fix
+
+Increase text size.
+
+Present both as handwritten notes or margin comments.
+
+Use red ink sparingly (underline, stamp, scribble) to draw attention.
+
+These are psychological cues — they should be readable at a glance.
+
+7. Typography hierarchy needs to be reset
+
+Problem
+
+Too many small text styles competing.
+
+Feels compressed and technical.
+
+Fix
+
+Reduce hierarchy complexity:
+
+Fewer font sizes
+
+More spacing
+
+Headings should clearly stand apart.
+
+Body text should never feel cramped.
+
+8. Theme discipline is being violated
+
+Reminder
+This app should feel like:
+
+A pitch room
+
+A whiteboard
+
+Paper notes and stamps
+
+Human judgment and uncertainty
+
+It should not feel like:
+
+A fintech dashboard
+
+An analytics tool
+
+A growth metrics app
+
+If a UI element looks like it belongs in Stripe, Notion, or a trading app, it does not belong here.
+
+Definition of “done” for the next iteration
+
+All text is easily readable without strain
+
+No bright green, blue, or purple anywhere
+
+Graph is legible and subdued
+
+Risk and conviction feel subjective, not prescriptive
+
+UI feels calm, analog, and intentional
+
+Please focus entirely on readability, color discipline, and restraint before adding or tweaking anything else.

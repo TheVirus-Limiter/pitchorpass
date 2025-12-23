@@ -105,10 +105,10 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
   };
 
   return (
-    <div className="w-full bg-white p-3 rounded-lg border border-gray-300" style={{opacity: 0.9}}>
-      <p className="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-3">Valuation Projection</p>
+    <div className="w-full bg-white p-3 rounded-lg border border-gray-300" style={{opacity: 0.85}}>
+      <p className="text-sm font-semibold text-gray-600 uppercase tracking-widest mb-3">Valuation Projection</p>
       
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer width="100%" height={180}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis 

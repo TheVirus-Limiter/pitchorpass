@@ -19,11 +19,11 @@ export function ExposureWarning({ investAmount, remainingCapital }: ExposureWarn
   };
 
   return (
-    <div className="px-3 py-2 space-y-1 text-xs transform -rotate-0.5">
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 font-semibold mb-1">
+    <div className="px-4 py-3 space-y-2 text-sm transform -rotate-0.5">
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 font-semibold mb-2">
         Your Exposure
       </p>
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-600 text-sm border-b-2 border-red-300 pb-1">
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-base border-b-2 border-red-300 pb-2">
         {getWarning()}
       </p>
     </div>
