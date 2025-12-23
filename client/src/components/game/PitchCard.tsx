@@ -313,7 +313,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             </motion.div>
 
             {/* Founder Conviction - informal margin note */}
-            <motion.div variants={item} className="mb-6 px-4 py-3 border-l-2 border-gray-400">
+            <motion.div variants={item} className="mb-6 px-4 py-4 bg-white border-l-4 border-yellow-400 rounded">
               <FounderConviction pitch={pitch} />
             </motion.div>
 
@@ -334,27 +334,23 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               </div>
             )}
 
-            {/* Action Buttons */}
+            {/* Action Buttons - Stamp style */}
             <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-auto">
-              <Button 
-                size="sm"
+              <button 
                 onClick={onPass}
                 disabled={disabled}
-                className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 border-0 font-bold text-xs"
+                className="relative py-4 px-3 bg-gray-100 border-2 border-gray-400 rounded text-sm font-bold text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <X className="w-4 h-4 mr-1" />
-                PASS
-              </Button>
+                <div className="stamp" style={{fontSize: '10px'}}>PASS</div>
+              </button>
               
-              <Button 
-                size="sm"
+              <button 
                 onClick={() => onInvest(investAmount)}
                 disabled={disabled || !canInvest}
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:shadow-lg hover:shadow-emerald-500/30 text-white border-0 font-bold text-xs"
+                className="relative py-4 px-3 bg-gray-100 border-2 border-gray-400 rounded text-sm font-bold text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Check className="w-4 h-4 mr-1" />
-                INVEST
-              </Button>
+                <div className="stamp" style={{fontSize: '10px', color: '#dc2626', borderColor: '#dc2626'}}>INVEST</div>
+              </button>
             </motion.div>
           </CardContent>
         </Card>

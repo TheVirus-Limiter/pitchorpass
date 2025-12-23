@@ -56,8 +56,9 @@ export function FounderConviction({ pitch }: FounderConvictionProps) {
   const conviction = generateConviction();
 
   return (
-    <div className="text-left">
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg text-gray-700 italic font-semibold">
+    <div className="text-left space-y-2">
+      <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Founder Conviction</p>
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-xl text-gray-800 italic font-semibold leading-relaxed border-b-2 border-yellow-400 pb-2">
         {conviction.label}
       </p>
     </div>

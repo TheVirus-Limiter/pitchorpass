@@ -39,11 +39,16 @@ export default function Home() {
           Can you call the shots?
         </p>
 
-        {/* CTA Button - Analog/Physical */}
+        {/* CTA Button - Paper card styled */}
         <Link href="/game">
-          <Button size="lg" className="text-lg px-10 py-6 rounded-sm bg-gray-700 hover:bg-gray-800 text-white border-2 border-gray-800 font-bold shadow-md hover:shadow-lg transition-all" style={{borderRadius: '2px', letterSpacing: '0.5px'}}>
-            Start Investing
-          </Button>
+          <div className="inline-block paper-note p-6 transform -rotate-2 hover-elevate cursor-pointer border-2 border-yellow-300 shadow-lg" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-3xl text-gray-800 font-bold">
+              Take a seat
+            </p>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-xl text-gray-700 mt-2">
+              Let's hear the first pitch
+            </p>
+          </div>
         </Link>
 
         {/* Feature Sticky Notes - Redesigned */}
@@ -55,10 +60,10 @@ export default function Home() {
         >
           {/* Sticky Note 1 */}
           <div className="sticky-note-news p-6 transform -rotate-6 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
               Every founder thinks their startup is special.
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-xl leading-relaxed whitespace-pre-wrap">
               {`Some are right.
 Most are wrong.
 
@@ -70,10 +75,10 @@ deserves your money.`}
 
           {/* Sticky Note 2 */}
           <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
               Real Outcomes
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-xl leading-relaxed whitespace-pre-wrap">
               {`Three years pass in minutes.
 
 Some quietly succeed.
@@ -87,10 +92,10 @@ timing, and risk tolerance.`}
 
           {/* Sticky Note 3 */}
           <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
               Investor Archetypes
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-xl leading-relaxed whitespace-pre-wrap">
               {`At the end, you see what
 kind of investor you are.
 

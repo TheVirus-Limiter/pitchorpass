@@ -1,0 +1,227 @@
+PART 1 — HOMEPAGE
+1. The “Start Investing” button is weak and generic
+
+Problem
+
+The button looks like a standard dark CTA.
+
+It doesn’t feel like the beginning of a game or experience.
+
+There’s no emotional pull.
+
+Fix
+
+Replace the button with something physical and expressive:
+
+A large paper card or stamp-style button
+
+Handwritten or marker-style arrow/text
+
+Slight rotation / imperfect edges
+
+Consider copy like:
+
+“Take a seat”
+
+“Hear the first pitch”
+
+“Let’s begin”
+(NOT marketing language)
+
+The CTA should feel like entering a room, not clicking a product button.
+
+2. Sticky notes are hard to read and not noteworthy
+
+Problems
+
+Text is too small.
+
+Notes blend into the background.
+
+They feel informational, not memorable.
+
+Fix
+
+Increase sticky note text size significantly.
+
+Increase line spacing.
+
+Make each note visually distinct:
+
+Different rotation angles
+
+Slight overlap
+
+Clear tape/pin detail
+
+Increase contrast slightly (darker ink, subtle shadow).
+
+These notes should be readable from across the room and feel like something someone left behind intentionally.
+
+3. Sticky notes still feel decorative, not essential
+
+Problem
+
+They feel optional, like flavor text.
+
+They don’t command attention.
+
+Fix
+
+Make them feel like the rules of the game, not explanations.
+
+They should visually compete with the title, not sit beneath it quietly.
+
+Pull them closer to the center of the page so they feel unavoidable.
+
+PART 2 — PITCH PAGE (RIGHT COLUMN ISSUES)
+4. Founder Conviction is basically invisible
+
+Problem
+
+“Overconfident, buzzword-heavy” is too small.
+
+There is no label or context.
+
+A user would not know what this is unless they designed the game.
+
+Fix
+
+Explicitly label it:
+
+Founder Conviction
+
+
+Increase text size.
+
+Present it as a margin note or callout, not inline text.
+
+Optional styling:
+
+Handwritten font
+
+Pencil underline
+
+Small red “NOTE” or “OBSERVATION” stamp
+
+This is a core psychological mechanic. It must be obvious.
+
+5. “Your Exposure” warning is too subtle
+
+Problem
+
+The exposure message is easy to miss.
+
+It doesn’t create pause or tension.
+
+There is too much unused space above and below it.
+
+Fix
+
+Turn “Your Exposure” into a full-height component in the right column.
+
+Use:
+
+Clear heading: “Your Exposure”
+
+Larger text
+
+More vertical spacing
+
+Visually separate it from ROI:
+
+Divider line
+
+Tape/pin styling
+
+Different paper shade
+
+This section should feel like a quiet but serious warning.
+
+6. Right column has too much dead space
+
+Problem
+
+Large areas of unused vertical space.
+
+Important psychological cues are compressed while space is wasted.
+
+Fix
+
+Stretch the following to fill the column:
+
+Founder Conviction
+
+ROI note
+
+Exposure warning
+
+The right column should feel dense with decision pressure, not empty.
+
+7. PASS / INVEST buttons still feel too modern
+
+Problem
+
+They still look like standard web buttons.
+
+Green INVEST button feels like a default CTA.
+
+Fix
+
+De-modernize completely:
+
+No green success color
+
+No flat button styles
+
+Replace with:
+
+Paper tabs
+
+Stamps
+
+Pencil-written labels
+
+Emotional feedback should come from:
+
+Red “INVESTED” / “PASS” stamps
+
+Slight shake / animation
+
+Sound or visual imprint
+
+Buttons should feel like actions taken, not clicks made.
+
+PART 3 — CREATIVE DIRECTION REMINDER
+
+This project should feel like:
+
+A pitch meeting
+
+A whiteboard
+
+Notes, stamps, judgment, uncertainty
+
+It should not feel like:
+
+A SaaS product
+
+A fintech dashboard
+
+A metrics viewer
+
+If something looks “clean but boring,” it’s probably wrong.
+
+Definition of “done” for next iteration
+
+Homepage immediately feels intriguing and human
+
+Sticky notes are readable, bold, and intentional
+
+Start action feels like entering a game, not clicking a CTA
+
+Founder Conviction and Exposure are unmistakable and legible
+
+Right column is filled with tension, not whitespace
+
+No element feels like default UI
