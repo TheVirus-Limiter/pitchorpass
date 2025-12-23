@@ -157,16 +157,12 @@ export default function Game() {
 
   const Header = () => (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-gradient-to-b from-background to-transparent">
-      <div className="flex items-center gap-3 bg-blue-100 px-4 py-2 rounded-full border border-blue-200">
-        <span className="text-sm font-bold text-blue-700">{round}/10</span>
-        <span className="text-xs font-medium text-blue-600 uppercase">Round</span>
+      <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 transform -rotate-1">
+        Round {round}/10
       </div>
       
-      <div className="flex items-center gap-2 bg-emerald-100 px-6 py-3 rounded-full border border-emerald-200">
-        <Wallet className="w-5 h-5 text-emerald-600" />
-        <span className="font-mono font-bold text-lg text-emerald-700">
-          ${(gameState === "revealing" || gameState === "finished" ? displayedCapital : capital).toLocaleString()}
-        </span>
+      <div className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">
+        ${(gameState === "revealing" || gameState === "finished" ? displayedCapital : capital).toLocaleString()}
       </div>
     </div>
   );

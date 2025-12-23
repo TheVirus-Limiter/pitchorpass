@@ -25,11 +25,18 @@ export default function Home() {
         <div className="sticky-note-news w-28 h-28 transform -rotate-8" />
       </div>
 
-      {/* Subtle background elements - sketches, doodles, numbers */}
-      <div className="absolute top-20 right-1/4 text-9xl font-black opacity-2 pointer-events-none transform -rotate-12">$</div>
-      <div className="absolute top-1/2 left-10 text-8xl font-black opacity-2 pointer-events-none transform rotate-6">€</div>
-      <div className="absolute bottom-32 right-20 text-7xl opacity-2 pointer-events-none transform -rotate-3">£</div>
-      <div className="absolute top-2/3 right-1/3 text-6xl opacity-2 pointer-events-none transform rotate-12">↑</div>
+      {/* Subtle background elements - sketches, doodles, money, scribbles */}
+      <div className="absolute top-20 right-1/4 text-9xl font-black opacity-3 pointer-events-none transform -rotate-12 text-gray-400">$</div>
+      <div className="absolute top-1/2 left-10 text-8xl font-black opacity-2 pointer-events-none transform rotate-6 text-gray-400">€</div>
+      <div className="absolute bottom-32 right-20 text-7xl opacity-3 pointer-events-none transform -rotate-3 text-gray-400">£</div>
+      <div className="absolute top-2/3 right-1/3 text-6xl opacity-2 pointer-events-none transform rotate-12 text-gray-400">↑</div>
+      
+      {/* Faint doodles and sketches */}
+      <div className="absolute top-1/4 left-1/3 w-24 h-24 border-2 border-gray-300 rounded opacity-10 pointer-events-none transform rotate-45" />
+      <div className="absolute bottom-40 right-1/4 text-4xl opacity-3 pointer-events-none transform -rotate-6 text-gray-500">≈ ≈ ≈</div>
+      <div className="absolute top-1/3 right-1/5 text-5xl opacity-2 pointer-events-none transform rotate-12 text-gray-400">/ / /</div>
+      <div className="absolute bottom-1/3 left-20 text-3xl opacity-2 pointer-events-none text-gray-400">• • • •</div>
+      <div className="absolute top-2/3 left-1/4 text-6xl font-bold opacity-3 pointer-events-none text-gray-300">10x</div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -54,7 +61,7 @@ export default function Home() {
         {/* CTA Button - Simple and clear */}
         <Link href="/game">
           <Button className="px-8 py-3 text-lg h-auto bg-primary hover:bg-primary/90 text-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            Begin
+            Let's go
           </Button>
         </Link>
 
