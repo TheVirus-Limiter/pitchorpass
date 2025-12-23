@@ -1,0 +1,214 @@
+Pitch or Pass — Clarifications + Corrections (Please Read Carefully)
+
+I want to reset a few things because some changes went in the wrong direction and others misunderstood the intent. Below is what to revert, what to fix, and what to change going forward.
+
+1. CTA / Buttons — revert + adjust, don’t overdesign
+A. Main CTA (“Take a seat”)
+
+The current button is worse than before.
+
+I am fine with a standard CTA button here.
+
+Do this instead
+
+Make it a clean, readable CTA.
+
+No weird borders, no awkward framing.
+
+It should clearly look clickable, nothing gimmicky.
+
+Simple > ugly “creative.”
+
+B. PASS / INVEST buttons (pitch page)
+
+PASS
+
+The previous PASS was fine.
+
+It should exist.
+
+If it’s a stamp, great — but it must still be clearly clickable.
+
+INVEST
+
+Needs improvement, but don’t overdo it.
+
+Green is fine.
+
+Clear intent: this is the action.
+
+Still should not feel like a default SaaS button, but do not make it ugly.
+
+Also:
+
+There is still too much empty space between:
+
+Pro Tip
+
+PASS / INVEST
+Tighten this column.
+
+2. Sticky Notes — font usage is backwards right now
+
+This is important because it’s been implemented incorrectly.
+
+Correct rule (non-negotiable):
+
+Sticky note TITLES → handwritten style
+
+Sticky note BODY TEXT → normal, readable font
+
+Right now it’s reversed or inconsistent.
+
+Additionally:
+
+The sticky note body text MUST include:
+
+Underlines
+
+Occasional bold / emphasis
+(Not everything, just enough to add character.)
+
+Example intent:
+
+Some are right.
+Most are wrong.
+
+This is about rhythm and personality, not decoration.
+
+3. Homepage still needs more life (but don’t clutter)
+
+The homepage is improving, but it’s still too flat.
+
+Add subtle background elements:
+
+Light sketches
+
+Faint charts
+
+Numbers
+
+Money marks
+
+Whiteboard scribbles
+
+These should be very low contrast, almost subconscious — not loud illustrations.
+
+4. Top HUD elements still don’t match the theme
+A. “Round 1/10” (top left)
+
+The blue pill does not belong.
+
+Too modern.
+
+Fix
+
+Convert to:
+
+Paper tag
+
+Desk label
+
+Light stamp
+
+Color is fine, but it must fit the paper/desk theme.
+
+B. “$100,000” purse (top right)
+
+The green pill is too UI-heavy.
+
+Fix
+
+Keep the green (I like it).
+
+Make it feel:
+
+Printed
+
+Labeled
+
+Pinned or tagged
+Not a floating app badge.
+
+5. Pitch page issues that must be addressed
+A. Founder Conviction
+
+This is now mostly correct visually, but:
+
+It must be clearly labeled
+
+It must be immediately noticeable
+
+Make sure:
+
+The label “Founder Conviction” is readable.
+
+The color of the sticky note communicates the meaning.
+
+B. Risk Assessment
+
+The faint color undertone is good.
+
+Keep:
+
+Red = high
+
+Yellow = medium
+
+Green = low
+Subtle is fine, but it must be present.
+
+C. Pro Tip (Exposure Warning)
+
+The design direction is better.
+
+Still needs to feel more like advice, less like an alert.
+
+Reduce dead space between this and the decision buttons.
+
+6. Graph bugs and visuals (still blocking)
+A. Graph line colors
+
+Good direction, but make sure all paths are clearly distinguishable.
+
+Muted colors only (green/red/blue is fine).
+
+B. Critical bug (still present)
+
+Typing in any input (Ask the founder one question) is still changing:
+
+Graph points
+
+Projection numbers
+
+This must be fixed immediately:
+
+Pitch data must be frozen once loaded.
+
+Inputs must NOT trigger recomputation.
+
+7. Remove things that don’t belong
+
+The lightning bolt near the founder photo should be removed.
+
+Any leftover modern UI pills/icons should be audited and replaced.
+
+Summary — what I want next
+
+For the next iteration, please focus on:
+
+Reverting the overdesigned CTA
+
+Fixing sticky note font hierarchy (title handwritten, body normal + underlines)
+
+Cleaning up PASS / INVEST (not removing them)
+
+Theming the top HUD elements properly
+
+Fixing the graph bug permanently
+
+Adding subtle background life to the homepage
+
+The direction is right, but right now execution is fighting the idea. Simpler, clearer, and more intentional will get us there faster.
+
+If anything above is unclear, please ask before implementing again.

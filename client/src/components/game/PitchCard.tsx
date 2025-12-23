@@ -312,17 +312,17 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             </motion.div>
 
             {/* Founder Conviction - standalone sticky note */}
-            <motion.div variants={item} className="mb-6">
+            <motion.div variants={item} className="mb-4">
               <FounderConviction pitch={pitch} />
             </motion.div>
 
             {/* Exit Math */}
-            <motion.div variants={item} className="mb-6">
+            <motion.div variants={item} className="mb-4">
               <ExitMath investAmount={investAmount} valuation={startup.valuation} />
             </motion.div>
 
             {/* Exposure Warning */}
-            <motion.div variants={item} className="mb-6">
+            <motion.div variants={item} className="mb-4">
               <ExposureWarning investAmount={investAmount} remainingCapital={maxAllowed} />
             </motion.div>
 
@@ -333,23 +333,24 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               </div>
             )}
 
-            {/* Action Buttons - Stamp style, no containers */}
-            <motion.div variants={item} className="grid grid-cols-2 gap-4 mt-auto">
-              <div 
+            {/* Action Buttons - clean and clear */}
+            <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-6">
+              <Button 
                 onClick={onPass}
-                className="py-5 px-4 text-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{pointerEvents: disabled ? 'none' : 'auto', opacity: disabled ? 0.5 : 1}}
+                disabled={disabled}
+                variant="outline"
+                className="py-2 text-sm font-semibold uppercase"
               >
-                <p className="text-sm font-bold text-gray-700 uppercase tracking-wider" style={{fontFamily: "'Caveat', cursive", fontSize: '18px'}}>PASS</p>
-              </div>
+                Pass
+              </Button>
               
-              <div 
+              <Button 
                 onClick={() => onInvest(investAmount)}
-                className="py-5 px-4 text-center cursor-pointer border-2 border-green-600 bg-green-50 rounded hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{pointerEvents: disabled || !canInvest ? 'none' : 'auto', opacity: disabled || !canInvest ? 0.5 : 1}}
+                disabled={disabled || !canInvest}
+                className="py-2 text-sm font-semibold uppercase bg-green-700 hover:bg-green-800 text-white"
               >
-                <p className="text-sm font-bold text-green-800 uppercase tracking-wider" style={{fontFamily: "'Caveat', cursive", fontSize: '18px'}}>INVEST</p>
-              </div>
+                Invest
+              </Button>
             </motion.div>
           </CardContent>
         </Card>

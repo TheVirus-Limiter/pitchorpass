@@ -119,15 +119,25 @@
 
   .sticky-note-news {
     @apply p-3 bg-yellow-50 border-2 border-yellow-300 rounded;
-    background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+    background: 
+      repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(150, 120, 80, 0.02) 2px, rgba(150, 120, 80, 0.02) 4px),
+      repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(100, 80, 60, 0.015) 3px, rgba(100, 80, 60, 0.015) 6px),
+      radial-gradient(circle at 20% 80%, rgba(200, 150, 80, 0.08) 1px, transparent 1px),
+      linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+    background-size: 100% 100%, 100% 100%, 200px 200px, 100% 100%;
     box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.08);
     position: relative;
-    background-image: 
-      radial-gradient(circle at 10% 20%, rgba(200, 150, 100, 0.05) 1px, transparent 1px),
-      radial-gradient(circle at 60% 80%, rgba(150, 120, 100, 0.04) 0.5px, transparent 0.5px),
-      linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
-    background-size: 100px 100px, 200px 200px, 100% 100%;
-    background-position: 0 0, 10px 10px, 0 0;
+  }
+  
+  /* Subtle background decorations for homepage */
+  .homepage-bg-decoration {
+    position: fixed;
+    opacity: 0.08;
+    pointer-events: none;
+    font-size: 120px;
+    color: #333;
+    font-weight: bold;
+    transform: rotate(-15deg);
   }
   
   .sticky-note-news::before {
