@@ -10,7 +10,6 @@ export default function Home() {
       <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="wood-pattern absolute inset-0" />
       </div>
-
       {/* Scattered papers/sticky notes background */}
       <div className="absolute top-10 left-5 opacity-20 pointer-events-none">
         <div className="sticky-note-news w-32 h-32 transform -rotate-12" />
@@ -24,20 +23,17 @@ export default function Home() {
       <div className="absolute bottom-1/4 left-1/4 opacity-10 pointer-events-none">
         <div className="sticky-note-news w-28 h-28 transform -rotate-8" />
       </div>
-
       {/* Subtle background elements - sketches, doodles, money, scribbles */}
       <div className="absolute top-20 right-1/4 text-9xl font-black opacity-3 pointer-events-none transform -rotate-12 text-gray-400">$</div>
       <div className="absolute top-1/2 left-10 text-8xl font-black opacity-2 pointer-events-none transform rotate-6 text-gray-400">€</div>
       <div className="absolute bottom-32 right-20 text-7xl opacity-3 pointer-events-none transform -rotate-3 text-gray-400">£</div>
       <div className="absolute top-2/3 right-1/3 text-6xl opacity-2 pointer-events-none transform rotate-12 text-gray-400">↑</div>
-      
       {/* Faint doodles and sketches */}
       <div className="absolute top-1/4 left-1/3 w-24 h-24 border-2 border-gray-300 rounded opacity-10 pointer-events-none transform rotate-45" />
       <div className="absolute bottom-40 right-1/4 text-4xl opacity-3 pointer-events-none transform -rotate-6 text-gray-500">≈ ≈ ≈</div>
       <div className="absolute top-1/3 right-1/5 text-5xl opacity-2 pointer-events-none transform rotate-12 text-gray-400">/ / /</div>
       <div className="absolute bottom-1/3 left-20 text-3xl opacity-2 pointer-events-none text-gray-400">• • • •</div>
       <div className="absolute top-2/3 left-1/4 text-6xl font-bold opacity-3 pointer-events-none text-gray-300">10x</div>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -45,9 +41,7 @@ export default function Home() {
         className="text-center z-10 max-w-4xl relative"
       >
         {/* Heading with hand-drawn style */}
-        <h1 className="text-5xl md:text-6xl font-bold font-display tracking-tighter mb-4 text-amber-900" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>
-          10 Pitches
-        </h1>
+        <h1 className="text-5xl md:text-6xl font-bold font-display tracking-tighter mb-4 text-amber-900" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>Pitch or Pass?</h1>
         
         {/* Subheading */}
         <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
