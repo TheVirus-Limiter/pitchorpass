@@ -334,11 +334,11 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             )}
 
             {/* Action Buttons - clean and decisive */}
-            <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-auto pt-2">
+            <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-8 pt-0">
               <button 
                 onClick={onPass}
                 disabled={disabled}
-                className="py-2 px-3 text-sm font-semibold uppercase text-gray-700 hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-2 px-3 text-sm font-medium uppercase text-gray-700 hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
                 PASS
@@ -347,7 +347,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               <button 
                 onClick={() => onInvest(investAmount)}
                 disabled={disabled || !canInvest}
-                className="py-2 px-3 text-sm font-semibold uppercase text-white bg-green-700 hover:bg-green-800 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-3 px-3 text-sm font-bold uppercase text-white bg-green-700 hover:bg-green-800 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
                 INVEST

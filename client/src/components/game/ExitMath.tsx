@@ -22,11 +22,11 @@ export function ExitMath({ investAmount, valuation }: ExitMathProps) {
   };
 
   return (
-    <div className="sticky-note-news p-4 space-y-2 text-sm transform -rotate-1">
+    <div className="sticky-note-news p-5 space-y-3 text-sm transform -rotate-1 border-l-4 border-green-600">
       <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 font-bold text-base">
         If exit hits $10M →
       </p>
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 font-bold text-xl">
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-green-800 font-bold text-2xl border-b-2 border-green-700 pb-2 inline-block">
         Your take ≈ {formatMoney(take)}
       </p>
       <p className="text-gray-600 text-sm italic mt-2">

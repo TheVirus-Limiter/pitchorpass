@@ -306,26 +306,23 @@ export default function Game() {
 
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden pt-24">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-background pointer-events-none" />
-        
         <ArchetypeBadge archetype={archetype} score={displayedCapital} />
         
-        <div className="mt-12 flex flex-col sm:flex-row gap-4">
-          <Button 
-            variant="outline" 
-            size="lg" 
+        <div className="mt-16 flex flex-col sm:flex-row gap-4">
+          <button 
             onClick={() => setLocation("/")}
-            className="border-2 border-foreground/20 hover:border-foreground/40 hover:bg-gray-100"
+            className="px-6 py-3 text-base font-semibold uppercase text-gray-700 border border-gray-400 rounded hover:bg-gray-100 transition-colors"
+            style={{fontFamily: "'Caveat', cursive"}}
           >
-            <HomeIcon className="mr-2 w-5 h-5" /> Home
-          </Button>
-          <Button 
-            size="lg" 
+            Home
+          </button>
+          <button 
             onClick={() => window.location.reload()}
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="px-6 py-3 text-base font-bold uppercase text-white bg-green-700 hover:bg-green-800 rounded transition-colors"
+            style={{fontFamily: "'Caveat', cursive"}}
           >
-            <RotateCcw className="mr-2 w-5 h-5" /> Play Again
-          </Button>
+            Play Again
+          </button>
         </div>
       </div>
     );

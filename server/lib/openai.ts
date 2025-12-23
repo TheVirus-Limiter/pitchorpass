@@ -38,6 +38,19 @@ export async function generatePitch() {
   const idea = STARTUP_IDEAS[ideaIndex];
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
   
+  const convictionTraits = [
+    "Brilliant but defensive",
+    "Vision-first, details later",
+    "Calm, but evasive on numbers",
+    "Deeply technical, poor communicator",
+    "Overconfident, dismissive of risks",
+    "Quietly impressive, under-selling",
+    "Data-driven, measured expectations",
+    "Visionary but scattered",
+    "Humble yet sharp",
+    "Aggressive on timeline, optimistic on runway"
+  ];
+  
   const prompt = `
     Generate a realistic startup pitch for an investment game. Create a JSON response ONLY.
     
@@ -57,7 +70,8 @@ export async function generatePitch() {
       "founder": {
         "name": "First Last (name matching ${location})",
         "country": "United States",
-        "gender": "male|female"
+        "gender": "male|female",
+        "conviction": "${convictionTraits[Math.floor(Math.random() * convictionTraits.length)]}"
       },
       "startup": {
         "name": "Creative startup name (NOT generic)",

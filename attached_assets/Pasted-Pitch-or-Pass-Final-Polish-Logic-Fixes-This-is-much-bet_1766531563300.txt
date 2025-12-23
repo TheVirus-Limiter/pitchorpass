@@ -1,0 +1,201 @@
+Pitch or Pass — Final Polish & Logic Fixes
+
+This is much better overall. The experience is finally cohesive. What’s left now are a few blocking polish and logic issues plus some content tuning. These are the last things before this feels “done.”
+
+1. Right column spacing + PASS / INVEST buttons
+A. Unused vertical space
+
+There is still an annoying empty gap in the right column above the PASS / INVEST buttons.
+
+This makes the decision area feel weak and unfinished.
+
+Fix
+
+Collapse the layout so the decision buttons sit immediately under:
+
+Pro Tip / Exposure section
+
+The right column should feel tight and pressurized, not airy.
+
+B. PASS / INVEST buttons (almost there, but still off)
+
+PASS
+
+Visually fine, but still feels slightly disconnected.
+
+Keep it understated, but clearly clickable.
+
+INVEST
+
+Green is correct.
+
+Needs more visual emphasis than PASS.
+
+This is the moment of commitment — it should feel weighty, not equal.
+
+Do not over-style. Just clarify hierarchy.
+
+2. Pro Tip / Exposure logic is wrong (math bug)
+
+Current behavior:
+
+“This would put 18% of your remaining capital into one bet.”
+
+This is incorrect when:
+
+User has $100,000
+
+User invests $9,000
+→ That is 9%, not 18%.
+
+Required fix
+
+Exposure must be calculated as:
+
+investment_amount / remaining_capital
+
+
+Not total portfolio
+
+Not original starting capital
+
+This text must always reflect the actual remaining cash, or it undermines trust.
+
+3. Exit payoff callout needs more emphasis (great feature, underused)
+
+This section:
+
+If exit hits $10M →
+Your take ≈ $1,590,909
+(15.91% equity)
+
+
+This is one of the coolest parts of the game, but it’s too easy to miss.
+
+Improve by
+
+Increasing font size slightly
+
+Adding subtle visual emphasis:
+
+Ink underline
+
+Marker highlight
+
+Small arrow or callout
+
+Make it feel like a “holy shit” moment without being loud
+
+This is where players feel the upside.
+
+4. Founder conviction variety (content issue)
+
+Right now, too many founders have:
+
+“Data-driven, measured expectations”
+
+This flattens the experience.
+
+Required fix
+
+Increase conviction diversity significantly.
+
+Use AI to generate more varied, human-feeling traits, e.g.:
+
+“Brilliant but defensive”
+
+“Vision-first, details later”
+
+“Calm, but evasive on numbers”
+
+“Deeply technical, poor communicator”
+
+“Overconfident, dismissive of risks”
+
+“Quietly impressive, under-selling”
+
+Conviction should feel like reading a person, not a rubric.
+
+5. Endgame outcome messages are too generic
+
+Most endings currently fall into:
+
+“The company failed to execute.”
+
+“Massive success.”
+
+This wastes a huge opportunity.
+
+Required change
+
+Use AI to generate short, funny, case-specific outcome one-liners per company.
+
+Examples of tone (not exact copy):
+
+“The tech worked. The business didn’t.”
+
+“Acquired for talent. Product quietly sunset.”
+
+“Pivoted three times. Found product-market fit on the fourth.”
+
+“Built a cult following. Never figured out distribution.”
+
+“Regulators killed it. Investors didn’t.”
+
+Each outcome should feel earned based on:
+
+Risk level
+
+Traction
+
+Founder conviction
+
+Your investment choice
+
+6. End screen visual mismatch (theme break)
+
+The end screen (“The Golden Touch”) is way off-theme.
+
+Issues:
+
+Feels like a fintech dashboard
+
+Bright gradient clashes with paper/desk aesthetic
+
+Bottom buttons are fogged out and feel disabled
+
+Fix
+
+Re-theme end screen to match the rest of the game:
+
+Paper
+
+Ink
+
+Desk notes
+
+Subtle highlights instead of gradients
+
+Make bottom buttons clearly active and readable
+
+The end should feel like:
+
+You leaned back in your chair and looked at how you did
+Not:
+You finished onboarding for an app
+
+Final checklist before sign-off
+
+Remove right-column dead space
+
+Fix exposure % calculation
+
+Emphasize exit payoff callout
+
+Increase founder conviction variety
+
+Replace generic end messages with AI-generated outcomes
+
+Re-theme end screen to match desk/paper aesthetic
+
+Make end buttons clearly active
