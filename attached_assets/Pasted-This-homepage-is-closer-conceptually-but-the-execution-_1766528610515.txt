@@ -1,0 +1,166 @@
+This homepage is closer conceptually, but the execution is still off. Right now it feels empty, oversized, and visually unbalanced, and the sticky notes don’t feel intentional. Please fix the following.
+
+1. The page feels empty and vertically stretched
+
+Problem
+
+There is too much empty space above and below the main content.
+
+The title, subtitle, and CTA feel disconnected from the notes.
+
+The page feels like a landing page template, not a room.
+
+Fix
+
+Pull the sticky notes higher, closer to the CTA.
+
+Reduce vertical spacing between:
+
+Title
+
+Subtitle
+
+Start Investing button
+
+The page should feel contained, like a board you’re standing in front of.
+
+2. Sticky notes feel decorative, not interactive
+
+Problems
+
+Notes are too evenly spaced.
+
+Rotation is too subtle.
+
+They feel pasted on, not placed.
+
+Fix
+
+Increase rotation variance (each note should clearly tilt differently).
+
+Slightly overlap at least one note.
+
+Add clearer tape/pin details so they feel physically attached.
+
+Increase shadow depth just a bit so they “lift” off the background.
+
+These should feel like someone casually stuck them there.
+
+3. Sticky note text is too small and cramped
+
+Problem
+
+Text is hard to read at a glance.
+
+Line spacing is tight.
+
+This undermines the handwritten feel.
+
+Fix
+
+Increase sticky note body text size.
+
+Increase line height.
+
+Let the notes breathe — they don’t need to be compact.
+
+These are story elements, not tooltips.
+
+4. Title hierarchy needs adjustment
+
+Problem
+
+“10 Pitches” is very large, but the context underneath feels weak.
+
+The subtitle reads like marketing copy.
+
+Fix
+
+Slightly reduce the title size.
+
+Make the supporting text feel calmer and more confident.
+
+Avoid emphasis colors (no green highlight on $100,000).
+
+Everything should be ink-colored, not highlighted.
+
+5. CTA button still looks like a modern web button
+
+Problem
+
+The “Start Investing” button feels like a generic product CTA.
+
+It clashes with the analog theme.
+
+Fix
+
+Make the button feel more physical:
+
+Paper texture
+
+Slightly imperfect edges
+
+Optional arrow drawn like marker, not an icon
+
+Reduce saturation — it should attract attention without screaming.
+
+6. The floating icon at the top feels random
+
+Problem
+
+The circular icon above the title has no context.
+
+It feels decorative and unnecessary.
+
+Fix
+
+Either remove it entirely or
+
+Integrate it meaningfully (e.g., stamped icon, sketch, or badge)
+If it doesn’t add meaning, it shouldn’t be there.
+
+7. Extra sticky notes at the edges are distracting
+
+Problem
+
+The blank sticky notes in the corners feel like placeholders.
+
+They add noise without purpose.
+
+Fix
+
+Remove them unless they serve a clear purpose.
+
+Fewer elements will make the page feel more intentional.
+
+8. Tone check — what this screen should feel like
+
+This screen should feel like:
+
+You’ve walked into a room
+
+Someone laid out a challenge
+
+Notes were left behind for you to read
+
+You’re about to sit down and make decisions
+
+It should not feel like:
+
+A SaaS landing page
+
+A marketing site
+
+A product hero section
+
+Definition of “done” for this screen
+
+Sticky notes feel physical, readable, and deliberate
+
+The page feels dense enough to be interesting, not empty
+
+Nothing looks like default UI
+
+The CTA feels like the start of a game, not a signup flow
+
+Focus only on spacing, scale, and physicality for this iteration.

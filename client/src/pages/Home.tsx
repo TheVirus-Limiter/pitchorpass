@@ -23,36 +23,26 @@ export default function Home() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center z-10 max-w-3xl relative"
+        className="text-center z-10 max-w-4xl relative"
       >
-        {/* Stamp-style icon badge */}
-        <motion.div 
-          initial={{ scale: 0, rotate: -15 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.2, type: "spring" }}
-          className="inline-flex items-center justify-center p-4 rounded-full bg-yellow-100 border-2 border-yellow-400 mb-8 shadow-lg transform -rotate-3"
-        >
-          <TrendingUp className="w-10 h-10 text-yellow-700" />
-        </motion.div>
-
         {/* Heading with hand-drawn style */}
-        <h1 className="text-6xl md:text-7xl font-bold font-display tracking-tighter mb-6 text-amber-900 hand-drawn" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>
+        <h1 className="text-5xl md:text-6xl font-bold font-display tracking-tighter mb-4 text-amber-900" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.1)'}}>
           10 Pitches
         </h1>
         
         {/* Subheading */}
-        <p className="text-lg md:text-xl text-amber-800 mb-12 max-w-2xl mx-auto leading-relaxed font-serif">
-          You have <span className="font-bold text-emerald-700 bg-yellow-100 px-2 py-1 rounded">$100,000</span>.
+        <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
+          You have $100,000.
           <br />
           10 Startup pitches. 10 Investment decisions.
           <br />
-          <span className="text-orange-700 font-bold">Can you call the shots on 10 startups?</span>
+          Can you call the shots?
         </p>
 
-        {/* CTA Button - Wood styled */}
+        {/* CTA Button - Analog/Physical */}
         <Link href="/game">
-          <Button size="lg" className="text-lg px-12 py-8 rounded-lg bg-gradient-to-b from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 hover:shadow-2xl shadow-lg text-white border-2 border-amber-900 font-bold transform hover:scale-105 transition-all">
-            Start Investing <ArrowRight className="ml-2 w-6 h-6" />
+          <Button size="lg" className="text-lg px-10 py-6 rounded-sm bg-gray-700 hover:bg-gray-800 text-white border-2 border-gray-800 font-bold shadow-md hover:shadow-lg transition-all" style={{borderRadius: '2px', letterSpacing: '0.5px'}}>
+            Start Investing
           </Button>
         </Link>
 
@@ -61,50 +51,53 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto"
+          className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 text-left max-w-5xl mx-auto relative"
         >
           {/* Sticky Note 1 */}
-          <div className="sticky-note-news p-5 transform -rotate-3 shadow-lg">
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+          <div className="sticky-note-news p-6 transform -rotate-6 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
               Every founder thinks their startup is special.
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
               {`Some are right.
 Most are wrong.
 
-You'll see the pitch, the traction, the valuation —
-and decide whether it deserves your money.`}
+You'll see the pitch, the traction,
+the valuation — and decide if it
+deserves your money.`}
             </p>
           </div>
 
           {/* Sticky Note 2 */}
-          <div className="sticky-note-news p-5 transform rotate-2 shadow-lg -mt-2">
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+          <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
               Real Outcomes
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
               {`Three years pass in minutes.
 
-Some companies quietly succeed.
+Some quietly succeed.
 Some flame out.
 A few surprise everyone.
 
-Your returns depend on equity, timing,
-and how much risk you were willing to take.`}
+Returns depend on equity,
+timing, and risk tolerance.`}
             </p>
           </div>
 
           {/* Sticky Note 3 */}
-          <div className="sticky-note-news p-5 transform -rotate-2 shadow-lg -mt-2">
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+          <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl font-bold leading-snug mb-3">
               Investor Archetypes
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
-              {`At the end, you don't just see a number.
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">
+              {`At the end, you see what
+kind of investor you are.
 
-You see what kind of investor you are —
-careful, bold, reckless, lucky,
-or something in between.`}
+Careful. Bold. Reckless. Lucky.
+Or something in between.
+
+You'll know.`}
             </p>
           </div>
         </motion.div>
