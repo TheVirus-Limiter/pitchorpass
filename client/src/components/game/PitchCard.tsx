@@ -213,8 +213,8 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             <motion.div variants={item} className="mb-8">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <div className="inline-block bg-gray-200 border-2 border-gray-400 px-3 py-2 rounded mb-3 transform -rotate-2">
-                    <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg font-bold text-gray-800">Round {round}/10</p>
+                  <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 mb-2 transform -rotate-1">
+                    Round {round}/10
                   </div>
                   <h2 className="text-4xl font-bold font-display text-foreground">{startup.name}</h2>
                 </div>

@@ -1,0 +1,195 @@
+Pitch or Pass — Final Adjustments + Bug Resolution Guidance
+
+This iteration is closer. Now we need to lock correctness and consistency. Below are specific final changes and how to resolve the remaining blockers.
+
+1. Homepage fixes (small but important)
+A. Capital display
+
+Remove the text “Starting Capital:”
+
+Display only $100,000
+
+Keep it styled like a pinned/printed element, not a UI pill.
+
+B. CTA text
+
+Change “Take a seat” → “Begin” or “Start”
+
+Keep it a standard, clean CTA
+
+No decorative borders or frames
+
+It should look obviously clickable, nothing fancy.
+
+C. Sticky notes (homepage)
+
+Clarify this exactly:
+
+Titles → handwritten (keep this)
+
+Body text → normal readable font (current direction is correct)
+
+Remove all bolding from sticky note body text
+
+Keep underlines only for emphasis
+
+Add subtle undertone variation (slightly different paper warmth per note)
+
+D. Background elements
+
+The background elements are a good idea, but:
+
+Reduce contrast
+
+Make them feel like faint desk/whiteboard artifacts
+
+The € symbol on the left is too bold
+
+Reduce opacity significantly
+
+It should barely register
+
+2. Top HUD elements (still incorrect)
+A. “Round 1/10” (top left)
+
+Still too modern and blue.
+
+Must be converted into:
+
+A paper tag / label
+
+Muted ink color
+
+No pill-style UI.
+
+B. $100,000 (top right)
+
+Still reads as a modern app badge.
+
+Keep green, but:
+
+Make it look printed, tagged, or pinned
+
+Less saturation
+
+Less “floating UI” feel
+
+These two elements must visually belong to the desk theme.
+
+3. Founder Conviction — color logic fix
+
+Current state:
+
+Text: “Overconfident, buzzword-heavy”
+
+This must be RED.
+
+Founder Conviction color should strictly follow meaning:
+
+Green → grounded / thoughtful
+
+Yellow → mixed signals
+
+Red → overconfident / risky
+
+The entire sticky note should reflect this.
+
+This is a semantic error, not stylistic.
+
+4. PASS / INVEST regression
+
+We went backward here.
+
+PASS
+
+Bring PASS back clearly.
+
+Stamp-style is fine, but it must be present and clickable.
+
+INVEST
+
+Green is correct.
+
+Still needs refinement, but:
+
+Do not over-style
+
+Do not remove clarity
+
+Tighten spacing — there is empty vertical space below these buttons that should be removed.
+
+5. Graph bug — must be permanently fixed
+
+This is the biggest remaining issue.
+
+Problem
+
+Typing in any input (Ask the founder one question) still:
+
+Changes graph points
+
+Changes projections
+
+Recomputes pitch data
+
+This breaks the game logic.
+
+Required architectural fix (pick one)
+Option A (preferred): Freeze pitch state
+
+When a pitch loads:
+
+Generate pitch data once
+
+Store it in immutable state (e.g. pitchData)
+
+Graph should render only from pitchData
+
+Text inputs must not trigger pitch regeneration
+
+Option B: Separate concerns explicitly
+
+Separate state into:
+
+pitchState (generated once)
+
+uiState (inputs, typing, sliders)
+
+Ensure graph subscribes only to pitchState
+
+Inputs must not touch pitch generation logic
+
+Option C: Lock graph data after render
+
+On initial render:
+
+Cache graph series
+
+On subsequent renders:
+
+Reuse cached values unless pitch ID changes
+
+Non-negotiable:
+Typing must NEVER affect pitch data. If this isn’t fixed, the game doesn’t work.
+
+6. Summary — final checklist
+
+For the next update, I expect:
+
+$100,000 only (no “Starting Capital” text)
+
+CTA text changed to “Begin” or “Start”
+
+No bold text in sticky note bodies (underlines only)
+
+Reduced prominence of background symbols
+
+Round + capital HUD elements themed properly
+
+Founder Conviction color corrected (red for overconfident)
+
+PASS restored, INVEST refined, spacing tightened
+
+Graph bug permanently resolved using one of the approaches above
+
+At this point the direction is clear — the remaining work is precision and discipline, not new ideas.

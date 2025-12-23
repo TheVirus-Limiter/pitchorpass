@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useMemo } from 'react';
 
 interface ValuationGraphProps {
   currentValuation: number;
@@ -8,14 +9,14 @@ interface ValuationGraphProps {
 
 export function ValuationGraph({ currentValuation, riskProfile, upside }: ValuationGraphProps) {
   // Generate realistic historical data (past 12 months)
-  const generateHistoricalData = () => {
+  const generateHistoricalData = (valuation: number) => {
     const data = [];
-    const startValue = currentValuation * 0.6; // Started 40% lower
+    const startValue = valuation * 0.6; // Started 40% lower
     let value = startValue;
     
     for (let i = -12; i <= 0; i++) {
       if (i === 0) {
-        value = currentValuation; // Ensure current month is accurate
+        value = valuation; // Ensure current month is accurate
       } else {
         const growthRate = 1.08 + (Math.random() * 0.08); // 8-16% monthly growth
         value = value * growthRate;
@@ -32,8 +33,8 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
   };
 
   // Generate future projections
-  const generateProjections = () => {
-    const baseVal = currentValuation;
+  const generateProjections = (valuation: number, risk: number) => {
+    const baseVal = valuation;
     
     // Three scenarios
     const conservative = [];
@@ -44,7 +45,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       const month = `M+${i}`;
       
       // Conservative: low growth
-      const conservativeGrowth = 1.04 + (riskProfile * 0.01);
+      const conservativeGrowth = 1.04 + (risk * 0.01);
       conservative.push({
         month,
         value: Math.round(baseVal * Math.pow(conservativeGrowth, i)),
@@ -52,7 +53,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       });
       
       // Realistic: moderate growth  
-      const realisticGrowth = 1.10 + (riskProfile * 0.04);
+      const realisticGrowth = 1.10 + (risk * 0.04);
       realistic.push({
         month,
         value: Math.round(baseVal * Math.pow(realisticGrowth, i)),
@@ -60,10 +61,10 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       });
       
       // Optimistic: high growth - exponential for high risk
-      let optimisticGrowth = 1.15 + (riskProfile * 0.10);
-      if (riskProfile > 0.6) {
+      let optimisticGrowth = 1.15 + (risk * 0.10);
+      if (risk > 0.6) {
         // High risk moonshots - crazy upside
-        optimisticGrowth = 1.30 + (riskProfile * 0.40);
+        optimisticGrowth = 1.30 + (risk * 0.40);
       }
       optimistic.push({
         month,
@@ -75,8 +76,17 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
     return { conservative, realistic, optimistic };
   };
 
-  const historical = generateHistoricalData();
-  const { conservative, realistic, optimistic } = generateProjections();
+  // Freeze graph data using useMemo - prevents recalculation on re-render
+  const { historical, conservative, realistic, optimistic } = useMemo(() => {
+    const hist = generateHistoricalData(currentValuation);
+    const { conservative: cons, realistic: real, optimistic: opt } = generateProjections(currentValuation, riskProfile);
+    return {
+      historical: hist,
+      conservative: cons,
+      realistic: real,
+      optimistic: opt
+    };
+  }, [currentValuation, riskProfile]);
 
   // Combine data for chart
   const chartData = [

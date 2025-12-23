@@ -26,10 +26,10 @@ export default function Home() {
       </div>
 
       {/* Subtle background elements - sketches, doodles, numbers */}
-      <div className="absolute top-20 right-1/4 text-9xl font-black opacity-5 pointer-events-none transform -rotate-12">$</div>
-      <div className="absolute top-1/2 left-10 text-8xl font-black opacity-4 pointer-events-none transform rotate-6">€</div>
-      <div className="absolute bottom-32 right-20 text-7xl opacity-5 pointer-events-none transform -rotate-3">£</div>
-      <div className="absolute top-2/3 right-1/3 text-6xl opacity-4 pointer-events-none transform rotate-12">↑</div>
+      <div className="absolute top-20 right-1/4 text-9xl font-black opacity-2 pointer-events-none transform -rotate-12">$</div>
+      <div className="absolute top-1/2 left-10 text-8xl font-black opacity-2 pointer-events-none transform rotate-6">€</div>
+      <div className="absolute bottom-32 right-20 text-7xl opacity-2 pointer-events-none transform -rotate-3">£</div>
+      <div className="absolute top-2/3 right-1/3 text-6xl opacity-2 pointer-events-none transform rotate-12">↑</div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function Home() {
         
         {/* Subheading */}
         <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-          You have <span className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">Starting Capital: $100,000</span>.
+          You have <span className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">$100,000</span>.
           <br />
           10 Startup pitches. 10 Investment decisions.
           <br />
@@ -54,7 +54,7 @@ export default function Home() {
         {/* CTA Button - Simple and clear */}
         <Link href="/game">
           <Button className="px-8 py-3 text-lg h-auto bg-primary hover:bg-primary/90 text-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-            Take a seat
+            Begin
           </Button>
         </Link>
 
@@ -78,7 +78,7 @@ export default function Home() {
               <br />
               You'll see the pitch, the traction,
               <br />
-              the valuation — and <strong>decide if it deserves your money.</strong>
+              the valuation — and decide if it deserves your money.
             </p>
           </div>
 
@@ -91,7 +91,7 @@ export default function Home() {
               <u>Three years pass in minutes.</u>
               <br />
               <br />
-              Some <strong>quietly succeed.</strong>
+              Some quietly succeed.
               <br />
               Some flame out.
               <br />
@@ -110,7 +110,7 @@ export default function Home() {
               Your choices define your investor profile.
             </p>
             <p className="text-gray-700 text-lg leading-relaxed space-y-1">
-              By the end, <strong>you'll see</strong>
+              By the end, you'll see
               <br />
               <u>exactly what kind of investor you are.</u>
               <br />
