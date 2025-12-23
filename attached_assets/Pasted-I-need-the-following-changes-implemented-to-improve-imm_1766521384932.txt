@@ -1,0 +1,247 @@
+I need the following changes implemented to improve immersion, fix bugs, and align the UI with the physical “wood / whiteboard / sticky note” theme. This is not feature creep — these are polish + correctness fixes.
+
+1. Add “Your Exposure Warning” under the ROI note
+
+Location
+
+Directly under the yellow “If exit hits $10M…” note
+
+Same width, visually stacked like a second pinned sticky note
+
+Purpose
+
+This is psychological guidance, not a metric
+
+It should update live as the investment slider moves
+
+Content
+
+Title (small, handwritten style):
+
+Your Exposure
+
+
+Dynamic copy (only show ONE line at a time):
+
+Use remaining capital %, not total fund.
+
+< 15% of remaining capital
+
+“Diversified enough to survive misses.”
+
+15–35%
+
+“This would put X% of your remaining capital into one bet.”
+
+35–55%
+
+“High concentration — one failure hurts.”
+
+> 55%
+
+“You’re betting the fund on this.”
+
+Visual style
+
+Paper: off-white / manila
+
+Text: charcoal / pencil gray
+
+Accent: subtle red underline or ⚠ stamp
+
+No bright colors or borders
+
+2. Critical bug fixes (must be resolved)
+Bug A — Graph changes when typing in “Ask” textbox
+
+Expected behavior
+
+Pitch data (valuation, projections, graph points) must be immutable once loaded
+
+Typing or submitting a question must not:
+
+regenerate pitch data
+
+recompute projections
+
+re-render graphs
+
+Implementation rule
+
+Asking a question can only update text UI — never pitch state.
+
+Bug B — Founder response changes after appearing
+
+Expected behavior
+
+The founder should respond once and only once
+
+After submission:
+
+Disable the input immediately
+
+Disable the Ask button immediately
+
+Render the response exactly once
+
+Never re-call or re-render
+
+UX improvement
+
+Stamp the response area with a small red “ANSWERED” mark so the lock feels intentional
+
+3. Color system overhaul (major immersion issue)
+
+The current UI uses too many unrelated colors (blue, green, yellow, red).
+This feels like a dashboard, not a room.
+
+New palette rules (mandatory)
+
+Allowed materials
+
+Wood (warm walnut / oak tones)
+
+Paper (off-white, manila, light gray)
+
+Ink (charcoal / graphite)
+
+Accent red (stamps ONLY)
+
+Remove entirely
+
+Bright blues
+
+Greens for success
+
+Yellow alert boxes
+
+Modern neon-style highlights
+
+Usage rules
+
+Numbers are black/graphite, not green
+
+Risk is communicated via wording and stamps, not color blocks
+
+Red is reserved for:
+
+stamps (INVESTED, PASS, ANSWERED)
+
+subtle warnings only
+
+4. Typography cleanup
+Fonts (max TWO)
+
+Primary UI font
+
+Inter / Source Sans 3 / IBM Plex Sans
+
+Used for all body text, numbers, labels
+
+Handwritten accent font
+
+Caveat / Patrick Hand / Architects Daughter
+
+Used ONLY for:
+
+sticky notes
+
+exposure warning
+
+stamps
+
+scribbles
+
+No other fonts should appear.
+
+5. Stamps & tactile elements (theme alignment)
+
+Add physical-feeling cues:
+
+Red ink stamps:
+
+INVESTED
+
+PASS
+
+ANSWERED
+
+Slight rotation, imperfect edges
+
+Use stamps instead of color-coded buttons where possible
+
+Buttons should feel like:
+
+Paper cards
+
+Pencil marks
+
+Rubber stamps
+
+Not modern SaaS buttons.
+
+6. Homepage redesign (sticky notes + new copy)
+
+The current homepage boxes feel AI-written and visually disconnected.
+
+Visual changes
+
+Replace the three boxes with three sticky notes
+
+Slightly rotated, taped or pinned
+
+Match the in-game material style
+
+Copy (use EXACT text below)
+Sticky Note 1 — AI-Generated Pitches
+Every founder thinks their startup is special.
+
+Some are right.
+Most are wrong.
+
+You’ll see the pitch, the traction, the valuation —
+and decide whether it deserves your money.
+
+Sticky Note 2 — Real Outcomes
+Three years pass in minutes.
+
+Some companies quietly succeed.
+Some flame out.
+A few surprise everyone.
+
+Your returns depend on equity, timing,
+and how much risk you were willing to take.
+
+Sticky Note 3 — Investor Archetypes
+At the end, you don’t just see a number.
+
+You see what kind of investor you are —
+careful, bold, reckless, lucky,
+or something in between.
+
+
+No rewriting, no marketing language, no buzzwords.
+
+7. Implementation order (important)
+
+Please do these in this order to avoid regressions:
+
+Lock pitch data after load (fix graph + response bugs)
+
+Apply new color + font system globally
+
+Add Exposure Warning component
+
+Redesign homepage boxes as sticky notes
+
+Success criteria
+
+When done, the app should:
+
+Feel like sitting in a startup pitch room
+
+Feel tactile and human, not AI-dashboardy
+
+Make investment decisions feel risky and personal
+
+Never change data unexpectedly due to UI input
