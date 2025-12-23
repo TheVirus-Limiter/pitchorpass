@@ -144,11 +144,11 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
             name="Historical"
           />
           
-          {/* Projection lines - dotted, muted */}
+          {/* Projection lines - dotted, muted colors */}
           <Line 
             type="monotone" 
             dataKey="conservative" 
-            stroke="#8b7d6b" 
+            stroke="#6b8db8" 
             strokeWidth={1}
             strokeDasharray="4 4"
             dot={false}
@@ -159,7 +159,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <Line 
             type="monotone" 
             dataKey="realistic" 
-            stroke="#6b6b6b" 
+            stroke="#7a9b6e" 
             strokeWidth={1}
             strokeDasharray="4 4"
             dot={false}
@@ -170,7 +170,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <Line 
             type="monotone" 
             dataKey="optimistic" 
-            stroke="#4b4b4b" 
+            stroke="#a87070" 
             strokeWidth={1}
             strokeDasharray="4 4"
             dot={false}
@@ -187,15 +187,15 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <span className="text-gray-700 text-xs">Historical</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #8b7d6b 0px, #8b7d6b 4px, transparent 4px, transparent 8px)'}} />
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #6b8db8 0px, #6b8db8 4px, transparent 4px, transparent 8px)'}} />
           <span className="text-gray-700 text-xs">Conservative</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #6b6b6b 0px, #6b6b6b 4px, transparent 4px, transparent 8px)'}} />
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #7a9b6e 0px, #7a9b6e 4px, transparent 4px, transparent 8px)'}} />
           <span className="text-gray-700">Realistic</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #4b4b4b 0px, #4b4b4b 4px, transparent 4px, transparent 8px)'}} />
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #a87070 0px, #a87070 4px, transparent 4px, transparent 8px)'}} />
           <span className="text-gray-700 text-xs">Optimistic</span>
         </div>
       </div>

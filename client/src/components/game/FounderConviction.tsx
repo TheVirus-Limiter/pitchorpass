@@ -67,10 +67,10 @@ export function FounderConviction({ pitch }: FounderConvictionProps) {
   const bgColor = convictionColors[conviction.label as keyof typeof convictionColors] || "bg-yellow-100 border-yellow-400";
 
   return (
-    <div className={`text-left space-y-2 p-4 rounded border-2 ${bgColor}`}>
-      <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Founder Conviction</p>
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg text-gray-800 italic font-semibold leading-relaxed">
-        {conviction.label}
+    <div className={`text-left space-y-3 p-4 rounded border-2 ${bgColor} sticky-note`}>
+      <p className="text-xs font-bold text-gray-700 uppercase tracking-widest">Founder Conviction</p>
+      <p className="text-xl text-gray-800 font-semibold leading-relaxed">
+        <em>{conviction.label}</em>
       </p>
     </div>
   );

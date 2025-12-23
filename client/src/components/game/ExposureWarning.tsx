@@ -19,9 +19,9 @@ export function ExposureWarning({ investAmount, remainingCapital }: ExposureWarn
   };
 
   return (
-    <div className="px-5 py-4 space-y-3 text-sm transform -rotate-0.5 bg-amber-50 border border-amber-300 rounded">
+    <div className="px-5 py-4 space-y-3 transform -rotate-0.5 bg-amber-50 border border-amber-300 rounded">
       <p className="text-xs font-bold text-amber-800 uppercase tracking-widest">Pro Tip</p>
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-lg font-semibold leading-relaxed">
+      <p className="text-gray-800 text-lg font-medium leading-relaxed">
         {getWarning()}
       </p>
     </div>

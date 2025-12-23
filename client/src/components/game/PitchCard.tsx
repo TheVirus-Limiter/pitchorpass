@@ -311,8 +311,8 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               {ownership === 49 && <p className="text-sm text-gray-600 mt-2">Capped at 49%</p>}
             </motion.div>
 
-            {/* Founder Conviction - informal margin note */}
-            <motion.div variants={item} className="mb-6 px-4 py-4 bg-white border-l-4 border-yellow-400 rounded">
+            {/* Founder Conviction - standalone sticky note */}
+            <motion.div variants={item} className="mb-6">
               <FounderConviction pitch={pitch} />
             </motion.div>
 
@@ -333,23 +333,23 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               </div>
             )}
 
-            {/* Action Buttons - Stamp style */}
-            <motion.div variants={item} className="grid grid-cols-2 gap-3 mt-auto">
-              <button 
+            {/* Action Buttons - Stamp style, no containers */}
+            <motion.div variants={item} className="grid grid-cols-2 gap-4 mt-auto">
+              <div 
                 onClick={onPass}
-                disabled={disabled}
-                className="relative py-4 px-3 bg-gray-100 border-2 border-gray-400 rounded text-sm font-bold text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-5 px-4 text-center cursor-pointer hover:opacity-80 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{pointerEvents: disabled ? 'none' : 'auto', opacity: disabled ? 0.5 : 1}}
               >
-                <div className="stamp" style={{fontSize: '10px'}}>PASS</div>
-              </button>
+                <p className="text-sm font-bold text-gray-700 uppercase tracking-wider" style={{fontFamily: "'Caveat', cursive", fontSize: '18px'}}>PASS</p>
+              </div>
               
-              <button 
+              <div 
                 onClick={() => onInvest(investAmount)}
-                disabled={disabled || !canInvest}
-                className="relative py-4 px-3 bg-gray-100 border-2 border-gray-400 rounded text-sm font-bold text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-5 px-4 text-center cursor-pointer border-2 border-green-600 bg-green-50 rounded hover:bg-green-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{pointerEvents: disabled || !canInvest ? 'none' : 'auto', opacity: disabled || !canInvest ? 0.5 : 1}}
               >
-                <div className="stamp" style={{fontSize: '10px', color: '#dc2626', borderColor: '#dc2626'}}>INVEST</div>
-              </button>
+                <p className="text-sm font-bold text-green-800 uppercase tracking-wider" style={{fontFamily: "'Caveat', cursive", fontSize: '18px'}}>INVEST</p>
+              </div>
             </motion.div>
           </CardContent>
         </Card>

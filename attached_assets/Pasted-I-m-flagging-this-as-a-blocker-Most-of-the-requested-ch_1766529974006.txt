@@ -1,0 +1,241 @@
+I’m flagging this as a blocker. Most of the requested changes were not implemented, and several known bugs are still present. Before moving forward, these issues must be resolved exactly as specified below.
+
+1. Multiple requested changes were not applied at all
+A. PASS / INVEST buttons
+
+Status: ❌ Not changed
+
+PASS still has a button container.
+
+INVEST is still a modern UI button.
+
+No green/decisive visual language for INVEST.
+
+No meaningful stamp interaction.
+
+Required fix
+
+PASS = stamp only, no button container.
+
+INVEST = clearly different, decisive action:
+
+Green stamp or bold ink
+
+Heavier visual weight than PASS
+
+These must not resemble standard web buttons.
+
+B. Founder Conviction implementation is incorrect
+
+Status: ❌ Incorrect
+
+Founder Conviction is now inside another box.
+
+It is visually buried.
+
+The color coding is weak and unclear.
+
+Required fix
+
+Founder Conviction must be its own standalone sticky note, not nested.
+
+It must include a visible label:
+
+Founder Conviction
+
+
+The entire note must be color-coded by conviction:
+
+Green = grounded
+
+Yellow = mixed
+
+Red = overconfident
+
+Increase text size significantly.
+
+This is a core mechanic and must be immediately legible.
+
+C. Exposure Warning design still wrong
+
+Status: ❌ Not implemented as requested
+
+Still looks like a warning box.
+
+Still too small.
+
+Still separated from the decision area.
+
+Still too much dead space above/below.
+
+Required fix
+
+Redesign as a “Pro Tip / Investor Note” style component.
+
+Larger text.
+
+Softer visual language.
+
+Visually connected to PASS / INVEST.
+
+Use the available vertical space — the right column should feel dense and pressurized.
+
+2. Graph issues are still unresolved (critical)
+A. Graph line colors
+
+Status: ❌ Not changed
+
+All lines are still effectively the same color.
+
+Required fix
+
+Use subtle but distinct colors:
+
+Historical → neutral graphite
+
+Conservative → muted blue
+
+Realistic → muted green
+
+Optimistic → muted red
+
+Low saturation only — still whiteboard-style.
+
+B. Graph values still change when typing
+
+Status: ❌ Bug still present
+
+This is now the third time this issue has appeared.
+
+Required fix (non-negotiable)
+
+Pitch data (including projections and graph points) must be immutable once loaded.
+
+Typing in any input field must:
+
+NOT regenerate pitch data
+
+NOT recompute projections
+
+NOT re-render graph values
+
+If needed, freeze the pitch object after load. This must be fixed before any visual polish continues.
+
+3. Modern UI elements still breaking immersion
+A. “Round 1/10” and “$100,000” HUD
+
+Status: ⚠️ Partially improved, still too modern
+
+Required fix
+
+These should feel like:
+
+Paper tags
+
+Desk notes
+
+Stamped or annotated elements
+
+Add subtle color, but stay within the paper/ink theme.
+
+Remove pill-style SaaS UI look.
+
+B. Lightning bolt near founder photo
+
+Status: ❌ Still present
+
+Required fix
+
+Remove entirely. It has no meaning and adds noise.
+
+4. Homepage issues still outstanding
+A. Sticky note body text font not changed
+
+Status: ❌ Not implemented
+
+Sticky note body text is still handwritten.
+
+No bold / underline / emphasis as requested.
+
+Required fix
+
+Change sticky note body text to a more notable, readable font (not handwritten).
+
+Use:
+
+Bold
+
+Italics
+
+Underlines
+sparingly for emphasis and rhythm.
+
+The notes should be read, not just glanced at.
+
+B. Homepage background is still bland
+
+Status: ❌ Not implemented
+
+Required fix
+
+Add creative background elements:
+
+Faint sketches
+
+Doodles
+
+Charts
+
+Numbers
+
+Currency symbols
+
+Whiteboard marks
+
+The page should feel like a workspace, not a flat gradient.
+
+C. “Take a seat” is still not a button
+
+Status: ❌ Still unclear affordance
+
+It does not read as clickable.
+
+It looks like decoration.
+
+Required fix
+
+Make it unmistakably a button:
+
+Stronger shadow
+
+Clear edges
+
+Bolder text
+
+It should feel like starting the game, not reading a note.
+
+5. Summary — what must happen next
+
+Before continuing, the next iteration must:
+
+Actually implement the PASS / INVEST redesign
+
+Fix Founder Conviction as a standalone, color-coded note
+
+Redesign Exposure Warning as a Pro Tip and use the space
+
+Fix graph line colors
+
+Permanently fix the graph-changing-on-typing bug
+
+Remove modern UI remnants (pills, icons, bolts)
+
+Make the homepage visually creative and intentional
+
+Make “Take a seat” a real button
+
+Change sticky note body font and add emphasis styling
+
+Right now, the issue is not misunderstanding the direction — it’s execution not matching the instructions.
+
+If any of the above is unclear, please ask before implementing.
