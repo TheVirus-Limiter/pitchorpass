@@ -1,0 +1,313 @@
+Pitch or Pass — Required Fixes for Current Iteration
+
+This build is moving in the right direction, but there are several glaring usability, clarity, and creativity issues that need to be addressed. Please treat the following as required changes, not suggestions.
+
+PART 1 — PITCH PAGE FIXES
+1. Risk Assessment needs color back (subtle, mood-setting)
+
+Problem
+
+Risk assessment is currently colorless and visually flat.
+
+It does not set emotional context.
+
+Fix
+
+Add a very faint undertone based on risk:
+
+High Risk → muted red tint
+
+Medium Risk → muted yellow tint
+
+Low Risk → muted green tint
+
+This should be subtle, not loud, but clearly readable.
+
+Risk should feel dangerous or safe at a glance.
+
+2. Founder Conviction must be obvious and legible
+
+Problems
+
+The conviction text is too small.
+
+There is no clear indication that this is a “Founder Conviction” signal.
+
+Users would not understand this unless they designed the game.
+
+Fix
+
+Make the entire conviction block a sticky note with:
+
+Clear label:
+Founder Conviction
+
+Larger text size
+
+Color-code the entire sticky note based on conviction:
+
+Green = strong / grounded
+
+Yellow = mixed / uncertain
+
+Red = overconfident / hand-wavy
+
+This is a core mechanic and should be visually unavoidable.
+
+3. Exposure Warning design is wrong
+
+Problems
+
+The current exposure warning looks like an error box.
+
+It feels disconnected and weak.
+
+There is still unnecessary space between it and PASS / INVEST.
+
+Fix
+
+Redesign Exposure Warning as a “Pro Tip” / advisory callout:
+
+Label example:
+Investor Note or Pro Tip
+
+Softer styling (no harsh borders)
+
+Increase text size and vertical presence.
+
+Visually connect it to the decision area.
+
+Remove dead space so the right column feels tight and pressurized.
+
+4. PASS / INVEST buttons still feel too “web app”
+
+Problems
+
+PASS button is okay conceptually, but the button outline ruins it.
+
+INVEST button feels generic and modern.
+
+Fix
+
+PASS
+
+Remove the button container entirely.
+
+Make it just a red stamp interaction.
+
+INVEST
+
+Use a clearly different visual language:
+
+Green stamp / green ink
+
+Or a heavier, decisive mark
+
+It should feel like committing capital.
+
+No flat buttons. These are actions, not UI controls.
+
+5. Remove the lightning bolt near the founder photo
+
+Problem
+
+The lightning bolt icon has no clear meaning.
+
+It adds visual noise and confusion.
+
+Fix
+
+Remove it entirely.
+
+6. Graph needs color differentiation (and must stop changing)
+A. Graph styling
+
+Problem
+
+Graph is too monotone and hard to parse.
+
+Fix
+
+Add subtle color variation:
+
+Historical: graphite / neutral
+
+Conservative: muted blue
+
+Realistic: muted green
+
+Optimistic: muted red
+
+Use low saturation — this is a whiteboard sketch, not a dashboard.
+
+B. Critical bug: graph changes when typing
+
+Problem
+
+Typing in the text input causes graph points to change.
+
+Fix (non-negotiable)
+
+Pitch data must be immutable once loaded.
+
+Text input and “ask founder” interactions must never:
+
+Regenerate pitch data
+
+Recalculate projections
+
+Re-render graph values
+
+This bug has appeared multiple times and must be fully resolved.
+
+7. “Round X/10” and “$X” displays look too modern
+
+Problem
+
+These indicators feel like SaaS UI elements.
+
+Fix
+
+Restyle them to match the theme:
+
+Paper tags
+
+Handwritten or stamped accents
+
+Subtle color (ink, muted green, muted red)
+
+They should feel like notations, not HUD elements.
+
+8. Copy tweak
+
+Change
+
+Replace:
+
+“Ask one question”
+
+With:
+
+“Ask the founder one question”
+
+This is clearer and more human.
+
+PART 2 — HOMEPAGE FIXES
+9. Homepage still feels bland and empty
+
+Problems
+
+Too little background texture.
+
+Too few visual anchors.
+
+Feels like a landing page, not a space.
+
+Fix
+
+Add more background elements:
+
+Faint paper layers
+
+Extra notes, pins, tape, or board texture
+
+The page should feel lived in.
+
+10. Sticky note copy structure needs consistency
+
+Problem
+
+Only the first sticky note uses the strong “Every founder thinks…” pattern.
+
+The other two feel like plain statements.
+
+Fix
+
+Rewrite the other two to match the same narrative structure.
+
+They should read like assertive, opinionated sentences, not descriptions.
+
+Example structure:
+
+“Every investment looks obvious in hindsight.”
+
+(Not asking for this exact copy, just the structure.)
+
+11. Sticky note typography needs to change
+
+Problems
+
+Handwritten font is too soft and not impactful.
+
+Notes don’t stand out.
+
+Fix
+
+Switch sticky note text to a more notable font (not handwritten).
+
+Use:
+
+Bold
+
+Italics
+
+Underlines
+sparingly to add emphasis and rhythm.
+
+These notes should be readable and memorable.
+
+12. Bring back the green $100,000 box
+
+Change
+
+Restore the green highlighted box for $100,000.
+
+This worked well visually and gave the user an immediate anchor.
+
+Keep it subtle and on-theme.
+
+13. “Take a seat” button does not read as a button
+
+Problem
+
+It looks like a piece of paper, not an action.
+
+There’s no affordance.
+
+Fix
+
+Make it clearly clickable:
+
+Stronger shadow
+
+Clear edge
+
+Bolder text
+
+It should feel like starting the experience, not decoration.
+
+FINAL DIRECTION REMINDER
+
+This product should feel:
+
+Creative
+
+Opinionated
+
+Physical
+
+Slightly messy
+
+Human
+
+It should not feel:
+
+Clean
+
+Generic
+
+Corporate
+
+SaaS-like
+
+Please focus on clarity, creativity, and emotional signaling in the next iteration — not polish for polish’s sake.

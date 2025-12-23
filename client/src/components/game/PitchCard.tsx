@@ -113,9 +113,6 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                     e.currentTarget.src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop&q=80";
                   }}
                 />
-                <div className="absolute -bottom-3 -right-3 bg-primary rounded-full p-3 border-4 border-white shadow-lg">
-                  <Zap className="w-5 h-5 text-white" />
-                </div>
               </div>
             </motion.div>
 
@@ -165,7 +162,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <motion.div variants={item} className="mt-4 space-y-3">
                   <input
                     type="text"
-                    placeholder="Ask one question..."
+                    placeholder="Ask the founder one question..."
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && !answering && askQuestion()}
@@ -216,7 +213,9 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             <motion.div variants={item} className="mb-8">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Round {round}/10</p>
+                  <div className="inline-block bg-gray-200 border-2 border-gray-400 px-3 py-2 rounded mb-3 transform -rotate-2">
+                    <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg font-bold text-gray-800">Round {round}/10</p>
+                  </div>
                   <h2 className="text-4xl font-bold font-display text-foreground">{startup.name}</h2>
                 </div>
               </div>
@@ -237,9 +236,9 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <p className="text-lg text-foreground font-medium">{startup.market}</p>
               </div>
 
-              <div className="bg-white p-4 rounded-xl border border-gray-300">
+              <div className={`p-4 rounded-xl border border-gray-300 ${startup.risk > 0.6 ? 'bg-red-50' : startup.risk > 0.3 ? 'bg-yellow-50' : 'bg-green-50'}`}>
                 <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Risk Assessment</p>
-                <p className="text-lg text-foreground font-medium">{riskLevel}</p>
+                <p className={`text-lg font-medium ${startup.risk > 0.6 ? 'text-red-800' : startup.risk > 0.3 ? 'text-amber-800' : 'text-green-800'}`}>{riskLevel}</p>
               </div>
 
               {/* Valuation Graph */}

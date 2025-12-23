@@ -54,11 +54,22 @@ export function FounderConviction({ pitch }: FounderConvictionProps) {
   };
 
   const conviction = generateConviction();
+  
+  const convictionColors = {
+    "Calm, precise, confident": "bg-green-100 border-green-400",
+    "Overconfident, buzzword-heavy": "bg-red-100 border-red-400",
+    "Honest but uncertain": "bg-yellow-100 border-yellow-400",
+    "Knows the problem deeply": "bg-green-100 border-green-400",
+    "Hand-wavy on scale, optimistic": "bg-red-100 border-red-400",
+    "Data-driven, measured expectations": "bg-green-100 border-green-400"
+  };
+  
+  const bgColor = convictionColors[conviction.label as keyof typeof convictionColors] || "bg-yellow-100 border-yellow-400";
 
   return (
-    <div className="text-left space-y-2">
+    <div className={`text-left space-y-2 p-4 rounded border-2 ${bgColor}`}>
       <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Founder Conviction</p>
-      <p style={{fontFamily: "'Caveat', cursive"}} className="text-xl text-gray-800 italic font-semibold leading-relaxed border-b-2 border-yellow-400 pb-2">
+      <p style={{fontFamily: "'Caveat', cursive"}} className="text-lg text-gray-800 italic font-semibold leading-relaxed">
         {conviction.label}
       </p>
     </div>

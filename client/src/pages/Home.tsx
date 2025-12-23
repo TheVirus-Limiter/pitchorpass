@@ -12,11 +12,17 @@ export default function Home() {
       </div>
 
       {/* Scattered papers/sticky notes background */}
-      <div className="absolute top-10 left-5 opacity-40 pointer-events-none">
+      <div className="absolute top-10 left-5 opacity-30 pointer-events-none">
         <div className="sticky-note-news w-32 h-32 transform -rotate-12" />
       </div>
-      <div className="absolute bottom-20 right-8 opacity-40 pointer-events-none">
+      <div className="absolute bottom-20 right-8 opacity-25 pointer-events-none">
         <div className="sticky-note-news w-40 h-40 transform rotate-6" />
+      </div>
+      <div className="absolute top-1/3 right-12 opacity-20 pointer-events-none">
+        <div className="sticky-note-news w-24 h-24 transform rotate-12" />
+      </div>
+      <div className="absolute bottom-1/4 left-1/4 opacity-20 pointer-events-none">
+        <div className="sticky-note-news w-28 h-28 transform -rotate-8" />
       </div>
 
       <motion.div
@@ -32,7 +38,7 @@ export default function Home() {
         
         {/* Subheading */}
         <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-          You have $100,000.
+          You have <span className="inline-block bg-green-200 text-green-900 font-bold px-3 py-1 rounded">$100,000</span>.
           <br />
           10 Startup pitches. 10 Investment decisions.
           <br />
@@ -41,11 +47,11 @@ export default function Home() {
 
         {/* CTA Button - Paper card styled */}
         <Link href="/game">
-          <div className="inline-block paper-note p-6 transform -rotate-2 hover-elevate cursor-pointer border-2 border-yellow-300 shadow-lg" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-3xl text-gray-800 font-bold">
+          <div className="inline-block paper-note p-8 transform -rotate-2 cursor-pointer border-4 border-yellow-300 shadow-2xl hover:shadow-3xl transition-all hover:-rotate-1" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-4xl text-gray-800 font-bold">
               Take a seat
             </p>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-xl text-gray-700 mt-2">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-2xl text-gray-700 mt-2">
               Let's hear the first pitch
             </p>
           </div>
@@ -76,7 +82,7 @@ deserves your money.`}
           {/* Sticky Note 2 */}
           <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
-              Real Outcomes
+              Every investment looks obvious in hindsight.
             </p>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-xl leading-relaxed whitespace-pre-wrap">
               {`Three years pass in minutes.
@@ -85,24 +91,25 @@ Some quietly succeed.
 Some flame out.
 A few surprise everyone.
 
-Returns depend on equity,
-timing, and risk tolerance.`}
+You'll know which bets
+paid off and which didn't.`}
             </p>
           </div>
 
           {/* Sticky Note 3 */}
           <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
-              Investor Archetypes
+              Your choices define your investor profile.
             </p>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-xl leading-relaxed whitespace-pre-wrap">
-              {`At the end, you see what
-kind of investor you are.
+              {`By the end, you'll see
+exactly what kind of investor you are.
 
 Careful. Bold. Reckless. Lucky.
 Or something in between.
 
-You'll know.`}
+The pattern emerges
+from your decisions.`}
             </p>
           </div>
         </motion.div>
