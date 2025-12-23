@@ -56,32 +56,56 @@ export default function Home() {
           </Button>
         </Link>
 
-        {/* Feature Cards - Wood design */}
+        {/* Feature Sticky Notes - Redesigned */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-4xl mx-auto"
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto"
         >
-          <div className="wood-card p-6 rounded-lg border-2 border-amber-700 shadow-lg transform hover:scale-105 transition-transform">
-            <div className="tape-corner" />
-            <Zap className="w-8 h-8 text-amber-700 mb-3" />
-            <h3 className="font-bold text-amber-900 mb-2">AI-Generated Pitches</h3>
-            <p className="text-sm text-amber-800">Each founder brings a unique opportunity. Will you recognize the next big thing?</p>
+          {/* Sticky Note 1 */}
+          <div className="sticky-note-news p-5 transform -rotate-2 shadow-lg">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+              Every founder thinks their startup is special.
+            </p>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+              {`Some are right.
+Most are wrong.
+
+You'll see the pitch, the traction, the valuation —
+and decide whether it deserves your money.`}
+            </p>
           </div>
 
-          <div className="wood-card p-6 rounded-lg border-2 border-emerald-700 shadow-lg transform hover:scale-105 transition-transform">
-            <div className="tape-corner" />
-            <TrendingUp className="w-8 h-8 text-emerald-700 mb-3" />
-            <h3 className="font-bold text-amber-900 mb-2">Real-Time Outcomes</h3>
-            <p className="text-sm text-amber-800">See how your portfolio performs over 3 years with realistic startup success rates.</p>
+          {/* Sticky Note 2 */}
+          <div className="sticky-note-news p-5 transform rotate-1 shadow-lg">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+              Real Outcomes
+            </p>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+              {`Three years pass in minutes.
+
+Some companies quietly succeed.
+Some flame out.
+A few surprise everyone.
+
+Your returns depend on equity, timing,
+and how much risk you were willing to take.`}
+            </p>
           </div>
 
-          <div className="wood-card p-6 rounded-lg border-2 border-orange-700 shadow-lg transform hover:scale-105 transition-transform">
-            <div className="tape-corner" />
-            <TrendingUp className="w-8 h-8 text-orange-700 mb-3" />
-            <h3 className="font-bold text-amber-900 mb-2">Investor Archetypes</h3>
-            <p className="text-sm text-amber-800">Discover your investor archetype based on your decisions and portfolio performance.</p>
+          {/* Sticky Note 3 */}
+          <div className="sticky-note-news p-5 transform -rotate-1 shadow-lg">
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
+              Investor Archetypes
+            </p>
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">
+              {`At the end, you don't just see a number.
+
+You see what kind of investor you are —
+careful, bold, reckless, lucky,
+or something in between.`}
+            </p>
           </div>
         </motion.div>
       </motion.div>

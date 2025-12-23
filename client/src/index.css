@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playwrite+US+Modern:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -118,9 +118,22 @@
     transform: rotate(-1deg);
   }
 
+  .sticky-note-warning {
+    background: linear-gradient(45deg, #fef3c7 0%, #fde68a 100%);
+  }
+
   .stamp {
-    @apply inline-block px-3 py-1 border-2 border-current font-bold text-sm tracking-widest;
+    @apply inline-block px-2 py-1 border-2 border-red-600 text-red-600 font-bold text-xs tracking-widest;
     transform: rotate(-15deg);
+    font-family: 'Caveat', cursive;
+  }
+
+  .stamp-invested {
+    @apply text-red-600 border-red-600;
+  }
+
+  .stamp-answered {
+    @apply text-red-600 border-red-600;
   }
 
   /* Hand-drawn doodle accents */

@@ -5,10 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Users, TrendingUp, DollarSign, MapPin, Zap, Check, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ValuationGraph } from "./ValuationGraph";
 import { FounderConviction } from "./FounderConviction";
 import { ExitMath } from "./ExitMath";
+import { ExposureWarning } from "./ExposureWarning";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -20,13 +21,18 @@ interface PitchCardProps {
 }
 
 export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
-  const { founder, startup, ask } = pitch;
+  // Lock pitch data with useMemo to prevent immutability issues
+  const lockedPitch = useMemo(() => pitch, [pitch.startup.id]);
+  const { founder, startup, ask } = lockedPitch;
+  
   const [investAmount, setInvestAmount] = useState(5000);
   const [askedQuestion, setAskedQuestion] = useState(false);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [answering, setAnswering] = useState(false);
+  
   const maxAllowed = Math.min(maxInvest, 50000);
-  const company_valuation = pitch.startup.valuation || 100000;
+  const company_valuation = startup.valuation || 100000;
   let ownership = (investAmount / company_valuation) * 100;
   // Cap equity offered at 49%
   ownership = Math.min(ownership, 49);
@@ -34,7 +40,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
 
   useEffect(() => {
     setInvestAmount(Math.min(5000, maxInvest));
-  }, [pitch, maxInvest]);
+  }, [maxInvest]);
 
   const container = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -64,12 +70,13 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
   };
 
   const askQuestion = async () => {
-    if (question.trim()) {
+    if (question.trim() && !answering) {
+      setAnswering(true);
       try {
         const res = await fetch("/api/game/answer-question", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pitch, question })
+          body: JSON.stringify({ pitch: lockedPitch, question })
         });
         const data = await res.json();
         setAnswer(data.answer || "We're focused on execution and expect strong results soon.");
@@ -78,6 +85,8 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
         console.error("Failed to get answer:", error);
         setAnswer("We're focused on execution and expect strong results soon.");
         setAskedQuestion(true);
+      } finally {
+        setAnswering(false);
       }
     }
   };
@@ -159,16 +168,17 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                     placeholder="Ask one question..."
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && askQuestion()}
-                    className="w-full px-3 py-2 text-xs border border-gray-400 rounded bg-white text-foreground placeholder-muted-foreground"
+                    onKeyPress={(e) => e.key === 'Enter' && !answering && askQuestion()}
+                    disabled={answering}
+                    className="w-full px-3 py-2 text-xs border border-gray-400 rounded bg-white text-foreground placeholder-muted-foreground disabled:opacity-50"
                   />
                   <Button
                     size="sm"
                     onClick={askQuestion}
-                    disabled={!question.trim()}
-                    className="w-full text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white border-0"
+                    disabled={!question.trim() || answering}
+                    className="w-full text-xs font-bold bg-gray-600 hover:bg-gray-700 text-white border-0"
                   >
-                    Ask
+                    {answering ? "Waiting..." : "Ask"}
                   </Button>
                 </motion.div>
               )}
@@ -179,10 +189,13 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                   variants={item}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 p-3 bg-blue-50 border-l-4 border-blue-400 rounded text-xs text-gray-700"
+                  className="mt-4 p-3 bg-amber-50 border-2 border-amber-300 rounded text-xs text-gray-700 relative"
                 >
-                  <p className="font-semibold text-blue-900 mb-1">Founder responds:</p>
-                  <p>{answer}</p>
+                  <div className="stamp stamp-answered absolute -top-2 -right-2">
+                    ANSWERED
+                  </div>
+                  <p className="font-semibold text-gray-900 mb-1">Founder responds:</p>
+                  <p className="text-gray-700">{answer}</p>
                 </motion.div>
               )}
             </motion.div>
@@ -307,6 +320,11 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             {/* Exit Math */}
             <motion.div variants={item} className="mb-6">
               <ExitMath investAmount={investAmount} valuation={startup.valuation} />
+            </motion.div>
+
+            {/* Exposure Warning */}
+            <motion.div variants={item} className="mb-6">
+              <ExposureWarning investAmount={investAmount} remainingCapital={maxAllowed} />
             </motion.div>
 
             {/* Error States */}
