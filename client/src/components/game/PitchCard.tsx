@@ -263,25 +263,25 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
         <Card className="overflow-hidden shadow-lg flex-1 flex flex-col border-2 border-emerald-300 wood-card-right">
           <CardContent className="p-6 flex flex-col flex-1">
             {/* Ask Amount */}
-            <motion.div variants={item} className="mb-8">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">They're Asking</p>
-              <div className="text-4xl font-bold font-mono text-emerald-600">
+            <motion.div variants={item} className="mb-6 paper-note p-3 rounded transform -rotate-1">
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">They're Asking</p>
+              <div className="text-3xl font-bold font-mono text-foreground">
                 ${ask.toLocaleString()}
               </div>
             </motion.div>
 
             {/* Company Valuation */}
-            <motion.div variants={item} className="mb-6 bg-white p-4 rounded-lg border border-gray-200">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Valuation</p>
+            <motion.div variants={item} className="mb-6 paper-note p-3 rounded transform rotate-0.5">
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Valuation</p>
               <p className="text-2xl font-bold font-mono text-foreground">
                 ${(startup.valuation ? (startup.valuation / 1000).toFixed(0) : "100") }k
               </p>
             </motion.div>
 
             {/* Upside Potential */}
-            <motion.div variants={item} className="mb-6 bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg border-2 border-yellow-300">
-              <p className="text-xs font-bold text-yellow-800 uppercase tracking-widest mb-2">Upside Potential</p>
-              <p className="text-2xl font-bold text-yellow-800">
+            <motion.div variants={item} className="mb-6 paper-note p-3 rounded transform -rotate-0.5">
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Upside</p>
+              <p className="text-2xl font-bold text-foreground">
                 {startup.upside.toFixed(1)}x
               </p>
             </motion.div>
@@ -306,14 +306,14 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
             </motion.div>
 
             {/* Equity Display */}
-            <motion.div variants={item} className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
-              <p className="text-xs font-bold text-blue-900 uppercase tracking-wider mb-1">Your Equity</p>
-              <p className="text-xl font-bold text-blue-700">{ownership.toFixed(2)}%</p>
-              {ownership === 49 && <p className="text-xs text-blue-600 mt-1">Max equity capped at 49%</p>}
+            <motion.div variants={item} className="mb-6 paper-note p-3 rounded transform rotate-1">
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Your Equity</p>
+              <p className="text-xl font-bold text-foreground">{ownership.toFixed(2)}%</p>
+              {ownership === 49 && <p className="text-xs text-gray-600 mt-1">Capped at 49%</p>}
             </motion.div>
 
-            {/* Founder Conviction */}
-            <motion.div variants={item} className="mb-6">
+            {/* Founder Conviction - informal margin note */}
+            <motion.div variants={item} className="mb-6 px-3 py-2 border-l-2 border-gray-400">
               <FounderConviction pitch={pitch} />
             </motion.div>
 

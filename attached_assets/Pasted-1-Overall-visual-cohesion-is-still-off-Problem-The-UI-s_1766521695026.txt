@@ -1,0 +1,217 @@
+1. Overall visual cohesion is still off
+
+Problem
+
+The UI still reads as a modern SaaS dashboard.
+
+Colors (green, blue, yellow, red) are competing instead of supporting a single material theme.
+
+Cards look digitally “perfect” instead of tactile.
+
+Fix
+
+Commit fully to one material system:
+
+Background: warm paper / light wood
+
+Cards: off-white, manila, or light gray paper
+
+Text: charcoal / graphite only
+
+Accent color: muted red only for stamps and warnings
+
+Remove or mute:
+
+Bright green numbers
+
+Bright blue outlines
+
+High-saturation yellow panels
+
+Nothing should look like a “success color” or “error color.” Let wording do the work.
+
+2. Right column still feels like a metrics sidebar, not part of the room
+
+Problem
+
+“They’re asking,” “Valuation,” “Upside Potential,” etc. still feel like a fintech UI.
+
+The yellow ROI note and exposure note look pasted on, not integrated.
+
+Fix
+
+Convert the entire right column into stacked paper notes, not boxed widgets.
+
+Each section should feel pinned or taped:
+
+Asking
+
+Valuation
+
+Upside
+
+Your Equity
+
+If exit hits $10M
+
+Your Exposure
+
+Slight rotation, subtle shadows, imperfect alignment.
+
+Reduce labels and visual noise — fewer borders, more whitespace.
+
+3. Exposure Warning needs refinement
+
+Problem
+
+The Exposure Warning exists, but it’s visually weak and blends into the ROI note.
+
+It doesn’t feel like a “quiet warning.”
+
+Fix
+
+Make it its own small note under the ROI note.
+
+Use:
+
+Pencil/handwritten font
+
+Muted red underline or small ⚠ stamp
+
+Ensure only one sentence shows at a time.
+
+Tone should feel like a human whisper, not a system alert.
+
+4. Founder Conviction box is too UI-ish
+
+Problem
+
+The Founder Conviction section reads like another labeled metric.
+
+The red box feels like a warning panel instead of an opinion.
+
+Fix
+
+Remove the solid red panel.
+
+Present it as a handwritten note or margin comment, e.g.:
+
+“Overconfident. Buzzword-heavy.”
+
+No hard border. No filled background. Let it feel subjective and informal.
+
+5. Graph section still breaks immersion
+
+Problem
+
+The valuation projection graph looks like a typical analytics chart.
+
+It visually dominates the pitch.
+
+Fix
+
+De-emphasize the graph:
+
+Thinner lines
+
+Muted colors (graphite / dashed pencil style)
+
+Less contrast
+
+It should feel like something scribbled on a whiteboard, not a dashboard centerpiece.
+
+6. Typography hierarchy needs tightening
+
+Problem
+
+Too many font weights and visual styles competing.
+
+Some headers still feel “tech product.”
+
+Fix
+
+Limit to two fonts total:
+
+Neutral sans (Inter / Source Sans / Plex) for most UI
+
+Handwritten font for:
+
+Sticky notes
+
+Exposure warning
+
+Conviction notes
+
+Stamps
+
+Reduce capitalization and heavy labels.
+
+7. Stamps need to do more work
+
+Problem
+
+Stamps exist but don’t feel central.
+
+Buttons still feel like standard UI buttons.
+
+Fix
+
+Lean harder into stamps:
+
+INVESTED
+
+PASS
+
+ANSWERED
+
+Make stamps:
+
+Slightly rotated
+
+Imperfect
+
+Red ink
+
+Buttons should feel secondary to stamps, not the other way around.
+
+8. Homepage still feels flat and unfinished
+
+Problems
+
+Sticky notes are too evenly spaced and too clean.
+
+Page feels empty despite content.
+
+Footer text breaks immersion.
+
+Fixes
+
+Sticky notes
+
+Increase rotation variance.
+
+Add subtle tape/pins.
+
+Let them overlap slightly.
+
+Whitespace
+
+Pull the notes slightly higher.
+
+Reduce empty space above and below.
+
+Remove footer text
+
+Delete the line:
+
+10 Pitches • The Investment Game
+
+
+The homepage should end cleanly with no footer tagline.
+
+9. Content is good — don’t rewrite it
+
+The sticky note copy on the homepage is good and should not be rewritten.
+The pitch text tone is also good.
+
+This is now a design execution problem, not a writing problem.

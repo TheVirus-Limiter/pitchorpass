@@ -105,10 +105,10 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
   };
 
   return (
-    <div className="w-full bg-white p-4 rounded-lg border-2 border-gray-200">
-      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Company Valuation Projection</p>
+    <div className="w-full bg-white p-3 rounded-lg border border-gray-300" style={{opacity: 0.9}}>
+      <p className="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-3">Valuation Projection</p>
       
-      <ResponsiveContainer width="100%" height={250}>
+      <ResponsiveContainer width="100%" height={200}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
           <XAxis 
@@ -137,20 +137,20 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <Line 
             type="monotone" 
             dataKey="actual" 
-            stroke="#2563eb" 
-            strokeWidth={2.5}
-            dot={{ fill: '#2563eb', r: 3 }}
+            stroke="#4b5563" 
+            strokeWidth={1.5}
+            dot={{ fill: '#4b5563', r: 2 }}
             isAnimationActive={false}
             name="Historical"
           />
           
-          {/* Projection lines - dotted */}
+          {/* Projection lines - dotted, muted */}
           <Line 
             type="monotone" 
             dataKey="conservative" 
-            stroke="#ef4444" 
-            strokeWidth={2}
-            strokeDasharray="5 5"
+            stroke="#8b7d6b" 
+            strokeWidth={1}
+            strokeDasharray="4 4"
             dot={false}
             isAnimationActive={false}
             name="Conservative"
@@ -159,9 +159,9 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <Line 
             type="monotone" 
             dataKey="realistic" 
-            stroke="#f59e0b" 
-            strokeWidth={2}
-            strokeDasharray="5 5"
+            stroke="#6b6b6b" 
+            strokeWidth={1}
+            strokeDasharray="4 4"
             dot={false}
             isAnimationActive={false}
             name="Realistic"
@@ -170,9 +170,9 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
           <Line 
             type="monotone" 
             dataKey="optimistic" 
-            stroke="#10b981" 
-            strokeWidth={2}
-            strokeDasharray="5 5"
+            stroke="#4b4b4b" 
+            strokeWidth={1}
+            strokeDasharray="4 4"
             dot={false}
             isAnimationActive={false}
             name="Optimistic"
@@ -181,22 +181,22 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
       </ResponsiveContainer>
 
       {/* Legend */}
-      <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+      <div className="mt-2 grid grid-cols-2 gap-2 text-xs opacity-70">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-0.5 bg-blue-500" />
-          <span className="text-gray-700">Historical</span>
+          <div className="w-3 h-px bg-gray-700" />
+          <span className="text-gray-700 text-xs">Historical</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-0.5 bg-red-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, currentColor 0px, currentColor 5px, transparent 5px, transparent 10px)'}} />
-          <span className="text-gray-700">Conservative</span>
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #8b7d6b 0px, #8b7d6b 4px, transparent 4px, transparent 8px)'}} />
+          <span className="text-gray-700 text-xs">Conservative</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-0.5 bg-amber-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, currentColor 0px, currentColor 5px, transparent 5px, transparent 10px)'}} />
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #6b6b6b 0px, #6b6b6b 4px, transparent 4px, transparent 8px)'}} />
           <span className="text-gray-700">Realistic</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-0.5 bg-emerald-500" style={{backgroundImage: 'repeating-linear-gradient(90deg, currentColor 0px, currentColor 5px, transparent 5px, transparent 10px)'}} />
-          <span className="text-gray-700">Optimistic</span>
+          <div className="w-3 h-px" style={{backgroundImage: 'repeating-linear-gradient(90deg, #4b4b4b 0px, #4b4b4b 4px, transparent 4px, transparent 8px)'}} />
+          <span className="text-gray-700 text-xs">Optimistic</span>
         </div>
       </div>
     </div>

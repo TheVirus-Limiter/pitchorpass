@@ -64,7 +64,7 @@ export default function Home() {
           className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto"
         >
           {/* Sticky Note 1 */}
-          <div className="sticky-note-news p-5 transform -rotate-2 shadow-lg">
+          <div className="sticky-note-news p-5 transform -rotate-3 shadow-lg">
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
               Every founder thinks their startup is special.
             </p>
@@ -78,7 +78,7 @@ and decide whether it deserves your money.`}
           </div>
 
           {/* Sticky Note 2 */}
-          <div className="sticky-note-news p-5 transform rotate-1 shadow-lg">
+          <div className="sticky-note-news p-5 transform rotate-2 shadow-lg -mt-2">
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
               Real Outcomes
             </p>
@@ -95,7 +95,7 @@ and how much risk you were willing to take.`}
           </div>
 
           {/* Sticky Note 3 */}
-          <div className="sticky-note-news p-5 transform -rotate-1 shadow-lg">
+          <div className="sticky-note-news p-5 transform -rotate-2 shadow-lg -mt-2">
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-base font-bold leading-tight mb-3">
               Investor Archetypes
             </p>
@@ -109,11 +109,6 @@ or something in between.`}
           </div>
         </motion.div>
       </motion.div>
-      
-      {/* Footer stamp */}
-      <div className="absolute bottom-6 text-xs text-amber-900/60 uppercase tracking-widest font-mono font-bold">
-        10 Pitches • The Investment Game
-      </div>
     </div>
   );
 }
