@@ -199,7 +199,6 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
           </CardContent>
         </Card>
       </motion.div>
-
       {/* Center - Pitch Card */}
       <motion.div
         variants={container}
@@ -251,7 +250,6 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
           </CardContent>
         </Card>
       </motion.div>
-
       {/* Right Sidebar - Investment Controls */}
       <motion.div
         variants={container}
@@ -338,7 +336,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               <button 
                 onClick={onPass}
                 disabled={disabled}
-                className="py-2 px-3 text-sm font-medium uppercase text-gray-700 hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300"
+                className="py-2 px-3 text-sm font-medium uppercase hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 bg-[#cf8080] text-[#ffffff]"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
                 PASS
