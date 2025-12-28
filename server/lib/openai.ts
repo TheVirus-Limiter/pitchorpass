@@ -71,7 +71,8 @@ export async function generatePitch() {
         "name": "First Last (name matching ${location})",
         "country": "United States",
         "gender": "male|female",
-        "conviction": "${convictionTraits[Math.floor(Math.random() * convictionTraits.length)]}"
+        "conviction": "${convictionTraits[Math.floor(Math.random() * convictionTraits.length)]}",
+        "credentials": ["Short line 1", "Short line 2"]
       },
       "startup": {
         "name": "Creative startup name (NOT generic)",
@@ -87,15 +88,17 @@ export async function generatePitch() {
         "valuation": (random between 100000 and 400000 - THIS IS SEED STAGE)
       },
       "ask": (random 10% to 25% of valuation),
-      "news": ["headline1", "headline2", "headline3"]
+      "news": ["headline1", "headline2", "headline3"],
+      "whiteboardNotes": ["Sentence 1", "Sentence 2", "Sentence 3", "Sentence 4"]
     }
     
     Rules:
     - Valuation MUST be $100k-$400k (not higher - this is seed/pre-seed)
     - Traction must match risk level
     - Ask should be 10-25% of valuation
-    - News should be 2-3 short snippets like: "Forbes: 'Raising $X for food delivery automation'" or "TechCrunch: 'Early traction shows 40% MoM growth'"
-    - Names must sound real and creative
+    - News should be 2-3 short snippets
+    - Credentials: Mix of elite (Harvard, Google) and humble (Self-taught, unknown startups)
+    - WhiteboardNotes: 3-4 short sentences. At least one MUST be negative/skeptical. High risk startups have more skeptical lines. Practical observations.
   `;
 
   try {

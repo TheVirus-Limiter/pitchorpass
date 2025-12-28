@@ -69,7 +69,7 @@ export default function Home() {
           {/* Sticky Note 1 */}
           <div className="sticky-note-news p-6 transform -rotate-6 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              Some founders are right.
+              <b><u>Some founders are right.</u></b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
               A lot of them aren’t.
@@ -85,7 +85,7 @@ export default function Home() {
           {/* Sticky Note 2 */}
           <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              Three years pass in just a few minutes.
+              <b><u>Three years pass in just a few minutes.</u></b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
               Some companies grow steadily.
@@ -102,7 +102,7 @@ export default function Home() {
           {/* Sticky Note 3 */}
           <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              By the end, you’ll have a sense of the kind of investor you are.
+              <b><u>By the end, you’ll have a sense of the kind of investor you are.</u></b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
               Careful. Bold. Risk-taking. Lucky.

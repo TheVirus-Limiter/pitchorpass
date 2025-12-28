@@ -1,0 +1,99 @@
+1. Sticky note emphasis and structure (important)
+
+For each sticky note, the first line should be both bolded and underlined. Specifically:
+
+“Some founders are right.”
+
+“Three years pass in just a few minutes.”
+
+“By the end, you’ll have a sense of the kind of investor you are.”
+
+These should act as the anchor of each note.
+
+Sticky note body text changes
+
+Increase the overall text size of sticky note content.
+
+Each note should have 3–4 short sentences that give more context, not just a summary.
+
+Notes should feel like quick observations you scribbled while listening.
+
+Required content rules for notes:
+
+At least one line must be negative or skeptical about the company.
+
+Higher-risk companies can have multiple skeptical lines.
+
+Tone should be realistic, not dramatic.
+
+Example intent (not exact copy):
+
+Mentions traction but questions sustainability
+
+Notes strong idea but unclear execution
+
+Calls out pricing, margins, or dependency risk
+
+This makes the notes actually useful for decision-making.
+
+2. Low MRR visual callout
+
+When a company has very low or $0 MRR:
+
+Add three hand-drawn exclamation marks (!!!) near the MRR value.
+
+Scribbled style, subtle but noticeable.
+
+This should immediately flag concern without adding text.
+
+3. Founder credentials section (new)
+
+Under the founder name / location, add a small section labeled something like:
+
+Credentials
+
+This should include 1–2 short bullet-style lines, for example:
+
+“MBA, Harvard Business School”
+
+“BS Computer Science, UT Austin”
+
+“Former software engineer at Google”
+
+“Previously worked at Microsoft”
+
+Important rules:
+
+Sprinkle in strong universities (Harvard, Stanford, MIT, UT Austin, Berkeley, etc.).
+
+Sprinkle in big tech experience (Google, Microsoft, Meta, Amazon).
+
+These should slightly increase perceived credibility, but:
+
+Not all great startups have great credentials
+
+Include some outliers:
+
+Unknown schools
+
+No-name companies
+
+Self-taught founders
+
+This creates realism and forces players to decide how much credentials actually matter.
+
+4. Risk alignment
+
+Companies with stronger credentials can tend to:
+
+Have lower execution risk
+
+Be more polished
+
+But do not make this deterministic.
+
+There should be cases where:
+
+Great credentials still fail
+
+Weak credentials lead to surprising success

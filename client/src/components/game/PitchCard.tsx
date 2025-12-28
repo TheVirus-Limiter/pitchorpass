@@ -129,6 +129,21 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                 <MapPin className="w-4 h-4" />
                 {founder.country}
               </div>
+
+              {/* Founder Credentials */}
+              {founder.credentials && founder.credentials.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Credentials</p>
+                  <ul className="space-y-1">
+                    {founder.credentials.map((cred, i) => (
+                      <li key={i} className="text-sm text-gray-700 leading-tight flex items-start gap-2">
+                        <span className="mt-1.5 w-1 h-1 bg-gray-400 rounded-full flex-shrink-0" />
+                        {cred}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </motion.div>
 
             {/* Traction Metrics */}
@@ -149,7 +164,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                 <div className="text-3xl font-bold text-foreground font-mono">
                   ${(startup.traction.revenue / 1000).toFixed(0)}k
                   {startup.traction.revenue === 0 && (
-                    <span className="absolute -top-1 -right-1 text-red-600 text-3xl font-bold transform rotate-12" style={{fontFamily: "'Caveat', cursive"}}>!</span>
+                    <span className="absolute -top-3 -right-3 text-red-600 text-5xl font-bold transform rotate-12" style={{fontFamily: "'Caveat', cursive"}}>!!!</span>
                   )}
                 </div>
                 <div className="text-sm text-gray-700 font-medium mt-1">Monthly Recurring Revenue</div>
@@ -258,13 +273,22 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
               />
 
               {/* Whiteboard Notes */}
-              <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg relative overflow-hidden bg-white/50">
+              <div className="mt-4 p-5 border-2 border-dashed border-gray-400 rounded-lg relative overflow-hidden bg-white/60">
                 <div className="absolute top-0 right-0 p-1 opacity-20">
                   <Zap className="w-4 h-4" />
                 </div>
-                <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Pitch nOTES</p>
-                <ul className="space-y-1">
+                <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Whiteboard Notes</p>
+                <div className="space-y-3">
                   {useMemo(() => {
+                    if (lockedPitch.whiteboardNotes && lockedPitch.whiteboardNotes.length > 0) {
+                      return lockedPitch.whiteboardNotes.map((note, i) => (
+                        <p key={i} style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl leading-tight">
+                          - {note}
+                        </p>
+                      ));
+                    }
+                    
+                    const id = startup.name.length;
                     const notes = [
                       "Customer acquisition seems expensive",
                       "Strong growth, unclear margins",
@@ -276,14 +300,13 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                       "Niche market, high retention"
                     ];
                     // Pick 2 random notes based on startup id to keep stable
-                    const id = startup.name.length;
                     return [notes[id % notes.length], notes[(id + 3) % notes.length]].map((note, i) => (
-                      <li key={i} style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-tight">
+                      <p key={i} style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl leading-tight">
                         - {note}
-                      </li>
+                      </p>
                     ));
-                  }, [startup.name])}
-                </ul>
+                  }, [startup.name, lockedPitch.whiteboardNotes])}
+                </div>
               </div>
             </motion.div>
           </CardContent>

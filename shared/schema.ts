@@ -21,6 +21,7 @@ export const founderSchema = z.object({
   name: z.string(),
   photo: z.string(),
   country: z.string(),
+  credentials: z.array(z.string()).optional(),
 });
 
 export const startupSchema = z.object({
@@ -44,6 +45,7 @@ export const pitchSchema = z.object({
   news: z.array(z.string()).optional(), // Simulated press snippets
   outcomeSummary: z.string().optional(), // Case-specific outcome snippet
   equityPercentage: z.number().optional(), // For display on invest
+  whiteboardNotes: z.array(z.string()).optional(),
 });
 
 export type Pitch = z.infer<typeof pitchSchema>;
