@@ -142,7 +142,8 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
 
               <div className="paper-note p-4 rounded">
                 <div className="text-3xl font-bold text-foreground font-mono">${(startup.traction.revenue / 1000).toFixed(0)}k</div>
-                <div className="text-sm text-gray-700 font-medium mt-1">MRR</div>
+                <div className="text-sm text-gray-700 font-medium mt-1">Monthly Recurring Revenue
+</div>
               </div>
 
               {/* Recent News - Always Visible */}
