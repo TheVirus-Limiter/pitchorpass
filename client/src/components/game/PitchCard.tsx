@@ -262,7 +262,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                 <div className="absolute top-0 right-0 p-1 opacity-20">
                   <Zap className="w-4 h-4" />
                 </div>
-                <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Whiteboard Notes</p>
+                <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Pitch nOTES</p>
                 <ul className="space-y-1">
                   {useMemo(() => {
                     const notes = [
