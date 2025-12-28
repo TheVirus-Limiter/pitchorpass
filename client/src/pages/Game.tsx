@@ -221,7 +221,7 @@ export default function Game() {
 
     // Calculate what opportunity cost would have been (if passed)
     const missedGain = currentReveal.amount === 0 
-      ? currentReveal.pitch.startup.valuation * currentReveal.pitch.startup.upside * 0.1 
+      ? (currentReveal.pitch.startup.valuation || 100000) * currentReveal.pitch.startup.upside * 0.1 
       : 0;
 
     return (

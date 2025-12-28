@@ -133,7 +133,7 @@ export function ValuationGraph({ currentValuation, riskProfile, upside }: Valuat
             domain={['dataMin * 0.9', 'dataMax * 1.1']}
           />
           <Tooltip 
-            formatter={(value) => value ? formatCurrency(value) : null}
+            formatter={(value) => value ? formatCurrency(Number(value)) : null}
             labelFormatter={(label) => `Month: ${label}`}
             contentStyle={{ 
               backgroundColor: '#f9fafb', 

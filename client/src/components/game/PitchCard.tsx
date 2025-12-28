@@ -24,7 +24,7 @@ interface PitchCardProps {
 
 export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments }: PitchCardProps) {
   // Lock pitch data with useMemo to prevent immutability issues
-  const lockedPitch = useMemo(() => pitch, [pitch.startup.id]);
+  const lockedPitch = useMemo(() => pitch, [pitch.startup.name]);
   const { founder, startup, ask } = lockedPitch;
   
   // Game Balance: Minimum check increases later in game
@@ -41,7 +41,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
   let ownership = (investAmount / company_valuation) * 100;
   // Cap equity offered at 49%
   ownership = Math.min(ownership, 49);
-  const canInvest = investAmount <= maxInvest && investAmount > 0;
+  const canInvest = investAmount <= maxInvest && investAmount >= minInvestment;
 
   useEffect(() => {
     setInvestAmount(Math.max(minInvestment, Math.min(minInvestment + 2000, maxInvest)));
@@ -355,7 +355,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
             {/* Exit Math */}
             <motion.div variants={item} className="mb-4">
-              <ExitMath investAmount={investAmount} valuation={startup.valuation} />
+              <ExitMath investAmount={investAmount} valuation={startup.valuation || 100000} />
             </motion.div>
 
             {/* Exposure Warning */}
