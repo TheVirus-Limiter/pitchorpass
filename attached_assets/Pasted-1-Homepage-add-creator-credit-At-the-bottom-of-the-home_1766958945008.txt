@@ -1,0 +1,153 @@
+1. Homepage: add creator credit
+
+At the bottom of the home screen, add a small, subtle scribble that says:
+
+made by rehan raj
+
+Handwritten / scribble style
+
+Low contrast
+
+Feels like something casually written in the corner of the desk
+
+This should feel personal, not like a footer.
+
+2. Replace sticky note text (exact copy)
+
+Please replace the sticky note content with the following verbatim.
+
+Sticky note 1
+
+Some founders are right.
+A lot of them aren’t.
+
+You’ll see the pitch, the traction,
+and the valuation.
+
+From there, it’s up to you
+to decide if it’s worth backing.
+
+Sticky note 2
+
+Three years pass in just a few minutes.
+
+Some companies grow steadily.
+Some never really get going.
+A few turn out better than expected.
+
+You’ll see which bets paid off
+and which ones didn’t.
+
+Sticky note 3
+
+By the end, you’ll have a sense
+of the kind of investor you are.
+
+Careful. Bold. Risk-taking. Lucky.
+Or somewhere in between.
+
+Your choices start to add up
+and a pattern begins to show.
+
+(Keep titles handwritten, body text normal, underlines only, no bold.)
+
+3. PASS button hover bug
+
+Right now:
+
+When you hover PASS, it turns white
+
+The text becomes unreadable
+
+Fix
+
+PASS hover state must preserve contrast
+
+Text should always remain readable
+
+If it’s a stamp, keep it consistent on hover
+
+4. Game balance issue: you can invest in everything
+
+Currently, you can invest ~$10k in all 10 companies and still be fine.
+This removes tension and makes decisions too easy.
+
+Please add a mechanic that forces tradeoffs, for example:
+
+Minimum investment sizes increase later in the game
+
+Some founders refuse small checks
+
+Limited number of investments allowed (e.g. max 6–7)
+
+Later rounds require larger commitments
+
+The player should have to pass on some deals.
+
+5. Pro Tip / Exposure math is still wrong
+
+Example bug:
+
+User invests $15k
+
+Remaining capital is $81k
+
+Pro Tip says this is 30% of capital
+
+That’s incorrect.
+
+Correct logic
+
+investment_amount / remaining_capital
+
+
+The Pro Tip must always reflect remaining cash, not starting capital or total portfolio.
+
+6. Add “whiteboard notes” under Valuation Projection
+
+Under the Valuation Projection section, add a small area that looks like
+handwritten whiteboard notes you took while listening to the pitch.
+
+These notes should:
+
+Be short
+
+Be practical
+
+Help with the investment decision
+
+Examples of note content (generated per pitch):
+
+“Customer acquisition seems expensive”
+
+“Strong growth, unclear margins”
+
+“Depends heavily on partnerships”
+
+“Tech risk is high but timing could be right”
+
+This makes the page feel more like thinking, not just reading stats.
+
+7. Highlight extremely low MRR
+
+When a company has very low or $0k MRR:
+
+Add a hand-drawn exclamation mark
+
+Subtle, but clearly draws attention
+
+Looks like it was scribbled next to the number
+
+This should quietly signal risk without adding text.
+
+Summary
+
+What’s left is about:
+
+Making choices matter
+
+Fixing trust-breaking math bugs
+
+Adding small visual cues that help decision-making
+
+The overall direction is strong. These changes will push it from “good” to “feels right.”

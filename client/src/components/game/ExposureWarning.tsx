@@ -4,7 +4,7 @@ interface ExposureWarningProps {
 }
 
 export function ExposureWarning({ investAmount, remainingCapital }: ExposureWarningProps) {
-  const exposurePercent = (investAmount / remainingCapital) * 100;
+  const exposurePercent = remainingCapital > 0 ? (investAmount / remainingCapital) * 100 : 0;
 
   const getWarning = () => {
     if (exposurePercent < 15) {

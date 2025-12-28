@@ -77,6 +77,9 @@ export default function Game() {
     }
   };
 
+  const activeInvestments = investments.filter(i => i.amount > 0).length;
+  const canStillInvest = activeInvestments < 7;
+
   const [revealIndex, setRevealIndex] = useState(0);
   const [displayedCapital, setDisplayedCapital] = useState(0);
 
@@ -200,6 +203,8 @@ export default function Game() {
                     onInvest={handleDecision}
                     onPass={() => handleDecision(0)}
                     disabled={gameState === "loading"}
+                    canInvestMore={canStillInvest}
+                    totalInvestments={activeInvestments}
                   />
                 )}
               </motion.div>

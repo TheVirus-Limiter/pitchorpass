@@ -18,14 +18,19 @@ interface PitchCardProps {
   onInvest: (amount: number) => void;
   onPass: () => void;
   disabled: boolean;
+  canInvestMore: boolean;
+  totalInvestments: number;
 }
 
-export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled }: PitchCardProps) {
+export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments }: PitchCardProps) {
   // Lock pitch data with useMemo to prevent immutability issues
   const lockedPitch = useMemo(() => pitch, [pitch.startup.id]);
   const { founder, startup, ask } = lockedPitch;
   
-  const [investAmount, setInvestAmount] = useState(5000);
+  // Game Balance: Minimum check increases later in game
+  const minInvestment = round > 7 ? 15000 : round > 4 ? 8000 : 3000;
+  
+  const [investAmount, setInvestAmount] = useState(minInvestment);
   const [askedQuestion, setAskedQuestion] = useState(false);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
@@ -39,8 +44,8 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
   const canInvest = investAmount <= maxInvest && investAmount > 0;
 
   useEffect(() => {
-    setInvestAmount(Math.min(5000, maxInvest));
-  }, [maxInvest]);
+    setInvestAmount(Math.max(minInvestment, Math.min(minInvestment + 2000, maxInvest)));
+  }, [maxInvest, minInvestment]);
 
   const container = {
     hidden: { opacity: 0, scale: 0.95 },
@@ -140,10 +145,14 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 <div className="text-sm text-gray-700 font-medium mt-1">MoM Growth</div>
               </div>
 
-              <div className="paper-note p-4 rounded">
-                <div className="text-3xl font-bold text-foreground font-mono">${(startup.traction.revenue / 1000).toFixed(0)}k</div>
-                <div className="text-sm text-gray-700 font-medium mt-1">Monthly Recurring Revenue
-</div>
+              <div className="paper-note p-4 rounded relative">
+                <div className="text-3xl font-bold text-foreground font-mono">
+                  ${(startup.traction.revenue / 1000).toFixed(0)}k
+                  {startup.traction.revenue === 0 && (
+                    <span className="absolute -top-1 -right-1 text-red-600 text-3xl font-bold transform rotate-12" style={{fontFamily: "'Caveat', cursive"}}>!</span>
+                  )}
+                </div>
+                <div className="text-sm text-gray-700 font-medium mt-1">Monthly Recurring Revenue</div>
               </div>
 
               {/* Recent News - Always Visible */}
@@ -247,6 +256,35 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 riskProfile={startup.risk}
                 upside={startup.upside}
               />
+
+              {/* Whiteboard Notes */}
+              <div className="mt-4 p-4 border-2 border-dashed border-gray-300 rounded-lg relative overflow-hidden bg-white/50">
+                <div className="absolute top-0 right-0 p-1 opacity-20">
+                  <Zap className="w-4 h-4" />
+                </div>
+                <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Whiteboard Notes</p>
+                <ul className="space-y-1">
+                  {useMemo(() => {
+                    const notes = [
+                      "Customer acquisition seems expensive",
+                      "Strong growth, unclear margins",
+                      "Depends heavily on partnerships",
+                      "Tech risk is high but timing could be right",
+                      "Solid team, crowded space",
+                      "Viral potential but defensibility?",
+                      "Burn rate looks manageable",
+                      "Niche market, high retention"
+                    ];
+                    // Pick 2 random notes based on startup id to keep stable
+                    const id = startup.name.length;
+                    return [notes[id % notes.length], notes[(id + 3) % notes.length]].map((note, i) => (
+                      <li key={i} style={{fontFamily: "'Caveat', cursive"}} className="text-gray-700 text-lg leading-tight">
+                        - {note}
+                      </li>
+                    ));
+                  }, [startup.name])}
+                </ul>
+              </div>
             </motion.div>
           </CardContent>
         </Card>
@@ -294,12 +332,12 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
                 value={[investAmount]}
                 onValueChange={(val) => setInvestAmount(val[0])}
                 max={maxAllowed}
-                min={1000}
+                min={minInvestment}
                 step={1000}
-                disabled={disabled}
+                disabled={disabled || !canInvestMore}
               />
               <div className="text-sm text-gray-600 font-mono text-center">
-                $1,000 — {formatMoney(maxAllowed)}
+                {formatMoney(minInvestment)} — {formatMoney(maxAllowed)}
               </div>
             </motion.div>
 
@@ -322,13 +360,18 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
 
             {/* Exposure Warning */}
             <motion.div variants={item} className="mb-4">
-              <ExposureWarning investAmount={investAmount} remainingCapital={maxAllowed} />
+              <ExposureWarning investAmount={investAmount} remainingCapital={maxInvest} />
             </motion.div>
 
             {/* Error States */}
-            {!canInvest && (
-              <div className="mb-4 bg-red-50 border border-red-300 p-2 rounded-lg text-xs text-red-800 font-medium">
-                Invalid amount
+            {!canInvestMore && (
+              <div className="mb-4 bg-amber-50 border border-amber-300 p-3 rounded text-sm text-amber-900 font-medium" style={{fontFamily: "'Caveat', cursive"}}>
+                You've reached your 7-investment limit. Choose wisely.
+              </div>
+            )}
+            {investAmount < minInvestment && (
+              <div className="mb-4 bg-red-50 border border-red-300 p-2 rounded text-xs text-red-800 font-medium">
+                Minimum check is {formatMoney(minInvestment)}
               </div>
             )}
 
@@ -337,7 +380,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               <button 
                 onClick={onPass}
                 disabled={disabled}
-                className="py-2 px-3 text-sm font-medium uppercase hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 bg-[#cf8080] text-[#ffffff]"
+                className="py-2 px-3 text-sm font-medium uppercase hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 bg-[#cf8080] hover:bg-[#b56b6b] text-[#ffffff]"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
                 PASS
@@ -345,7 +388,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled 
               
               <button 
                 onClick={() => onInvest(investAmount)}
-                disabled={disabled || !canInvest}
+                disabled={disabled || !canInvestMore || investAmount < minInvestment || investAmount > maxInvest}
                 className="py-3 px-3 text-sm font-bold uppercase text-white bg-green-700 hover:bg-green-800 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                 style={{fontFamily: "'Caveat', cursive"}}
               >

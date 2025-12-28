@@ -59,7 +59,7 @@ export default function Home() {
           </Button>
         </Link>
 
-        {/* Feature Sticky Notes - Redesigned */}
+        {/* Feature Sticky Notes - Verbatim copy */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -68,65 +68,57 @@ export default function Home() {
         >
           {/* Sticky Note 1 */}
           <div className="sticky-note-news p-6 transform -rotate-6 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
-              Every founder thinks their startup is special.
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
+              Some founders are right.
             </p>
-            <p className="text-gray-700 text-lg leading-relaxed space-y-1">
-              Some are right.
-              <br />
-              <u>Most are wrong.</u>
-              <br />
-              <br />
-              You'll see the pitch, the traction,
-              <br />
-              the valuation — and decide if it deserves your money.
+            <p className="text-gray-700 text-lg leading-relaxed">
+              A lot of them aren’t.
+              <br /><br />
+              You’ll see the pitch, the traction,
+              and the valuation.
+              <br /><br />
+              From there, it’s up to you
+              to decide if it’s worth backing.
             </p>
           </div>
 
           {/* Sticky Note 2 */}
           <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
-              Every investment looks obvious in hindsight.
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
+              Three years pass in just a few minutes.
             </p>
-            <p className="text-gray-700 text-lg leading-relaxed space-y-1">
-              <u>Three years pass in minutes.</u>
+            <p className="text-gray-700 text-lg leading-relaxed">
+              Some companies grow steadily.
               <br />
+              Some never really get going.
               <br />
-              Some quietly succeed.
-              <br />
-              Some flame out.
-              <br />
-              A few surprise everyone.
-              <br />
-              <br />
-              You'll know which bets
-              <br />
-              paid off and which didn't.
+              A few turn out better than expected.
+              <br /><br />
+              You’ll see which bets paid off
+              and which ones didn’t.
             </p>
           </div>
 
           {/* Sticky Note 3 */}
           <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
-            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl font-bold leading-snug mb-4">
-              Your choices define your investor profile.
+            <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
+              By the end, you’ll have a sense of the kind of investor you are.
             </p>
-            <p className="text-gray-700 text-lg leading-relaxed space-y-1">
-              By the end, you'll see
+            <p className="text-gray-700 text-lg leading-relaxed">
+              Careful. Bold. Risk-taking. Lucky.
               <br />
-              <u>exactly what kind of investor you are.</u>
-              <br />
-              <br />
-              Careful. Bold. Reckless. Lucky.
-              <br />
-              Or something in between.
-              <br />
-              <br />
-              The pattern emerges
-              <br />
-              from your decisions.
+              Or somewhere in between.
+              <br /><br />
+              Your choices start to add up
+              and a pattern begins to show.
             </p>
           </div>
         </motion.div>
+
+        {/* Creator Credit */}
+        <div className="mt-12 opacity-40 hover:opacity-70 transition-opacity" style={{fontFamily: "'Caveat', cursive"}}>
+          <p className="text-gray-600 text-lg">made by rehan raj</p>
+        </div>
       </motion.div>
     </div>
   );
