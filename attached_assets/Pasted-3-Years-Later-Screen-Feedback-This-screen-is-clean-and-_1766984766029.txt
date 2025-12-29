@@ -1,0 +1,94 @@
+3 Years Later Screen — Feedback
+
+This screen is clean and readable, but right now it feels too generic and underwhelming for what should be a big moment. This is one of the emotional peaks of the game, and it needs more personality and payoff.
+
+What’s working
+
+The layout is simple and easy to understand.
+
+The gain amount is clear and readable.
+
+The idea of revealing outcomes one by one is strong.
+
+What needs improvement
+1. “MASSIVE SUCCESS!” is too generic
+
+That line feels placeholder-y and breaks immersion.
+
+Instead of generic labels like:
+
+“MASSIVE SUCCESS”
+
+“FAILED TO EXECUTE”
+
+Use specific, human outcome lines, for example:
+
+“Adoption took off faster than expected.”
+
+“Quietly became a category leader.”
+
+“Strong product, great timing.”
+
+“Execution beat even optimistic forecasts.”
+
+This should feel like what actually happened, not a score label.
+
+2. Add context, not just the number
+
+Right now it jumps straight to +$155,000, which is good, but it lacks story.
+
+Consider adding one short line of context above or below the number, such as:
+
+Why it worked
+
+What surprised people
+
+What the market reaction was
+
+This reinforces the player’s decision-making, not just the math.
+
+3. Visual style doesn’t fully match the game
+
+This card feels more like a fintech dashboard than the rest of the game.
+
+Suggestions:
+
+Soften the box edges slightly or add a paper-like texture.
+
+Reduce the “clean UI” feel and lean into the desk / note aesthetic.
+
+Consider a subtle handwritten annotation or stamp (e.g. “Paid off” or “Good call”).
+
+It should feel like a reveal, not a report.
+
+4. The empty space weakens the moment
+
+There’s a lot of unused space around the card, which makes the reveal feel quiet.
+
+Possible fixes:
+
+Slightly enlarge the card
+
+Add faint background elements (scribbles, arrows, notes)
+
+Bring the viewer’s eye more tightly to the outcome
+
+This moment should feel focused.
+
+5. Progress indicators are too subtle
+
+“2 / 5 REVEALED” and “PORTFOLIO UPDATING…” are easy to miss.
+
+Suggestions:
+
+Make the progress indicator more prominent
+
+Or phrase it more narratively, e.g.:
+
+“2 of 5 outcomes revealed”
+
+“Updating your portfolio…”
+
+This helps pacing and anticipation.
+
+Overall direction

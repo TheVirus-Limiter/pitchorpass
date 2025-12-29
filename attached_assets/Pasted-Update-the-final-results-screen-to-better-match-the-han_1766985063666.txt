@@ -1,0 +1,122 @@
+Update the final results screen to better match the handmade, investor-journal theme of the game.
+
+Make the following changes exactly:
+
+Tone & Language
+
+Remove marketing language such as “golden touch,” “legendary,” “handsomely,” or anything that sounds like a SaaS landing page.
+
+Replace with grounded, human phrasing that reflects decisions made during play.
+
+Keep sentences short and natural. Avoid em dashes and overly dramatic wording.
+
+Archetype Presentation
+
+Keep the archetype title at the top, but add 2 to 3 short lines explaining why the player earned it.
+
+These lines must reference behavior such as risk tolerance, concentration of bets, traction focus, or founder conviction patterns.
+
+Archetypes should feel earned, not assigned.
+
+Visual Style
+
+Reduce confetti opacity by at least 60 percent or replace it with a subtle paper texture or faint stamp marks.
+
+Avoid glossy gradients. Use softer, paper-like color fills.
+
+The screen should feel like closing a notebook, not winning a mobile game.
+
+Numbers & Context
+
+Keep Final Net Worth as the main number.
+
+Add a subtle line above or below it that says:
+“Started with $100,000”
+
+Keep Return Multiple and Profit, but reduce their visual dominance slightly.
+
+Decision Summary
+
+Add a short section titled “What shaped this outcome” with 2 to 3 bullet points.
+
+These bullets should be generated dynamically from gameplay patterns (example: concentrated bets, avoided hype, favored revenue).
+
+Buttons
+
+Make “Play Again” the clear primary action.
+
+Keep “Home” secondary but fully readable.
+
+Buttons should feel intentional, not fogged or disabled.
+
+The final screen should feel reflective, personal, and consistent with the pitch and note-taking experience throughout the game.
+
+15 INVESTOR ARCHETYPE EXAMPLES
+
+(Use these directly or as presets)
+
+Strong / Positive Outcomes
+
+The Visionary
+You backed ideas early and stayed patient.
+Most of your biggest wins came from conviction, not consensus.
+
+The Pattern Spotter
+You noticed what others missed.
+Your best bets followed the same signals, even across different markets.
+
+The Concentrated Believer
+You didn’t spread thin.
+When you believed, you committed and it paid off.
+
+The Traction First Investor
+You cared less about storytelling and more about proof.
+Growth and revenue guided most of your decisions.
+
+The Quiet Winner
+No flashy moves.
+Just steady picks that added up over time.
+
+Mixed / Realistic Outcomes
+
+The Calculated Risk Taker
+You took chances, but not blindly.
+Some bets missed, but the wins covered the losses.
+
+The Balanced Operator
+You mixed safe picks with a few long shots.
+The portfolio held together, even when some companies didn’t.
+
+The Late Conviction Investor
+You waited for signals before committing.
+You avoided disasters, but sometimes missed the biggest upside.
+
+The Story Skeptic
+You ignored hype and buzzwords.
+A few great narratives slipped past you, but so did many bad ones.
+
+The Portfolio Builder
+You treated this like a system, not a gamble.
+No single company carried the outcome.
+
+Risky / Funny / Sharp Outcomes
+
+The Hype Chaser
+Big visions caught your eye.
+Reality caught up later.
+
+The Overconfident Picker
+You trusted your gut every time.
+Sometimes it worked. Sometimes it really didn’t.
+
+The Spray and Pray Investor
+You backed almost everything.
+A few hits saved a lot of misses.
+
+The Almost There
+You were early, just not early enough.
+Close calls defined your portfolio.
+
+The Learned the Hard Way
+Mistakes were expensive.
+But you probably wouldn’t make them again.

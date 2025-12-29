@@ -1,0 +1,123 @@
+Add a Dedicated “Reveal” Screen for Each Startup
+
+Right now, outcomes appear too abruptly. To improve pacing and emotional payoff, each startup should have its own short reveal screen before the portfolio updates.
+
+How the Reveal Screen Should Work
+
+After finishing a phase (or at the 3-years-later moment):
+
+Reveal one startup at a time
+
+Each reveal gets its own focused screen
+
+The player clicks to move to the next reveal
+
+This turns outcomes into moments, not lines in a list.
+
+Structure of a Single Reveal Screen
+
+Each startup reveal should include:
+
+1. Clear headline (company name)
+
+Example:
+
+SomniSense
+
+This anchors the moment.
+
+2. Short context line (what you did)
+
+Example:
+
+You invested $31,000 for 12.40% equity
+
+Keeps the player oriented.
+
+3. Outcome number (the payoff)
+
+Example:
+
++$155,000
+
+This should still be the visual focus.
+
+4. Case-specific outcome line (not generic)
+
+Replace labels like “MASSIVE SUCCESS” with one human sentence, for example:
+
+“Adoption accelerated faster than expected.”
+
+“Quietly became a default choice for sleep clinics.”
+
+“Strong retention carried growth when marketing stalled.”
+
+This makes the result feel earned.
+
+5. Optional small annotation (flavor)
+
+Very light, optional, handwritten-style notes like:
+
+“Good timing.”
+
+“Right bet.”
+
+“Risk paid off.”
+
+Use sparingly.
+
+Visual / UX Guidance
+
+The reveal screen should:
+
+Feel focused
+
+Remove distractions
+
+Center the card on screen
+
+Background can stay minimal, but:
+
+Slight paper texture
+
+Subtle vignette
+
+This should feel like pausing to look at one decision, not skimming results.
+
+Pacing Suggestions (Optional)
+
+Add a brief delay or fade-in for:
+
+Company name
+
+Then the number
+
+This builds anticipation without needing animation-heavy effects.
+
+Why This Matters
+
+This change:
+
+Makes outcomes memorable
+
+Reinforces cause-and-effect
+
+Gives weight to each decision
+
+Prevents results from feeling like a spreadsheet update
+
+Each reveal should feel like:
+
+“Okay… what happened to this one?”
+
+After All Reveals
+
+Only after all startups are revealed:
+
+Update total portfolio value
+
+Show archetype
+
+Show summary screen
+
+This keeps narrative flow clean and satisfying.

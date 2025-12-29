@@ -14,6 +14,7 @@ import { ExposureWarning } from "./ExposureWarning";
 interface PitchCardProps {
   pitch: Pitch;
   round: number;
+  phase: number;
   maxInvest: number;
   onInvest: (amount: number) => void;
   onPass: () => void;
@@ -22,13 +23,18 @@ interface PitchCardProps {
   totalInvestments: number;
 }
 
-export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments }: PitchCardProps) {
+export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments }: PitchCardProps) {
   // Lock pitch data with useMemo to prevent immutability issues
   const lockedPitch = useMemo(() => pitch, [pitch.startup.name]);
   const { founder, startup, ask } = lockedPitch;
   
-  // Game Balance: Minimum check increases later in game
-  const minInvestment = round > 7 ? 15000 : round > 4 ? 8000 : 3000;
+  // Game Balance: Phase 1 - first 2 rounds = 30k min, last 3 = 20k min to force at least one pass
+  // Phase 2 - higher minimums for later stage
+  // Clamp to never exceed the ask amount
+  const requestedMin = phase === 1 
+    ? (round <= 2 ? 30000 : 20000)
+    : (round <= 2 ? 150000 : 100000);
+  const minInvestment = Math.min(requestedMin, ask);
   
   const [investAmount, setInvestAmount] = useState(minInvestment);
   const [askedQuestion, setAskedQuestion] = useState(false);
@@ -162,7 +168,9 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
               <div className="paper-note p-4 rounded relative">
                 <div className="text-3xl font-bold text-foreground font-mono">
-                  ${(startup.traction.revenue / 1000).toFixed(0)}k
+                  {startup.traction.revenue >= 1000000 
+                    ? `$${(startup.traction.revenue / 1000000).toFixed(1)}M`
+                    : `$${(startup.traction.revenue / 1000).toFixed(0)}k`}
                   {startup.traction.revenue === 0 && (
                     <span className="absolute -top-3 -right-3 text-red-600 text-5xl font-bold transform rotate-12" style={{fontFamily: "'Caveat', cursive"}}>!!!</span>
                   )}
@@ -286,7 +294,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                     }
                     
                     const id = startup.name.length;
-                    const notes = [
+                    const earlyNotes = [
                       "Customer acquisition seems expensive",
                       "Strong growth, unclear margins",
                       "Depends heavily on partnerships",
@@ -296,6 +304,17 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
                       "Burn rate looks manageable",
                       "Niche market, high retention"
                     ];
+                    const lateNotes = [
+                      "Unit economics finally working",
+                      "Path to profitability is clear",
+                      "Market leader in their niche",
+                      "Enterprise contracts add stability",
+                      "Growth slowing but margins improving",
+                      "Acquisition target for big players",
+                      "IPO potential in 2-3 years",
+                      "Strong recurring revenue base"
+                    ];
+                    const notes = phase === 2 ? lateNotes : earlyNotes;
                     // Pick 2 random notes based on startup id to keep stable
                     return [notes[id % notes.length], notes[(id + 3) % notes.length]].map((note, i) => (
                       <p key={i} style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-xl leading-tight">
@@ -330,7 +349,9 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
             <motion.div variants={item} className="mb-6 paper-note p-4 rounded transform rotate-0.5">
               <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Valuation</p>
               <p className="text-3xl font-bold font-mono text-foreground">
-                ${(startup.valuation ? (startup.valuation / 1000).toFixed(0) : "100") }k
+                {startup.valuation && startup.valuation >= 1000000 
+                  ? `$${(startup.valuation / 1000000).toFixed(1)}M`
+                  : `$${((startup.valuation || 100000) / 1000).toFixed(0)}k`}
               </p>
             </motion.div>
 
@@ -375,7 +396,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
             {/* Exit Math */}
             <motion.div variants={item} className="mb-4">
-              <ExitMath investAmount={investAmount} valuation={startup.valuation || 100000} />
+              <ExitMath investAmount={investAmount} valuation={startup.valuation || 100000} phase={phase} />
             </motion.div>
 
             {/* Exposure Warning */}
@@ -400,7 +421,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
               <button 
                 onClick={onPass}
                 disabled={disabled}
-                className="py-2 px-3 text-sm font-medium uppercase hover:bg-gray-100 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 bg-[#cf8080] hover:bg-[#b56b6b] text-[#ffffff]"
+                className="py-2 px-3 text-sm font-medium uppercase rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300 bg-[#cf8080] hover:bg-[#a55555] text-white"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
                 PASS

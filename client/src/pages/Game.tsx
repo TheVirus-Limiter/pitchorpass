@@ -245,6 +245,7 @@ export default function Game() {
                   <PitchCard 
                     pitch={currentPitch} 
                     round={round}
+                    phase={phase}
                     maxInvest={capital}
                     onInvest={handleDecision}
                     onPass={() => handleDecision(0)}
