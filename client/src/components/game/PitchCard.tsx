@@ -274,9 +274,6 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
               {/* Whiteboard Notes */}
               <div className="mt-4 p-5 border-2 border-dashed border-gray-400 rounded-lg relative overflow-hidden bg-white/60">
-                <div className="absolute top-0 right-0 p-1 opacity-20">
-                  <Zap className="w-4 h-4" />
-                </div>
                 <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-500 text-sm mb-2 uppercase tracking-tighter">Whiteboard Notes</p>
                 <div className="space-y-3">
                   {useMemo(() => {
