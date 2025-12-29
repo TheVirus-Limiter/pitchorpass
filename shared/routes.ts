@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { pitchSchema, insertGameSchema, games } from "./schema";
 
+export type InsertGame = z.infer<typeof insertGameSchema>;
+
 export const api = {
   game: {
     generatePitch: {
       method: "POST" as const,
-      path: "/api/game/pitch",
+      path: "/api/game/generate-pitch",
       responses: {
         200: pitchSchema,
         500: z.object({ message: z.string() }),
@@ -13,7 +15,7 @@ export const api = {
     },
     saveResult: {
       method: "POST" as const,
-      path: "/api/game/result",
+      path: "/api/game/save-result",
       input: insertGameSchema,
       responses: {
         201: z.custom<typeof games.$inferSelect>(),

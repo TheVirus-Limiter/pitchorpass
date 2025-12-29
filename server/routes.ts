@@ -3,14 +3,13 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { generatePitch, generateOutcome, answerFounderQuestion } from "./lib/openai";
-import { z } from "zod";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
   
-  app.post(api.game.generatePitch.path, async (req, res) => {
+  app.post("/api/game/generate-pitch", async (req, res) => {
     try {
       const { phase } = req.body;
       const pitch = await generatePitch(phase);
@@ -21,7 +20,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post(api.game.saveResult.path, async (req, res) => {
+  app.post("/api/game/save-result", async (req, res) => {
     try {
       const input = api.game.saveResult.input.parse(req.body);
       const result = await storage.createGameResult(input);
@@ -40,7 +39,7 @@ export async function registerRoutes(
       res.json({ narrative });
     } catch (error) {
       console.error("Outcome narrative error:", error);
-      res.json({ narrative: isWin ? "Great success!" : "Things didn't work out." });
+      res.json({ narrative: req.body?.isWin ? "Great success!" : "Things didn't work out." });
     }
   });
 
