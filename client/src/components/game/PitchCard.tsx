@@ -267,7 +267,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
               {/* Valuation Graph */}
               <ValuationGraph 
-                currentValuation={startup.valuation}
+                currentValuation={startup.valuation || 100000}
                 riskProfile={startup.risk}
                 upside={startup.upside}
               />

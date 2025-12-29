@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, type Pitch, type InsertGame } from "@shared/routes";
+import { api, type InsertGame } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
+import { type Pitch } from "@shared/schema";
 
 export function useGeneratePitch() {
   return useMutation({

@@ -35,8 +35,8 @@ export async function registerRoutes(
   // Generate outcome narrative for reveal sequence
   app.post("/api/game/outcome", async (req, res) => {
     try {
-      const { pitch, invested, outcome, isWin } = req.body;
-      const narrative = await generateOutcome(pitch, invested, outcome, isWin);
+      const { pitch, invested, investmentAmount, equity, isWin } = req.body;
+      const narrative = await generateOutcome(pitch, invested, investmentAmount, equity, isWin);
       res.json({ narrative });
     } catch (error) {
       console.error("Outcome narrative error:", error);

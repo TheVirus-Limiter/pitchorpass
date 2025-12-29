@@ -68,7 +68,7 @@ export default function Game() {
       narrative: ""
     };
 
-    setInvestments(updatedInvestments);
+    setInvestments(prev => [...prev, newInvestment]);
     setCapital(prev => prev - investAmount);
 
     if (round === 5 && phase === 1) {
@@ -139,6 +139,25 @@ export default function Game() {
 
   const finishGame = () => {
     const finalScore = displayedCapital;
+    
+    let archetype = "The Angel Investor";
+    const totalInvested = investments.reduce((acc, inv) => acc + inv.amount, 0);
+    const wins = investments.filter(i => i.isWin).length;
+    const losses = investments.filter(i => !i.isWin && i.amount > 0).length;
+    const avgOwnership = investments.length > 0 
+      ? investments.reduce((sum, i) => sum + i.ownership, 0) / investments.length 
+      : 0;
+    const winRate = investments.length > 0 ? (wins / investments.filter(i => i.amount > 0).length) * 100 : 0;
+    
+    if (finalScore > 1000000) archetype = "The Mogul";
+    else if (finalScore > 500000) archetype = "The Visionary";
+    else if (finalScore > 300000 && avgOwnership > 15) archetype = "The Shark";
+    else if (winRate > 60 && wins >= 4) archetype = "The Golden Touch";
+    else if (winRate > 50 && finalScore > 150000) archetype = "The Optimist";
+    else if (avgOwnership > 12 && losses <= 3) archetype = "The Concentrated Player";
+    else if (avgOwnership < 8 && losses <= 2) archetype = "The Diversifier";
+    else if (finalScore > 120000 && losses <= 2) archetype = "The Cautious Investor";
+    else if (finalScore < 50000) archetype = "The Learning Investor";
 
     saveResult.mutate({
       score: Math.round(finalScore),
