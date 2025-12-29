@@ -338,15 +338,15 @@ export default function Game() {
     const totalGain = investments.reduce((sum, i) => sum + i.outcome, 0);
     const winRate = investments.length > 0 ? (wins / investments.filter(i => i.amount > 0).length) * 100 : 0;
     
-    if (finalScore > 1000000) archetype = "The Mogul";
-    else if (finalScore > 500000) archetype = "The Visionary";
-    else if (finalScore > 300000 && avgOwnership > 15) archetype = "The Shark";
+    if (score > 1000000) archetype = "The Mogul";
+    else if (score > 500000) archetype = "The Visionary";
+    else if (score > 300000 && avgOwnership > 15) archetype = "The Shark";
     else if (winRate > 60 && wins >= 4) archetype = "The Golden Touch";
-    else if (winRate > 50 && finalScore > 150000) archetype = "The Optimist";
+    else if (winRate > 50 && score > 150000) archetype = "The Optimist";
     else if (avgOwnership > 12 && losses <= 3) archetype = "The Concentrated Player";
     else if (avgOwnership < 8 && losses <= 2) archetype = "The Diversifier";
-    else if (finalScore > 120000 && losses <= 2) archetype = "The Cautious Investor";
-    else if (finalScore < 50000) archetype = "The Learning Investor";
+    else if (score > 120000 && losses <= 2) archetype = "The Cautious Investor";
+    else if (score < 50000) archetype = "The Learning Investor";
 
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden pt-24">
