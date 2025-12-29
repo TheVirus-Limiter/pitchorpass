@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useGeneratePitch, useSaveResult } from "@/hooks/use-game-api";
 import { PitchCard } from "@/components/game/PitchCard";
+import { RevealCard } from "@/components/game/RevealCard";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
 import { Button } from "@/components/ui/button";
 import { Loader2, Wallet, RotateCcw, Home as HomeIcon } from "lucide-react";
@@ -93,40 +94,40 @@ export default function Game() {
   useEffect(() => {
     if (gameState === "revealing") {
       setDisplayedCapital(capital);
-      
       const startIndex = phase === 1 ? 0 : 5;
-      const endIndex = phase === 1 ? 5 : 10;
       setRevealIndex(startIndex);
-
-      const interval = setInterval(() => {
-        setRevealIndex(prev => {
-          if (prev >= endIndex - 1) {
-            clearInterval(interval);
-            setTimeout(() => {
-              if (phase === 1 && isTransitioning) {
-                // Moving to Phase 2 - carry over the updated capital from phase 1 reveals
-                const phase1Outcomes = investments.slice(0, 5).reduce((sum, inv) => sum + inv.outcome, 0);
-                const newCapital = capital + phase1Outcomes;
-                setCapital(newCapital);
-                setDisplayedCapital(newCapital);
-                setPhase(2);
-                setRound(6);
-                setIsTransitioning(false);
-                setGameState("loading");
-                loadNextPitch(2);
-              } else {
-                finishGame();
-              }
-            }, 2000);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 3000);
-
-      return () => clearInterval(interval);
     }
-  }, [gameState, phase, isTransitioning]);
+  }, [gameState, phase]);
+
+  const handleNextReveal = () => {
+    const endIndex = phase === 1 ? 5 : investments.length;
+    const currentInv = investments[revealIndex];
+    
+    // Calculate the updated capital synchronously
+    const nextDisplayedCapital = displayedCapital + (currentInv?.outcome || 0);
+    setDisplayedCapital(nextDisplayedCapital);
+    
+    if (revealIndex >= endIndex - 1) {
+      // All reveals done for this phase
+      if (phase === 1 && isTransitioning) {
+        // Moving to Phase 2
+        const phase1Outcomes = investments.slice(0, 5).reduce((sum, inv) => sum + inv.outcome, 0);
+        const newCapital = capital + phase1Outcomes;
+        setCapital(newCapital);
+        setDisplayedCapital(newCapital);
+        setPhase(2);
+        setRound(6);
+        setIsTransitioning(false);
+        setGameState("loading");
+        loadNextPitch(2);
+      } else {
+        // Pass the final calculated capital to finishGame
+        finishGame(nextDisplayedCapital);
+      }
+    } else {
+      setRevealIndex(prev => prev + 1);
+    }
+  };
 
   useEffect(() => {
     if (phase === 2 && round === 6 && gameState === "loading" && !currentPitch) {
@@ -134,15 +135,9 @@ export default function Game() {
     }
   }, [phase, round, gameState, currentPitch]);
 
-  useEffect(() => {
-    if (gameState === "revealing" && revealIndex < investments.length) {
-      const inv = investments[revealIndex];
-      setDisplayedCapital(prev => prev + inv.outcome);
-    }
-  }, [revealIndex, gameState]);
 
-  const finishGame = () => {
-    const finalScore = displayedCapital;
+  const finishGame = (finalCapital?: number) => {
+    const finalScore = finalCapital ?? displayedCapital;
     
     let archetype = "The Angel Investor";
     const totalInvested = investments.reduce((acc, inv) => acc + inv.amount, 0);
@@ -266,72 +261,26 @@ export default function Game() {
     const currentReveal = investments[revealIndex];
     if (!currentReveal) return null;
 
-    // Calculate what opportunity cost would have been (if passed)
-    const missedGain = currentReveal.amount === 0 
-      ? (currentReveal.pitch.startup.valuation || 100000) * currentReveal.pitch.startup.upside * 0.1 
-      : 0;
+    const endIndex = phase === 1 ? 5 : investments.length;
+    const isLastReveal = revealIndex >= endIndex - 1;
 
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 pt-32">
-        <Header />
-        <motion.div 
-          key={revealIndex}
-          initial={{ scale: 0.8, opacity: 0, rotateY: 90 }}
-          animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-          transition={{ duration: 0.6, type: "spring" }}
-          className="text-center max-w-2xl w-full"
-        >
-          <h2 className="text-sm text-muted-foreground uppercase tracking-widest mb-8 font-bold">3 Years Later...</h2>
-          
-          <div className={`p-12 rounded-2xl border-2 ${
-            currentReveal.isWin 
-              ? 'bg-emerald-50 border-emerald-300' 
-              : 'bg-red-50 border-red-300'
-          }`}>
-            <h3 className="text-4xl font-bold mb-2 text-foreground">{currentReveal.pitch.startup.name}</h3>
-            <p className="text-muted-foreground mb-8">
-              You {currentReveal.amount === 0 ? "passed on" : "invested"} <span className="font-bold text-foreground">${currentReveal.amount.toLocaleString()}</span>
-              {currentReveal.ownership > 0 && (
-                <> for {currentReveal.ownership.toFixed(2)}% equity</>
-              )}
-            </p>
-
-            <div className="py-8 border-t border-t-black/10 border-b border-b-black/10 mb-8">
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-6xl font-bold font-mono tracking-tighter mb-3"
-              >
-                {currentReveal.isWin ? (
-                  <span className="text-emerald-600">+${currentReveal.outcome.toLocaleString()}</span>
-                ) : currentReveal.amount === 0 ? (
-                  <span className="text-yellow-600">${missedGain.toLocaleString()}</span>
-                ) : (
-                  <span className="text-red-600">-${currentReveal.amount.toLocaleString()}</span>
-                )}
-              </motion.div>
-              <p className="text-sm font-semibold text-foreground">
-                {currentReveal.narrative || (currentReveal.isWin 
-                  ? "MASSIVE SUCCESS!" 
-                  : currentReveal.amount === 0 
-                    ? "Passed on this opportunity." 
-                    : "The company failed to execute.")}
-              </p>
-              {currentReveal.amount === 0 && missedGain > 0 && (
-                <p className="text-xs text-yellow-700 mt-4 italic">
-                  Missed opportunity: If you'd invested $10k, you'd have made ~${(missedGain * 0.1).toLocaleString()}
-                </p>
-              )}
-            </div>
-            
-            <div className="flex justify-between text-xs text-muted-foreground uppercase font-bold">
-              <span>{revealIndex + 1} / {investments.length} Revealed</span>
-              <span>Portfolio Updating...</span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      <RevealCard
+        key={revealIndex}
+        companyName={currentReveal.pitch.startup.name}
+        investmentAmount={currentReveal.amount}
+        ownership={currentReveal.ownership}
+        outcome={currentReveal.outcome}
+        isWin={currentReveal.isWin}
+        narrative={currentReveal.narrative || (currentReveal.isWin 
+          ? "The company executed well and found its market."
+          : currentReveal.amount === 0 
+            ? "" 
+            : "The company struggled to find product-market fit.")}
+        onNext={handleNextReveal}
+        isLast={isLastReveal && phase === 2}
+        invested={currentReveal.amount > 0}
+      />
     );
   }
 
