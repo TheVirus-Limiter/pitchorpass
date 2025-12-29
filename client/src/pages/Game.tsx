@@ -104,7 +104,11 @@ export default function Game() {
             clearInterval(interval);
             setTimeout(() => {
               if (phase === 1 && isTransitioning) {
-                // Moving to Phase 2
+                // Moving to Phase 2 - carry over the updated capital from phase 1 reveals
+                const phase1Outcomes = investments.slice(0, 5).reduce((sum, inv) => sum + inv.outcome, 0);
+                const newCapital = capital + phase1Outcomes;
+                setCapital(newCapital);
+                setDisplayedCapital(newCapital);
                 setPhase(2);
                 setRound(6);
                 setIsTransitioning(false);
@@ -192,22 +196,25 @@ export default function Game() {
     );
   }
 
-  const Header = () => (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-gradient-to-b from-background to-transparent">
-      <div className="flex flex-col gap-1">
-        <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 transform -rotate-1">
-          Round {round}/10
+  const Header = () => {
+    const phaseRound = phase === 1 ? round : round - 5;
+    return (
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-gradient-to-b from-background to-transparent">
+        <div className="flex flex-col gap-1">
+          <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 transform -rotate-1">
+            Round {phaseRound}/5
+          </div>
+          <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+            Phase {phase}: {phase === 1 ? "Early Stage" : "Later Stage"}
+          </div>
         </div>
-        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
-          Phase {phase}: {phase === 1 ? "Early Stage" : "Later Stage"}
+        
+        <div className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">
+          ${(gameState === "revealing" || gameState === "finished" ? displayedCapital : capital).toLocaleString()}
         </div>
       </div>
-      
-      <div className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">
-        ${(gameState === "revealing" || gameState === "finished" ? displayedCapital : capital).toLocaleString()}
-      </div>
-    </div>
-  );
+    );
+  };
 
   if (gameState === "loading" || gameState === "playing") {
     return (
@@ -241,7 +248,7 @@ export default function Game() {
                     maxInvest={capital}
                     onInvest={handleDecision}
                     onPass={() => handleDecision(0)}
-                    disabled={gameState === "loading"}
+                    disabled={false}
                     canInvestMore={canStillInvest}
                     totalInvestments={activeInvestments}
                   />

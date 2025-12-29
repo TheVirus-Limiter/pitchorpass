@@ -38,18 +38,46 @@ export async function generatePitch(phase: number = 1) {
   const idea = STARTUP_IDEAS[ideaIndex];
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
   
-  const convictionTraits = [
-    "Brilliant but defensive",
-    "Vision-first, details later",
-    "Calm, but evasive on numbers",
-    "Deeply technical, poor communicator",
-    "Overconfident, dismissive of risks",
-    "Quietly impressive, under-selling",
-    "Data-driven, measured expectations",
-    "Visionary but scattered",
-    "Humble yet sharp",
-    "Aggressive on timeline, optimistic on runway"
-  ];
+  const convictionTraitsByRisk: Record<string, string[]> = {
+    high: [
+      "Overconfident, buzzword-heavy",
+      "Charismatic, light on details",
+      "Vision-driven, execution unclear",
+      "Confident, avoids hard questions",
+      "Aggressive, dismissive of risks",
+      "Optimistic, hand-wavy projections",
+      "Polished, says all the right things",
+      "Big ideas, small evidence",
+      "Sounds smart, says little",
+      "More pitch than plan"
+    ],
+    medium: [
+      "Measured, cautiously optimistic",
+      "Thoughtful, still figuring things out",
+      "Understands the problem, unsure on scale",
+      "Honest, limited experience",
+      "Technical, poor communicator",
+      "Energetic, unfocused pitch",
+      "Clear product, fuzzy go-to-market",
+      "Reasonable assumptions, early days",
+      "Smart, but stretching the story",
+      "Knows the space, not the path"
+    ],
+    low: [
+      "Calm, data-backed",
+      "Grounded, realistic expectations",
+      "Understated, quietly confident",
+      "Clear strategy, disciplined thinking",
+      "Knows the numbers cold",
+      "Careful, conservative assumptions",
+      "Direct, transparent about risks",
+      "Strong fundamentals, no hype",
+      "Focused, execution-oriented",
+      "Lets the data do the talking"
+    ]
+  };
+  
+  const convictionTraits = convictionTraitsByRisk[idea.riskProfile] || convictionTraitsByRisk.medium;
 
   const valuationRange = phase === 1 
     ? "between 100000 and 400000 - THIS IS SEED STAGE" 
@@ -135,6 +163,39 @@ export async function generatePitch(phase: number = 1) {
   }
 }
 
+// Varied outcome templates for when AI is unavailable
+const SUCCESS_OUTCOMES = [
+  "Acquired by {acquirer} for ${amount}M after explosive growth.",
+  "IPO'd at ${amount}M valuation. Early investors made {multiple}x.",
+  "Strategic acquisition by {acquirer}. Clean exit.",
+  "Series C at ${amount}M valuation. Your stake worth ${payout}.",
+  "Profitable and growing. Secondary sale at {multiple}x your investment.",
+  "Market leader in {market}. Acquired for ${amount}M.",
+  "Unicorn status achieved. Your {equity}% now worth ${payout}.",
+  "Sold to private equity for ${amount}M. Solid return.",
+  "Merger with competitor created market giant. {multiple}x exit.",
+  "Global expansion succeeded. Acquired by {acquirer} for ${amount}M."
+];
+
+const FAILURE_OUTCOMES = [
+  "Ran out of runway after Series A. Assets liquidated.",
+  "Regulatory changes killed the business model.",
+  "Key competitor launched first. Lost market window.",
+  "Co-founder conflict led to company dissolution.",
+  "Customer acquisition costs never came down. Shut down.",
+  "Pivoted twice, burned through cash. Acqui-hired for talent only.",
+  "Market timing was wrong. Idea ahead of its time.",
+  "Unit economics never worked. Investors wrote it off.",
+  "Failed to raise Series B. Wound down operations.",
+  "Supply chain issues proved insurmountable. Closed.",
+  "Viral growth but zero retention. Users churned out.",
+  "Tech worked, but couldn't find product-market fit.",
+  "Founder burnout led to shutdown despite traction.",
+  "Down-round wiped out early investors. Zombie company."
+];
+
+const ACQUIRERS = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Salesforce", "Shopify", "Uber", "DoorDash", "Stripe", "Block", "Airbnb"];
+
 // Generate outcome narratives based on company data
 export async function generateOutcome(pitch: any, invested: boolean, investmentAmount: number, equity: number, isWin: boolean) {
   if (!invested || investmentAmount === 0) {
@@ -142,42 +203,68 @@ export async function generateOutcome(pitch: any, invested: boolean, investmentA
   }
 
   const exitValue = isWin ? investmentAmount * pitch.startup.upside : 0;
-  const payout = isWin ? Math.round(exitValue * (equity / 100)) : 0;
-  const loss = isWin ? 0 : investmentAmount;
+  const multiple = pitch.startup.upside || 5;
+  const acquirer = ACQUIRERS[Math.floor(Math.random() * ACQUIRERS.length)];
+  const amount = Math.max(1, Math.round((investmentAmount * multiple) / 1000000));
+  const payout = "$" + Math.round(exitValue).toLocaleString();
 
   const prompt = `
-    Generate a 1-sentence case-specific outcome for a startup investment outcome.
+    Generate a 1-sentence specific outcome for a startup investment. Be creative and realistic.
     
     Company: ${pitch.startup.name} (${pitch.startup.market})
-    Risk: ${pitch.startup.risk > 0.6 ? "HIGH" : pitch.startup.risk > 0.35 ? "MEDIUM" : "LOW"}
-    Success: ${isWin}
-    Invested: $${investmentAmount.toLocaleString()} for ${equity.toFixed(1)}% equity
-    ${isWin ? `Exit value: $${exitValue.toLocaleString()}, Your payout: $${payout.toLocaleString()}` : "Total loss: $" + investmentAmount.toLocaleString()}
+    Risk Level: ${pitch.startup.risk > 0.6 ? "HIGH" : pitch.startup.risk > 0.35 ? "MEDIUM" : "LOW"}
+    Outcome: ${isWin ? "SUCCESS" : "FAILURE"}
+    Investment: $${investmentAmount.toLocaleString()} for ${equity.toFixed(1)}% equity
+    ${isWin ? `Exit multiple: ${multiple}x, Your payout: $${payout}` : "Total loss: $" + investmentAmount.toLocaleString()}
     
-    Create a specific, realistic outcome. Mix of: acquisition, down-round, pivot success, regulatory block, viral then churn, etc.
-    Examples:
-    - "Acquired by DoorDash for $80M. Great exit."
-    - "Series B at lower valuation, down-round. Investors diluted."
-    - "Market saturation + high churn. Shut down after Series A."
-    - "Regulatory approval blocked in EU. Pivoted to B2B, survived."
+    SUCCESS examples (use variety):
+    - "Acquired by Shopify for $180M after dominating the vertical."
+    - "IPO'd at $2.4B. Your stake multiplied 47x."
+    - "Strategic merger created category leader. 12x return."
+    - "Profitable bootstrap pivot. Sold to PE firm for $90M."
+    - "Series D unicorn. Secondary sale netted you $1.2M."
     
-    Return ONLY the short narrative (1 sentence, no quotes, no explanation).
+    FAILURE examples (use variety):
+    - "Regulatory crackdown killed the business overnight."
+    - "Ran hot for 18 months, then users churned. Shut down."
+    - "Down-round at 80% haircut. Wiped out early investors."
+    - "Co-founder left with the IP. Lawsuits drained remaining cash."
+    - "Supply chain issues proved fatal. Liquidated assets."
+    - "Market window closed. Acqui-hired for pennies."
+    - "Pivoted 3x, never found PMF. Wound down."
+    
+    Return ONLY a short, punchy 1-sentence narrative. No quotes.
   `;
 
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a startup storyteller. Generate specific, realistic 1-sentence outcomes." },
+        { role: "system", content: "You are a startup outcomes generator. Create specific, realistic 1-sentence outcomes with real company names and dollar amounts when relevant. Be direct and punchy." },
         { role: "user", content: prompt }
       ],
-      max_completion_tokens: 100
+      max_completion_tokens: 80
     });
 
-    return response.choices[0].message.content?.trim() || (isWin ? "Successful exit!" : "Failed to execute.");
+    return response.choices[0].message.content?.trim() || getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market);
   } catch (error) {
     console.error("Outcome generation error:", error);
-    return isWin ? "Successful exit!" : "Failed to execute.";
+    return getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market);
+  }
+}
+
+function getFallbackOutcome(isWin: boolean, acquirer: string, amount: number, multiple: number, payout: string, equity: number, market: string): string {
+  if (isWin) {
+    const template = SUCCESS_OUTCOMES[Math.floor(Math.random() * SUCCESS_OUTCOMES.length)];
+    return template
+      .replace("{acquirer}", acquirer)
+      .replace("{amount}", String(amount))
+      .replace("{multiple}", String(Math.round(multiple)))
+      .replace("{payout}", payout)
+      .replace("{equity}", equity.toFixed(1))
+      .replace("{market}", market);
+  } else {
+    return FAILURE_OUTCOMES[Math.floor(Math.random() * FAILURE_OUTCOMES.length)];
   }
 }
 
