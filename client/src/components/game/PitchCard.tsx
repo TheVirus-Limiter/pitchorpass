@@ -339,7 +339,7 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
 
             {/* Upside Potential */}
             <motion.div variants={item} className="mb-6 paper-note p-4 rounded transform -rotate-0.5">
-              <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Upside</p>
+              <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Upside potential</p>
               <p className="text-3xl font-bold text-foreground">
                 {startup.upside.toFixed(1)}x
               </p>
