@@ -69,32 +69,32 @@ export default function Home() {
           {/* Sticky Note 1 */}
           <div className="sticky-note-news p-6 transform -rotate-6 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              <b><u>Some founders are right.</u></b>
+              <b>Some founders are right.</b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
-              A lot of them aren’t.
+              <u>A lot of them aren’t.</u>
               <br /><br />
               You’ll see the pitch, the traction,
-              and the valuation.
+              and <u>the valuation.</u>
               <br /><br />
               From there, it’s up to you
-              to decide if it’s worth backing.
+              to <u>decide if it’s worth backing.</u>
             </p>
           </div>
 
           {/* Sticky Note 2 */}
           <div className="sticky-note-news p-6 transform rotate-3 shadow-xl -mt-6" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              <b><u>Three years pass in just a few minutes.</u></b>
+              <b>Three years pass in just a few minutes.</b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
-              Some companies grow steadily.
+              Some companies <u>grow steadily.</u>
               <br />
               Some never really get going.
               <br />
-              A few turn out better than expected.
+              A few turn out <u>better than expected.</u>
               <br /><br />
-              You’ll see which bets paid off
+              You’ll see which bets <u>paid off</u>
               and which ones didn’t.
             </p>
           </div>
@@ -102,14 +102,14 @@ export default function Home() {
           {/* Sticky Note 3 */}
           <div className="sticky-note-news p-6 transform -rotate-4 shadow-xl" style={{backgroundColor: 'linear-gradient(135deg, #fefce8 0%, #fef08a 100%)'}}>
             <p style={{fontFamily: "'Caveat', cursive"}} className="text-gray-800 text-2xl mb-4">
-              <b><u>By the end, you’ll have a sense of the kind of investor you are.</u></b>
+              <b>By the end, you’ll have a sense of the kind of investor you are.</b>
             </p>
             <p className="text-gray-700 text-lg leading-relaxed">
-              Careful. Bold. Risk-taking. Lucky.
+              <u>Careful. Bold. Risk-taking. Lucky.</u>
               <br />
               Or somewhere in between.
               <br /><br />
-              Your choices start to add up
+              Your choices <u>start to add up</u>
               and a pattern begins to show.
             </p>
           </div>

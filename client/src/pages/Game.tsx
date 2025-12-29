@@ -25,25 +25,27 @@ export default function Game() {
   const [gameState, setGameState] = useState<GameState>("loading");
   const [capital, setCapital] = useState(100000);
   const [round, setRound] = useState(1);
+  const [phase, setPhase] = useState(1);
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [currentPitch, setCurrentPitch] = useState<Pitch | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   
   const generatePitch = useGeneratePitch();
   const saveResult = useSaveResult();
 
   useEffect(() => {
-    loadNextPitch();
+    loadNextPitch(1);
   }, []);
 
-  const loadNextPitch = () => {
+  const loadNextPitch = (currentPhase: number = phase) => {
     setGameState("loading");
-    generatePitch.mutate(undefined, {
+    generatePitch.mutate(currentPhase, {
       onSuccess: (data) => {
         setCurrentPitch(data);
         setGameState("playing");
       },
       onError: () => {
-        setTimeout(loadNextPitch, 1000);
+        setTimeout(() => loadNextPitch(currentPhase), 1000);
       }
     });
   };
@@ -66,14 +68,20 @@ export default function Game() {
       narrative: ""
     };
 
-    setInvestments([...investments, newInvestment]);
+    const updatedInvestments = [...investments, newInvestment];
+    setInvestments(updatedInvestments);
     setCapital(prev => prev - investAmount);
 
-    if (round < 10) {
-      setRound(prev => prev + 1);
-      loadNextPitch();
-    } else {
+    if (round === 5 && phase === 1) {
+      // End of Phase 1 - Transition to revealing Phase 1 results
+      setIsTransitioning(true);
       setGameState("revealing");
+    } else if (round === 10) {
+      // End of Game
+      setGameState("revealing");
+    } else {
+      setRound(prev => prev + 1);
+      loadNextPitch(phase);
     }
   };
 
@@ -87,11 +95,25 @@ export default function Game() {
     if (gameState === "revealing") {
       setDisplayedCapital(capital);
       
+      const startIndex = phase === 1 ? 0 : 5;
+      const endIndex = phase === 1 ? 5 : 10;
+      setRevealIndex(startIndex);
+
       const interval = setInterval(() => {
         setRevealIndex(prev => {
-          if (prev >= investments.length - 1) {
+          if (prev >= endIndex - 1) {
             clearInterval(interval);
-            setTimeout(() => finishGame(), 2000);
+            setTimeout(() => {
+              if (phase === 1 && isTransitioning) {
+                // Moving to Phase 2
+                setPhase(2);
+                setRound(6);
+                setIsTransitioning(false);
+                loadNextPitch(2);
+              } else {
+                finishGame();
+              }
+            }, 2000);
             return prev;
           }
           return prev + 1;
@@ -100,7 +122,7 @@ export default function Game() {
 
       return () => clearInterval(interval);
     }
-  }, [gameState]);
+  }, [gameState, phase]);
 
   useEffect(() => {
     if (gameState === "revealing" && revealIndex < investments.length) {
@@ -110,20 +132,7 @@ export default function Game() {
   }, [revealIndex, gameState]);
 
   const finishGame = () => {
-    const finalScore = investments.reduce((acc, inv) => acc + inv.outcome, capital);
-    
-    let archetype = "The Angel Investor";
-    const totalInvested = investments.reduce((acc, inv) => acc + inv.amount, 0);
-    const wins = investments.filter(i => i.isWin).length;
-    const avgOwnership = investments.length > 0 
-      ? investments.reduce((sum, i) => sum + i.ownership, 0) / investments.length 
-      : 0;
-    
-    if (finalScore > 500000) archetype = "The Visionary";
-    else if (finalScore > 300000) archetype = "The Shark";
-    else if (wins >= 5) archetype = "The Golden Touch";
-    else if (avgOwnership > 10) archetype = "The Concentrated Player";
-    else if (finalScore < 50000) archetype = "The Learning Investor";
+    const finalScore = displayedCapital;
 
     saveResult.mutate({
       score: Math.round(finalScore),

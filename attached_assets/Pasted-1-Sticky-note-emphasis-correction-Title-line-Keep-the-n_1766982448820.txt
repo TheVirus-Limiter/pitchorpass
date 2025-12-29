@@ -1,0 +1,162 @@
+1. Sticky note emphasis (correction)
+Title line
+
+Keep the note title bold
+
+Do NOT underline the title
+
+Example:
+
+Some founders are right.
+
+Body text emphasis (move underlines here)
+
+Apply underlines only in the body text, specifically to key phrases.
+Use the following body copy exactly, with underlines applied where appropriate:
+
+A lot of them aren’t.
+
+You’ll see the pitch, the traction, and the valuation.
+
+From there, it’s up to you to decide if it’s worth backing.
+
+
+Underline emphasis should be subtle and selective (not every line).
+
+2. “They’re asking / Seeking” section is broken and should be fixed
+
+Problem
+
+The “They’re asking” amount is misleading.
+
+In some cases it says they’re asking for $37,500 but the user can invest $50k anyway.
+
+This makes the field meaningless.
+
+Fix
+
+The maximum investment amount must be capped at 100% of what they’re asking.
+
+If a founder is asking for $37,500:
+
+The slider max = $37,500
+
+The user cannot exceed it
+
+If this constraint cannot be enforced cleanly, remove the “They’re asking” field entirely.
+
+This number must always be respected or it should not exist.
+
+3. Founder credentials — increase randomness and realism
+
+Problem
+
+Too many founders have top-tier credentials.
+
+It’s becoming predictable.
+
+Fix
+
+Increase the frequency of:
+
+Non-name universities
+
+Regional schools
+
+Less prestigious programs
+
+Still include strong schools (Harvard, Stanford, UT Austin, etc.), but slightly less often.
+
+Example mix:
+
+“BS Computer Science, University of Houston”
+
+“Economics, Arizona State”
+
+“Self-taught developer”
+
+“Dropped out after sophomore year”
+
+Same rule for work history:
+
+Mix big tech (Google, Microsoft) with:
+
+Startups
+
+Small agencies
+
+Freelance / consulting
+
+No prior experience
+
+Credentials should influence perception, not give away outcomes.
+
+4. Major game structure change: two-phase game
+
+The game should now be split into two distinct phases.
+
+Phase 1: Early-stage investing
+
+5 pitches
+
+Lower valuations (roughly what exists now)
+
+You invest with your starting capital
+
+After pitch 5:
+
+Immediately resolve exits for those 5 companies
+
+Show outcomes and update capital
+
+Phase 2: Later-stage investing
+
+5 new pitches
+
+These companies are now valued in the millions
+
+You invest using:
+
+The money you made (or lost) from Phase 1
+
+Stakes feel higher:
+
+Larger checks
+
+Smaller equity percentages
+
+These are not repeats — entirely new companies
+
+End of game
+
+After Phase 2 exits resolve:
+
+Show final outcomes
+
+Archetype
+
+Missed opportunities
+
+Full summary
+
+This structure creates:
+
+Progression
+
+Rising stakes
+
+A clearer narrative arc
+
+Summary of changes to implement
+
+Move underlines from note titles → note body text
+
+Enforce max investment = amount they’re asking
+
+Increase frequency of non-name universities and non-big-tech backgrounds
+
+Split the game into:
+
+Phase 1: 5 early-stage pitches + exits
+
+Phase 2: 5 later-stage pitches with higher valuations

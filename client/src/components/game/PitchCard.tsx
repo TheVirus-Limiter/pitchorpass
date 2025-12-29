@@ -36,12 +36,12 @@ export function PitchCard({ pitch, round, maxInvest, onInvest, onPass, disabled,
   const [answer, setAnswer] = useState("");
   const [answering, setAnswering] = useState(false);
   
-  const maxAllowed = Math.min(maxInvest, 50000);
+  const maxAllowed = Math.min(maxInvest, ask);
   const company_valuation = startup.valuation || 100000;
   let ownership = (investAmount / company_valuation) * 100;
   // Cap equity offered at 49%
   ownership = Math.min(ownership, 49);
-  const canInvest = investAmount <= maxInvest && investAmount >= minInvestment;
+  const canInvest = investAmount <= maxInvest && investAmount >= minInvestment && investAmount <= ask;
 
   useEffect(() => {
     setInvestAmount(Math.max(minInvestment, Math.min(minInvestment + 2000, maxInvest)));

@@ -33,7 +33,7 @@ const FOUNDER_LOCATIONS = [
   "Chicago, IL", "San Diego, CA", "Portland, OR", "Dallas, TX"
 ];
 
-export async function generatePitch() {
+export async function generatePitch(phase: number = 1) {
   const ideaIndex = Math.floor(Math.random() * STARTUP_IDEAS.length);
   const idea = STARTUP_IDEAS[ideaIndex];
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
@@ -50,6 +50,10 @@ export async function generatePitch() {
     "Humble yet sharp",
     "Aggressive on timeline, optimistic on runway"
   ];
+
+  const valuationRange = phase === 1 
+    ? "between 100000 and 400000 - THIS IS SEED STAGE" 
+    : "between 2000000 and 15000000 - THIS IS SERIES A/B LATER STAGE";
   
   const prompt = `
     Generate a realistic startup pitch for an investment game. Create a JSON response ONLY.
@@ -59,6 +63,7 @@ export async function generatePitch() {
     Founder location: ${location}
     Market: ${idea.market}
     Risk profile: ${idea.riskProfile}
+    Game Phase: ${phase} (${phase === 1 ? 'Early Stage' : 'Later Stage'})
     
     For ${idea.riskProfile}-risk startups:
     - LOW-RISK: conservative metrics, steady growth (2-8x upside)
@@ -79,13 +84,13 @@ export async function generatePitch() {
         "pitch": "2-3 compelling sentences with specific details",
         "market": "${idea.market}",
         "traction": {
-          "users": (integer, scale to risk: low=10k-50k, medium=50k-200k, high=1k-100k),
+          "users": (integer, scale to risk and phase: low=10k-50k, medium=50k-200k, high=1k-100k for phase 1. Multiply by 10-50 for phase 2),
           "monthlyGrowth": (integer 2-60%, correlate to risk),
-          "revenue": (integer, 0-150000, or 0 for some high-risk startups)
+          "revenue": (integer, phase 1: 0-150k, phase 2: 500k-5M)
         },
         "risk": (${idea.riskProfile === 'low' ? '0.15-0.35' : idea.riskProfile === 'medium' ? '0.35-0.60' : '0.60-0.85'}),
         "upside": (${idea.riskProfile === 'low' ? '2-8' : idea.riskProfile === 'medium' ? '8-20' : '25-100'}),
-        "valuation": (random between 100000 and 400000 - THIS IS SEED STAGE)
+        "valuation": (random ${valuationRange})
       },
       "ask": (random 10% to 25% of valuation),
       "news": ["headline1", "headline2", "headline3"],
@@ -93,11 +98,11 @@ export async function generatePitch() {
     }
     
     Rules:
-    - Valuation MUST be $100k-$400k (not higher - this is seed/pre-seed)
-    - Traction must match risk level
-    - Ask should be 10-25% of valuation
-    - News should be 2-3 short snippets
-    - Credentials: Mix of elite (Harvard, Google) and humble (Self-taught, unknown startups)
+    - Valuation MUST match the phase description.
+    - Traction must match risk level and phase.
+    - Ask should be 10-25% of valuation.
+    - News: 2-3 short snippets.
+    - Credentials: ONLY 30% elite (Stanford/Google), 70% non-name/regional (ASU, local agency, freelancer, self-taught).
     - WhiteboardNotes: 3-4 short sentences. At least one MUST be negative/skeptical. High risk startups have more skeptical lines. Practical observations.
   `;
 
