@@ -68,7 +68,6 @@ export default function Game() {
       narrative: ""
     };
 
-    const updatedInvestments = [...investments, newInvestment];
     setInvestments(updatedInvestments);
     setCapital(prev => prev - investAmount);
 
@@ -86,7 +85,7 @@ export default function Game() {
   };
 
   const activeInvestments = investments.filter(i => i.amount > 0).length;
-  const canStillInvest = activeInvestments < 7;
+  const canStillInvest = phase === 1 ? activeInvestments < 5 : activeInvestments < 10;
 
   const [revealIndex, setRevealIndex] = useState(0);
   const [displayedCapital, setDisplayedCapital] = useState(0);
@@ -109,6 +108,7 @@ export default function Game() {
                 setPhase(2);
                 setRound(6);
                 setIsTransitioning(false);
+                setGameState("loading");
                 loadNextPitch(2);
               } else {
                 finishGame();
@@ -122,7 +122,13 @@ export default function Game() {
 
       return () => clearInterval(interval);
     }
-  }, [gameState, phase]);
+  }, [gameState, phase, isTransitioning]);
+
+  useEffect(() => {
+    if (phase === 2 && round === 6 && gameState === "loading" && !currentPitch) {
+       loadNextPitch(2);
+    }
+  }, [phase, round, gameState, currentPitch]);
 
   useEffect(() => {
     if (gameState === "revealing" && revealIndex < investments.length) {
@@ -169,8 +175,13 @@ export default function Game() {
 
   const Header = () => (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-6 bg-gradient-to-b from-background to-transparent">
-      <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 transform -rotate-1">
-        Round {round}/10
+      <div className="flex flex-col gap-1">
+        <div className="inline-block bg-white border border-gray-400 px-3 py-1.5 rounded text-xs font-semibold text-gray-700 transform -rotate-1">
+          Round {round}/10
+        </div>
+        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+          Phase {phase}: {phase === 1 ? "Early Stage" : "Later Stage"}
+        </div>
       </div>
       
       <div className="inline-block bg-white text-green-900 font-bold px-4 py-2 rounded border-2 border-green-600 text-sm">
@@ -308,15 +319,15 @@ export default function Game() {
     const totalGain = investments.reduce((sum, i) => sum + i.outcome, 0);
     const winRate = investments.length > 0 ? (wins / investments.filter(i => i.amount > 0).length) * 100 : 0;
     
-    if (score > 700000) archetype = "The Mogul";
-    else if (score > 500000) archetype = "The Visionary";
-    else if (score > 300000 && avgOwnership > 15) archetype = "The Shark";
+    if (finalScore > 1000000) archetype = "The Mogul";
+    else if (finalScore > 500000) archetype = "The Visionary";
+    else if (finalScore > 300000 && avgOwnership > 15) archetype = "The Shark";
     else if (winRate > 60 && wins >= 4) archetype = "The Golden Touch";
-    else if (winRate > 50 && score > 150000) archetype = "The Optimist";
+    else if (winRate > 50 && finalScore > 150000) archetype = "The Optimist";
     else if (avgOwnership > 12 && losses <= 3) archetype = "The Concentrated Player";
     else if (avgOwnership < 8 && losses <= 2) archetype = "The Diversifier";
-    else if (score > 120000 && losses <= 2) archetype = "The Cautious Investor";
-    else if (score < 50000) archetype = "The Learning Investor";
+    else if (finalScore > 120000 && losses <= 2) archetype = "The Cautious Investor";
+    else if (finalScore < 50000) archetype = "The Learning Investor";
 
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden pt-24">

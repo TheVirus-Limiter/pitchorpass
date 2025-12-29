@@ -12,7 +12,8 @@ export async function registerRoutes(
   
   app.post(api.game.generatePitch.path, async (req, res) => {
     try {
-      const pitch = await generatePitch();
+      const { phase } = req.body;
+      const pitch = await generatePitch(phase);
       res.json(pitch);
     } catch (error) {
       console.error("Pitch generation error:", error);

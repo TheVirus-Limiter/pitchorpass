@@ -4,10 +4,11 @@ import { apiRequest } from "@/lib/queryClient";
 
 export function useGeneratePitch() {
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async (phase: number = 1) => {
       const res = await apiRequest(
-        api.game.generatePitch.method,
-        api.game.generatePitch.path
+        "POST",
+        "/api/game/generate-pitch",
+        { phase }
       );
       const data = await res.json();
       return api.game.generatePitch.responses[200].parse(data);
