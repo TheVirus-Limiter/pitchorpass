@@ -30,13 +30,13 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
   const { founder, startup, ask } = lockedPitch;
   
   // Game Balance: Phase 1 - first 2 rounds = 30k min, last 3 = 20k min to force at least one pass
-  // Phase 2 - dynamic minimums that sum to 115% of starting capital, forcing at least one pass
-  // Each company gets 25%-40% of Phase 2 starting capital as minimum
+  // Phase 2 - dynamic minimums that sum to 120% of starting capital, forcing at least one pass
+  // Distribution: 28%, 26%, 24%, 22%, 20% = 120% total, guaranteeing at least one forced pass
   const getPhase2Minimum = () => {
     const C = phase2StartingCapital || 150000;
     const phaseRound = round - 5; // 1-5 for phase 2
-    // Distribute minimums: rounds 1,2 = 25%, rounds 3,4 = 23%, round 5 = 19%
-    // Total = 0.25 + 0.25 + 0.23 + 0.23 + 0.19 = 1.15 (115%)
+    // Distribute minimums: 28% + 26% + 24% + 22% + 20% = 120% of phase 2 capital
+    // This guarantees at least one forced pass in Phase 2
     const percentages = [0.28, 0.26, 0.24, 0.22, 0.20];
     const percentage = percentages[phaseRound - 1] || 0.23;
     return Math.round(C * percentage);
@@ -45,10 +45,18 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
   const requestedMin = phase === 1 
     ? (round <= 2 ? 30000 : 20000)
     : getPhase2Minimum();
-  const minInvestment = Math.min(requestedMin, ask);
+  // Phase 2: minimum is never clamped - must invest the full required amount
+  // If ask < requestedMin, the startup is still asking for less but minimum stays enforced
+  // This ensures forced-pass math works (totaling 120% = at least one pass)
+  const minInvestment = phase === 1 
+    ? Math.min(requestedMin, ask) 
+    : requestedMin;
   
-  // Show capital squeeze warning for Phase 2
-  const capitalSqueeze = phase === 2 && minInvestment > maxInvest;
+  // Show capital squeeze warning for Phase 2 when player can't afford minimum
+  const capitalSqueeze = phase === 2 && requestedMin > maxInvest;
+  
+  // In Phase 2, if you can't afford the minimum, you must pass
+  const forcedPass = phase === 2 && maxInvest < requestedMin;
   
   const [investAmount, setInvestAmount] = useState(minInvestment);
   const [askedQuestion, setAskedQuestion] = useState(false);
@@ -61,7 +69,8 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
   let ownership = (investAmount / company_valuation) * 100;
   // Cap equity offered at 49%
   ownership = Math.min(ownership, 49);
-  const canInvest = investAmount <= maxInvest && investAmount >= minInvestment && investAmount <= ask;
+  // In Phase 2, must have enough capital to meet minimum; Phase 1 can invest up to ask
+  const canInvest = !forcedPass && investAmount <= maxInvest && investAmount >= minInvestment;
 
   useEffect(() => {
     setInvestAmount(Math.max(minInvestment, Math.min(minInvestment + 2000, maxInvest)));
@@ -419,7 +428,13 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
             </motion.div>
 
             {/* Error States */}
-            {capitalSqueeze && (
+            {forcedPass && (
+              <div className="mb-4 bg-red-100 border-2 border-red-400 p-3 rounded text-sm text-red-900" style={{fontFamily: "'Caveat', cursive"}}>
+                <p className="font-bold text-base mb-1">Cannot afford minimum</p>
+                <p>You need {formatMoney(requestedMin)} to invest in this round. You only have {formatMoney(maxInvest)}. Must pass.</p>
+              </div>
+            )}
+            {capitalSqueeze && !forcedPass && (
               <div className="mb-4 bg-amber-100 border-2 border-amber-400 p-3 rounded text-sm text-amber-900" style={{fontFamily: "'Caveat', cursive"}}>
                 <p className="font-bold text-base mb-1">Capital squeeze</p>
                 <p>You don't have enough to back every late-stage deal. Concentration is now a requirement.</p>
@@ -449,7 +464,7 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
               
               <button 
                 onClick={() => onInvest(investAmount)}
-                disabled={disabled || !canInvestMore || investAmount < minInvestment || investAmount > maxInvest}
+                disabled={disabled || !canInvestMore || !canInvest || forcedPass}
                 className="py-3 px-3 text-sm font-bold uppercase text-white bg-green-700 hover:bg-green-800 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                 style={{fontFamily: "'Caveat', cursive"}}
               >
