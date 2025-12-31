@@ -3,6 +3,14 @@ import { api, type InsertGame } from "@shared/routes";
 import { apiRequest } from "@/lib/queryClient";
 import { type Pitch } from "@shared/schema";
 
+export interface OutcomeData {
+  narrative: string;
+  newsClippings: { source: string; headline: string }[];
+  valuationHistory: number[];
+  missedOpportunity?: number;
+  exitValuation?: number;
+}
+
 export function useGeneratePitch() {
   return useMutation({
     mutationFn: async (phase: number = 1) => {
@@ -13,6 +21,19 @@ export function useGeneratePitch() {
       );
       const data = await res.json();
       return api.game.generatePitch.responses[200].parse(data);
+    },
+  });
+}
+
+export function useGenerateOutcome() {
+  return useMutation({
+    mutationFn: async (params: { pitch: Pitch; invested: boolean; investmentAmount: number; equity: number; isWin: boolean }): Promise<OutcomeData> => {
+      const res = await apiRequest(
+        "POST",
+        "/api/game/outcome",
+        params
+      );
+      return await res.json();
     },
   });
 }

@@ -196,60 +196,202 @@ const FAILURE_OUTCOMES = [
 
 const ACQUIRERS = ["Google", "Amazon", "Microsoft", "Meta", "Apple", "Salesforce", "Shopify", "Uber", "DoorDash", "Stripe", "Block", "Airbnb"];
 
+const NEWS_SOURCES = ["Forbes", "TechCrunch", "The New York Times", "Bloomberg", "The Wall Street Journal", "Reuters", "CNBC"];
+
+export interface OutcomeData {
+  narrative: string;
+  newsClippings: { source: string; headline: string }[];
+  valuationHistory: number[];
+  missedOpportunity?: number;
+  exitValuation?: number;
+}
+
 // Generate outcome narratives based on company data
-export async function generateOutcome(pitch: any, invested: boolean, investmentAmount: number, equity: number, isWin: boolean) {
+export async function generateOutcome(pitch: any, invested: boolean, investmentAmount: number, equity: number, isWin: boolean): Promise<OutcomeData> {
+  const multiple = pitch.startup.upside || 5;
+  const initialValuation = pitch.startup.valuation || 100000;
+  const finalValuation = isWin ? initialValuation * multiple : 0;
+  const acquirer = ACQUIRERS[Math.floor(Math.random() * ACQUIRERS.length)];
+  
+  // Calculate missed opportunity if passed - use actual ask amount from pitch
+  const askAmount = pitch.ask || Math.round(initialValuation * 0.15);
+  const hypotheticalInvestment = askAmount;
+  const hypotheticalEquity = (hypotheticalInvestment / initialValuation) * 100;
+  const missedOpportunity = isWin ? Math.round(hypotheticalInvestment * multiple) : 0;
+  
+  // Generate valuation history (6 points over 3 years)
+  const valuationHistory = generateValuationHistory(initialValuation, finalValuation, isWin);
+  
+  // If passed on the deal
   if (!invested || investmentAmount === 0) {
-    return "You passed on this deal.";
+    const passedOutcome = await generatePassedOutcome(pitch, isWin, finalValuation, missedOpportunity, hypotheticalEquity, acquirer);
+    return {
+      narrative: passedOutcome.narrative,
+      newsClippings: passedOutcome.newsClippings,
+      valuationHistory,
+      missedOpportunity: isWin ? missedOpportunity : 0,
+      exitValuation: finalValuation
+    };
   }
 
-  const exitValue = isWin ? investmentAmount * pitch.startup.upside : 0;
-  const multiple = pitch.startup.upside || 5;
-  const acquirer = ACQUIRERS[Math.floor(Math.random() * ACQUIRERS.length)];
-  const amount = Math.max(1, Math.round((investmentAmount * multiple) / 1000000));
+  const exitValue = isWin ? investmentAmount * multiple : 0;
+  const amount = Math.max(1, Math.round(finalValuation / 1000000));
   const payout = "$" + Math.round(exitValue).toLocaleString();
 
   const prompt = `
-    Generate a 1-sentence specific outcome for a startup investment. Be creative and realistic.
+    Generate outcome data for a startup investment. Return ONLY valid JSON.
     
     Company: ${pitch.startup.name} (${pitch.startup.market})
     Risk Level: ${pitch.startup.risk > 0.6 ? "HIGH" : pitch.startup.risk > 0.35 ? "MEDIUM" : "LOW"}
-    Outcome: ${isWin ? "SUCCESS" : "FAILURE"}
+    Outcome: ${isWin ? "SUCCESS - company succeeded" : "FAILURE - company failed"}
     Investment: $${investmentAmount.toLocaleString()} for ${equity.toFixed(1)}% equity
-    ${isWin ? `Exit multiple: ${multiple}x, Your payout: $${payout}` : "Total loss: $" + investmentAmount.toLocaleString()}
+    ${isWin ? `Exit multiple: ${multiple}x, Final valuation: $${amount}M, Investor payout: ${payout}` : "Total loss of investment"}
+    Exit type: ${isWin ? (Math.random() > 0.5 ? "Acquisition" : "IPO") : "Shutdown/Acquihire"}
+    Acquirer (if acquisition): ${acquirer}
     
-    SUCCESS examples (use variety):
-    - "Acquired by Shopify for $180M after dominating the vertical."
-    - "IPO'd at $2.4B. Your stake multiplied 47x."
-    - "Strategic merger created category leader. 12x return."
-    - "Profitable bootstrap pivot. Sold to PE firm for $90M."
-    - "Series D unicorn. Secondary sale netted you $1.2M."
+    Return JSON with:
+    {
+      "narrative": "1-2 sentence specific story about what happened. Include dollar amounts, acquirer names, specific details. NOT generic.",
+      "newsClippings": [
+        {"source": "Forbes/TechCrunch/NYT/Bloomberg/WSJ", "headline": "Realistic headline about this company's outcome"},
+        {"source": "Different source", "headline": "Another realistic headline"},
+        {"source": "Different source", "headline": "Third headline about the outcome"}
+      ]
+    }
     
-    FAILURE examples (use variety):
-    - "Regulatory crackdown killed the business overnight."
-    - "Ran hot for 18 months, then users churned. Shut down."
-    - "Down-round at 80% haircut. Wiped out early investors."
-    - "Co-founder left with the IP. Lawsuits drained remaining cash."
-    - "Supply chain issues proved fatal. Liquidated assets."
-    - "Market window closed. Acqui-hired for pennies."
-    - "Pivoted 3x, never found PMF. Wound down."
-    
-    Return ONLY a short, punchy 1-sentence narrative. No quotes.
+    Make headlines sound like real news - specific, with numbers, names, and concrete details.
   `;
 
   try {
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        { role: "system", content: "You are a startup outcomes generator. Create specific, realistic 1-sentence outcomes with real company names and dollar amounts when relevant. Be direct and punchy." },
+        { role: "system", content: "You are a startup news generator. Create specific, realistic outcomes and news headlines that sound like real Forbes/TechCrunch articles. Include specific dollar amounts, company names, and details." },
         { role: "user", content: prompt }
       ],
-      max_completion_tokens: 80
+      response_format: { type: "json_object" },
+      max_completion_tokens: 300
     });
 
-    return response.choices[0].message.content?.trim() || getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market);
+    const content = response.choices[0].message.content || "{}";
+    const data = JSON.parse(content);
+    
+    return {
+      narrative: data.narrative || getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market),
+      newsClippings: data.newsClippings || getFallbackNews(pitch.startup.name, isWin, acquirer, amount),
+      valuationHistory,
+      exitValuation: finalValuation
+    };
   } catch (error) {
     console.error("Outcome generation error:", error);
-    return getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market);
+    return {
+      narrative: getFallbackOutcome(isWin, acquirer, amount, multiple, payout, equity, pitch.startup.market),
+      newsClippings: getFallbackNews(pitch.startup.name, isWin, acquirer, amount),
+      valuationHistory,
+      exitValuation: finalValuation
+    };
+  }
+}
+
+async function generatePassedOutcome(pitch: any, isWin: boolean, finalValuation: number, missedOpportunity: number, hypotheticalEquity: number, acquirer: string): Promise<{ narrative: string; newsClippings: { source: string; headline: string }[] }> {
+  const amount = Math.max(1, Math.round(finalValuation / 1000000));
+  
+  const prompt = `
+    Generate outcome data for a startup the investor PASSED ON. Return ONLY valid JSON.
+    
+    Company: ${pitch.startup.name} (${pitch.startup.market})
+    Outcome: ${isWin ? "SUCCESS - company became huge" : "FAILURE - company failed"}
+    ${isWin ? `Final valuation: $${amount}M, Missed opportunity: ~$${Math.round(missedOpportunity).toLocaleString()} if they had invested` : "Company shut down"}
+    ${isWin ? `Exit: ${Math.random() > 0.5 ? `Acquired by ${acquirer}` : "IPO"}` : ""}
+    
+    Return JSON with:
+    {
+      "narrative": "${isWin ? "1-2 sentences about the company's massive success that the investor missed" : "1-2 sentences about how the company failed (investor dodged a bullet)"}",
+      "newsClippings": [
+        {"source": "Forbes/TechCrunch/NYT", "headline": "${isWin ? "Headline about company success/acquisition/IPO" : "Headline about shutdown/failure"}"},
+        {"source": "Different source", "headline": "Another headline"},
+        {"source": "Different source", "headline": "Third headline"}
+      ]
+    }
+    
+    For SUCCESS: Make investor feel they missed a huge opportunity
+    For FAILURE: Make investor feel smart for passing
+  `;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: "Generate realistic startup outcomes for deals investors passed on. Make success feel like missed opportunity, failure feel like smart pass." },
+        { role: "user", content: prompt }
+      ],
+      response_format: { type: "json_object" },
+      max_completion_tokens: 300
+    });
+
+    const content = response.choices[0].message.content || "{}";
+    const data = JSON.parse(content);
+    
+    return {
+      narrative: data.narrative || (isWin ? `${pitch.startup.name} went on to massive success.` : `${pitch.startup.name} shut down 18 months later.`),
+      newsClippings: data.newsClippings || getFallbackNews(pitch.startup.name, isWin, acquirer, amount)
+    };
+  } catch (error) {
+    console.error("Passed outcome generation error:", error);
+    return {
+      narrative: isWin 
+        ? `${pitch.startup.name} went on to a $${amount}M exit. You missed this one.` 
+        : `${pitch.startup.name} failed to find product-market fit. Smart pass.`,
+      newsClippings: getFallbackNews(pitch.startup.name, isWin, acquirer, amount)
+    };
+  }
+}
+
+function generateValuationHistory(initial: number, final: number, isWin: boolean): number[] {
+  const points: number[] = [initial];
+  
+  if (isWin) {
+    // Success trajectory - gradual growth with some variation
+    const growthRate = Math.pow(final / initial, 1/5);
+    for (let i = 1; i <= 5; i++) {
+      const base = initial * Math.pow(growthRate, i);
+      const variation = base * (0.9 + Math.random() * 0.2); // +/- 10% variation
+      points.push(Math.round(variation));
+    }
+    points[5] = final; // Ensure final point is exact
+  } else {
+    // Failure trajectory - initial growth then decline
+    const peakMultiple = 1.5 + Math.random() * 2; // Peak at 1.5x to 3.5x
+    const peakIndex = 2 + Math.floor(Math.random() * 2); // Peak at month 12-18
+    
+    for (let i = 1; i <= 5; i++) {
+      if (i <= peakIndex) {
+        const progress = i / peakIndex;
+        points.push(Math.round(initial * (1 + (peakMultiple - 1) * progress)));
+      } else {
+        const decline = (i - peakIndex) / (5 - peakIndex);
+        points.push(Math.round(initial * peakMultiple * (1 - decline * 0.9)));
+      }
+    }
+    points[5] = 0;
+  }
+  
+  return points;
+}
+
+function getFallbackNews(companyName: string, isWin: boolean, acquirer: string, amount: number): { source: string; headline: string }[] {
+  if (isWin) {
+    return [
+      { source: "TechCrunch", headline: `${companyName} acquired by ${acquirer} for $${amount}M` },
+      { source: "Forbes", headline: `How ${companyName} built a $${amount}M business in just 3 years` },
+      { source: "Bloomberg", headline: `${acquirer}'s ${companyName} deal signals market consolidation` }
+    ];
+  } else {
+    return [
+      { source: "TechCrunch", headline: `${companyName} shuts down after failing to raise Series B` },
+      { source: "The Information", headline: `Inside the collapse of ${companyName}` },
+      { source: "Forbes", headline: `What went wrong at ${companyName}? Founders speak out` }
+    ];
   }
 }
 

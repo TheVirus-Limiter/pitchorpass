@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
-import { useGeneratePitch, useSaveResult } from "@/hooks/use-game-api";
+import { useGeneratePitch, useSaveResult, useGenerateOutcome } from "@/hooks/use-game-api";
 import { PitchCard } from "@/components/game/PitchCard";
 import { RevealCard } from "@/components/game/RevealCard";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
@@ -12,6 +12,11 @@ import type { Pitch } from "@shared/schema";
 
 type GameState = "loading" | "playing" | "revealing" | "finished";
 
+type NewsClipping = {
+  source: string;
+  headline: string;
+};
+
 type Investment = {
   pitch: Pitch;
   amount: number;
@@ -19,6 +24,9 @@ type Investment = {
   outcome: number;
   isWin: boolean;
   narrative: string;
+  newsClippings: NewsClipping[];
+  valuationHistory: number[];
+  missedOpportunity: number;
 };
 
 export default function Game() {
@@ -33,6 +41,8 @@ export default function Game() {
   
   const generatePitch = useGeneratePitch();
   const saveResult = useSaveResult();
+  const generateOutcome = useGenerateOutcome();
+  const [loadingOutcomes, setLoadingOutcomes] = useState(false);
 
   useEffect(() => {
     loadNextPitch(1);
@@ -66,7 +76,10 @@ export default function Game() {
       ownership: Math.round(ownership * 100) / 100,
       outcome,
       isWin,
-      narrative: ""
+      narrative: "",
+      newsClippings: [],
+      valuationHistory: [],
+      missedOpportunity: 0
     };
 
     setInvestments(prev => [...prev, newInvestment]);
@@ -96,6 +109,41 @@ export default function Game() {
       setDisplayedCapital(capital);
       const startIndex = phase === 1 ? 0 : 5;
       setRevealIndex(startIndex);
+      
+      const fetchOutcomes = async () => {
+        setLoadingOutcomes(true);
+        const endIndex = phase === 1 ? 5 : investments.length;
+        
+        for (let i = startIndex; i < endIndex; i++) {
+          const inv = investments[i];
+          if (!inv.narrative) {
+            try {
+              const outcomeData = await generateOutcome.mutateAsync({
+                pitch: inv.pitch,
+                invested: inv.amount > 0,
+                investmentAmount: inv.amount,
+                equity: inv.ownership,
+                isWin: inv.isWin
+              });
+              
+              setInvestments(prev => prev.map((item, idx) => 
+                idx === i ? {
+                  ...item,
+                  narrative: outcomeData.narrative,
+                  newsClippings: outcomeData.newsClippings || [],
+                  valuationHistory: outcomeData.valuationHistory || [],
+                  missedOpportunity: outcomeData.missedOpportunity || 0
+                } : item
+              ));
+            } catch (error) {
+              console.error("Failed to fetch outcome for investment", i, error);
+            }
+          }
+        }
+        setLoadingOutcomes(false);
+      };
+      
+      fetchOutcomes();
     }
   }, [gameState, phase]);
 
@@ -259,7 +307,17 @@ export default function Game() {
 
   if (gameState === "revealing") {
     const currentReveal = investments[revealIndex];
-    if (!currentReveal) return null;
+    
+    if (!currentReveal || loadingOutcomes && !currentReveal.narrative) {
+      return (
+        <div className="fixed inset-0 bg-gradient-to-br from-amber-100/95 via-stone-100/95 to-amber-50/95 flex flex-col items-center justify-center z-50">
+          <Loader2 className="w-12 h-12 text-stone-600 animate-spin mb-4" />
+          <p className="text-stone-600 font-medium" style={{ fontFamily: "'Caveat', cursive" }}>
+            Gathering market intelligence...
+          </p>
+        </div>
+      );
+    }
 
     const endIndex = phase === 1 ? 5 : investments.length;
     const isLastReveal = revealIndex >= endIndex - 1;
@@ -277,6 +335,9 @@ export default function Game() {
           : currentReveal.amount === 0 
             ? "" 
             : "The company struggled to find product-market fit.")}
+        newsClippings={currentReveal.newsClippings || []}
+        valuationHistory={currentReveal.valuationHistory || []}
+        missedOpportunity={currentReveal.missedOpportunity || 0}
         onNext={handleNextReveal}
         isLast={isLastReveal && phase === 2}
         invested={currentReveal.amount > 0}

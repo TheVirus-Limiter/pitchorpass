@@ -1,0 +1,144 @@
+Detailed Changes to Fix “The Mogul” End Screen
+1. Tone and Copy (Biggest Issue)
+
+Problem:
+The language still reads like a generic fintech dashboard or VC blog headline. “Legendary investor,” “unicorn-tier returns,” and “mastered the art of venture investing” feel disconnected from the grounded, handwritten, decision-driven experience of the game.
+
+Changes:
+
+Remove phrases like:
+
+“Legendary investor”
+
+“Unicorn-tier returns”
+
+“Mastered portfolio management”
+
+“Mastered the art of venture investing”
+
+Replace with specific, behavior-based reflection, for example:
+
+“You concentrated capital early and stayed patient.”
+
+“A few high-conviction bets carried most of the outcome.”
+
+“You leaned into risk when others wouldn’t.”
+
+Goal:
+The archetype should feel explained, not awarded.
+
+2. Archetype Header (Too Polished)
+
+Problem:
+“The Mogul” title with the trophy icon and gradient still feels like a mobile game achievement rather than the closing page of a thoughtful simulation.
+
+Changes:
+
+Keep the title, but soften presentation:
+
+Reduce gradient intensity or replace with a flatter, paper-toned color
+
+Shrink the trophy icon slightly or swap it for a stamp-style or sketch-style icon
+
+Add a short subtitle under the title, such as:
+
+“Built on a few big bets that paid off”
+
+“High conviction, high concentration”
+
+3. Numbers Need Context, Not Just Scale
+
+Problem:
+$34,266,000 and 342.7x are impressive, but without grounding, they feel abstract and gamey.
+
+Changes:
+
+Add a line directly above or below Final Net Worth:
+
+“Started with $100,000”
+
+Add a smaller contextual line under Return Multiple:
+
+“Driven by 1–2 outsized exits”
+
+Reduce the visual dominance of the return multiple slightly so it doesn’t overpower the story.
+
+4. Missing Reflection Section (Critical)
+
+Problem:
+There is no explanation of how the player arrived here. This makes the screen feel disconnected from the gameplay.
+
+Add a new section:
+
+Title:
+“What shaped this outcome”
+
+Content (2–3 bullets, generated from gameplay):
+
+“You invested heavily in fewer companies.”
+
+“You favored conviction over diversification.”
+
+“Most returns came from late-stage exits.”
+
+This should be dynamic, not static.
+
+5. Visual Consistency With the Rest of the Game
+
+Problem:
+This screen is still too clean and glossy compared to the rest of the experience, which uses notes, paper textures, stamps, and imperfection.
+
+Changes:
+
+Reduce confetti opacity significantly or replace with:
+
+Light paper grain
+
+Faint stamp marks
+
+Subtle sketch lines
+
+Add very light imperfections so it feels like the last page of a notebook, not a SaaS KPI screen.
+
+6. Button Hierarchy and Feel
+
+Problem:
+Buttons feel generic and slightly disconnected from the emotional moment.
+
+Changes:
+
+Make Play Again the clear primary CTA, but keep it grounded:
+
+Avoid overly bright green
+
+Use a tone consistent with prior “Invest” actions
+
+Keep Home secondary but fully readable
+
+Remove any fogged or disabled appearance
+
+7. Remove Redundant Praise
+
+Problem:
+“You’ve mastered the art of venture investing” repeats what the archetype already implies.
+
+Changes:
+
+Replace the footer line with something reflective, for example:
+
+“A few decisions made all the difference.”
+
+“Not every bet worked. The right ones mattered.”
+
+8. Tie Back to the Reveal Flow
+
+Problem:
+This screen currently feels detached from the individual startup reveal moments.
+
+Suggestion:
+
+Add a subtle line like:
+
+“Based on outcomes from 10 investments”
+
+Or animate this screen in after the final reveal completes, not as a hard cut.

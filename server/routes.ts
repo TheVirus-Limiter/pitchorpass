@@ -31,15 +31,20 @@ export async function registerRoutes(
     }
   });
 
-  // Generate outcome narrative for reveal sequence
+  // Generate outcome data for reveal sequence
   app.post("/api/game/outcome", async (req, res) => {
     try {
       const { pitch, invested, investmentAmount, equity, isWin } = req.body;
-      const narrative = await generateOutcome(pitch, invested, investmentAmount, equity, isWin);
-      res.json({ narrative });
+      const outcomeData = await generateOutcome(pitch, invested, investmentAmount, equity, isWin);
+      res.json(outcomeData);
     } catch (error) {
       console.error("Outcome narrative error:", error);
-      res.json({ narrative: req.body?.isWin ? "Great success!" : "Things didn't work out." });
+      res.json({ 
+        narrative: req.body?.isWin ? "Great success!" : "Things didn't work out.",
+        newsClippings: [],
+        valuationHistory: [100000, 150000, 200000, 250000, 300000, 350000],
+        missedOpportunity: 0
+      });
     }
   });
 

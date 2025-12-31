@@ -1,136 +1,194 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, TrendingUp, Zap, Target } from "lucide-react";
+import { Stamp, TrendingUp, TrendingDown, Target, Zap, Shield, Lightbulb, Star } from "lucide-react";
 
 interface ArchetypeBadgeProps {
   archetype: string;
   score: number;
 }
 
-const archetypeDetails: Record<string, { icon: any; color: string; description: string }> = {
+const archetypeDetails: Record<string, { icon: any; stampColor: string; description: string; reflection: string }> = {
   "The Mogul": {
-    icon: Trophy,
-    color: "from-yellow-500 to-orange-600",
-    description: "Legendary investor. You've achieved unicorn-tier returns and mastered portfolio management."
+    icon: Star,
+    stampColor: "text-amber-700",
+    description: "High conviction, concentrated bets.",
+    reflection: "A few big decisions made all the difference."
   },
   "The Visionary": {
-    icon: Trophy,
-    color: "from-yellow-400 to-orange-500",
-    description: "You have the golden touch. Your portfolio strategy paid off handsomely."
+    icon: Lightbulb,
+    stampColor: "text-amber-600",
+    description: "Strong portfolio, smart timing.",
+    reflection: "You concentrated capital early and stayed patient."
   },
   "The Shark": {
     icon: TrendingUp,
-    color: "from-blue-500 to-indigo-600",
-    description: "Aggressive but calculated. You know how to spot winners and close deals."
+    stampColor: "text-blue-700",
+    description: "Aggressive but calculated.",
+    reflection: "You leaned into risk when others wouldn't."
   },
   "The Golden Touch": {
     icon: Zap,
-    color: "from-emerald-400 to-teal-500",
-    description: "Your winner-picking ratio is exceptional. Most of your bets paid off."
+    stampColor: "text-emerald-700",
+    description: "Exceptional winner-picking.",
+    reflection: "Most of your bets paid off. That's rare."
   },
   "The Diversifier": {
     icon: Target,
-    color: "from-teal-400 to-cyan-500",
-    description: "Balanced portfolio, risk management pro. Steady, intelligent investing."
+    stampColor: "text-teal-700",
+    description: "Balanced, risk-managed portfolio.",
+    reflection: "Steady spreading across opportunities. Smart."
   },
   "The Concentrated Player": {
     icon: Target,
-    color: "from-purple-500 to-pink-500",
-    description: "You bet big on select opportunities. High conviction, all-in investor."
+    stampColor: "text-purple-700",
+    description: "High conviction, all-in approach.",
+    reflection: "You bet big on select opportunities."
   },
   "The Angel Investor": {
-    icon: Target,
-    color: "from-gray-400 to-blue-400",
-    description: "Balanced approach. You spread risk across diverse opportunities."
+    icon: Shield,
+    stampColor: "text-stone-600",
+    description: "Balanced approach across deals.",
+    reflection: "Spread risk across diverse opportunities."
   },
   "The Optimist": {
     icon: Zap,
-    color: "from-green-400 to-emerald-500",
-    description: "Mostly winners. You have a knack for spotting potential before others."
+    stampColor: "text-green-700",
+    description: "Mostly winners.",
+    reflection: "You spotted potential before others did."
   },
   "The Cautious Investor": {
-    icon: Zap,
-    color: "from-orange-400 to-amber-500",
-    description: "Conservative bets, smaller risk. Not all wins, but stable returns."
+    icon: Shield,
+    stampColor: "text-orange-700",
+    description: "Conservative, measured bets.",
+    reflection: "Not all wins, but stable returns."
   },
   "The Learning Investor": {
-    icon: Zap,
-    color: "from-red-400 to-orange-400",
-    description: "Early stage lessons learned. The startup world is tougher than it looks!"
+    icon: Lightbulb,
+    stampColor: "text-red-700",
+    description: "Early stage lessons.",
+    reflection: "The startup world is tougher than it looks. That's how you learn."
   }
+};
+
+const formatMoney = (val: number) => {
+  const absVal = Math.abs(val);
+  if (absVal >= 1000000000) {
+    return `$${(val / 1000000000).toFixed(2)}B`;
+  }
+  if (absVal >= 1000000) {
+    return `$${(val / 1000000).toFixed(2)}M`;
+  }
+  if (absVal >= 1000) {
+    return `$${(val / 1000).toFixed(0)}K`;
+  }
+  return `$${val.toLocaleString()}`;
 };
 
 export function ArchetypeBadge({ archetype, score }: ArchetypeBadgeProps) {
   const details = archetypeDetails[archetype] || archetypeDetails["The Angel Investor"];
   const Icon = details.icon;
 
-  const multiplier = Math.round((score / 100000) * 10) / 10;
+  const multiplier = Math.round((score / 100000) * 100) / 100;
+  const profit = score - 100000;
 
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0, rotateY: 180 }}
       animate={{ scale: 1, opacity: 1, rotateY: 0 }}
       transition={{ duration: 0.8, type: "spring" }}
-      className="w-full max-w-2xl"
+      className="w-full max-w-xl"
     >
-      <Card className="border-3 border-foreground/10 bg-white shadow-2xl overflow-hidden">
-        <CardContent className="p-0">
-          {/* Gradient Header */}
-          <div className={`bg-gradient-to-r ${details.color} p-12 text-white text-center relative overflow-hidden`}>
-            <div className="absolute inset-0 opacity-20 bg-pattern" />
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 150 }}
-              className="relative z-10"
-            >
-              <Icon className="w-16 h-16 mx-auto mb-4" />
-              <h2 className="text-4xl font-bold font-display mb-2">{archetype}</h2>
-            </motion.div>
-          </div>
-
-          {/* Content */}
-          <div className="p-12 text-center">
-            <p className="text-muted-foreground mb-8 text-lg">{details.description}</p>
-
-            {/* Score Display */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="space-y-6"
-            >
-              <div>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">Final Net Worth</p>
-                <div className="text-6xl font-bold font-mono text-primary">
-                  ${score.toLocaleString()}
+      <div className="relative">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOCIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=')] rounded-lg" />
+        
+        <Card className="border-2 border-stone-300 bg-amber-50/80 shadow-xl overflow-hidden relative">
+          <CardContent className="p-0">
+            <div className="bg-stone-100 border-b-2 border-stone-300 p-6 text-center relative">
+              <div className="absolute top-2 right-2 opacity-30">
+                <div className={`border-2 ${details.stampColor} border-current rounded-full p-2 rotate-12`}>
+                  <Icon className="w-6 h-6" />
                 </div>
               </div>
+              
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 150 }}
+              >
+                <p className="text-xs uppercase tracking-widest text-stone-500 mb-2">Your Investor Profile</p>
+                <h2 
+                  className={`text-4xl font-bold ${details.stampColor}`}
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  {archetype}
+                </h2>
+                <p className="text-sm text-stone-600 mt-2">{details.description}</p>
+              </motion.div>
+            </div>
 
-              <div className="grid grid-cols-2 gap-6 py-6 border-y border-gray-200">
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">Return Multiple</p>
-                  <p className="text-3xl font-bold text-foreground">{multiplier}x</p>
+            <div className="p-6 space-y-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="text-center"
+              >
+                <p className="text-xs uppercase tracking-widest text-stone-500 mb-1">Final Portfolio Value</p>
+                <p className="text-xs text-stone-400 mb-3">Started with $100,000</p>
+                <div 
+                  className="text-5xl font-bold text-stone-800"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  {formatMoney(score)}
                 </div>
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">Profit</p>
-                  <p className={`text-3xl font-bold ${score >= 100000 ? 'text-emerald-600' : 'text-red-600'}`}>
-                    {score >= 100000 ? '+' : ''}{Math.round((score - 100000) / 1000)}k
+              </motion.div>
+
+              <div className="grid grid-cols-2 gap-4 py-4 border-y border-stone-300">
+                <div className="text-center">
+                  <p className="text-xs uppercase tracking-widest text-stone-500 mb-1">Return</p>
+                  <p className="text-2xl font-bold text-stone-700" style={{ fontFamily: "'Caveat', cursive" }}>
+                    {multiplier.toFixed(1)}x
                   </p>
                 </div>
+                <div className="text-center">
+                  <p className="text-xs uppercase tracking-widest text-stone-500 mb-1">Profit</p>
+                  <div className="flex items-center justify-center gap-1">
+                    {profit >= 0 ? (
+                      <TrendingUp className="w-4 h-4 text-green-700" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4 text-red-700" />
+                    )}
+                    <p 
+                      className={`text-2xl font-bold ${profit >= 0 ? 'text-green-700' : 'text-red-700'}`}
+                      style={{ fontFamily: "'Caveat', cursive" }}
+                    >
+                      {profit >= 0 ? '+' : ''}{formatMoney(profit)}
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <p className="text-sm text-muted-foreground italic">
-                {score > 500000 && "Legendary performance. You've mastered the art of venture investing."}
-                {score > 300000 && score <= 500000 && "Exceptional results. You know how to spot and nurture winners."}
-                {score > 150000 && score <= 300000 && "Strong performance. Your portfolio strategy is paying off."}
-                {score > 100000 && score <= 150000 && "Positive returns. You're building investor experience."}
-                {score <= 100000 && "Better luck next round. Every investor has tough rounds. That's how you learn!"}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="bg-white/50 border border-stone-200 rounded p-4"
+              >
+                <p 
+                  className="text-stone-600 text-center italic text-lg"
+                  style={{ fontFamily: "'Caveat', cursive" }}
+                >
+                  "{details.reflection}"
+                </p>
+              </motion.div>
+
+              <p className="text-xs text-center text-stone-400">
+                Based on outcomes from 10 investments
               </p>
-            </motion.div>
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </motion.div>
   );
 }
