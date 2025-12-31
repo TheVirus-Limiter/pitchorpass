@@ -166,7 +166,6 @@ export function RevealCard({
               <HandDrawnGraph 
                 valuationHistory={valuationHistory} 
                 isWin={isWin} 
-                invested={invested}
               />
             )}
 
