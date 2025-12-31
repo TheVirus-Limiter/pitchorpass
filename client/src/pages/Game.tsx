@@ -38,6 +38,7 @@ export default function Game() {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [currentPitch, setCurrentPitch] = useState<Pitch | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [phase2StartingCapital, setPhase2StartingCapital] = useState(0);
   
   const generatePitch = useGeneratePitch();
   const saveResult = useSaveResult();
@@ -163,6 +164,7 @@ export default function Game() {
         const newCapital = capital + phase1Outcomes;
         setCapital(newCapital);
         setDisplayedCapital(newCapital);
+        setPhase2StartingCapital(newCapital);
         setPhase(2);
         setRound(6);
         setIsTransitioning(false);
@@ -295,6 +297,7 @@ export default function Game() {
                     disabled={false}
                     canInvestMore={canStillInvest}
                     totalInvestments={activeInvestments}
+                    phase2StartingCapital={phase2StartingCapital}
                   />
                 )}
               </motion.div>
@@ -368,7 +371,7 @@ export default function Game() {
 
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden pt-24">
-        <ArchetypeBadge archetype={archetype} score={displayedCapital} />
+        <ArchetypeBadge archetype={archetype} score={displayedCapital} investments={investments} />
         
         <div className="mt-16 flex flex-col sm:flex-row gap-4">
           <button 

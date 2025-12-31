@@ -1,72 +1,70 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Stamp, TrendingUp, TrendingDown, Target, Zap, Shield, Lightbulb, Star } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, Zap, Shield, Lightbulb, Star, Circle } from "lucide-react";
+
+interface Investment {
+  pitch: { startup: { name: string } };
+  amount: number;
+  outcome: number;
+  isWin: boolean;
+}
 
 interface ArchetypeBadgeProps {
   archetype: string;
   score: number;
+  investments: Investment[];
 }
 
-const archetypeDetails: Record<string, { icon: any; stampColor: string; description: string; reflection: string }> = {
+const archetypeDetails: Record<string, { icon: any; stampColor: string; description: string }> = {
   "The Mogul": {
     icon: Star,
     stampColor: "text-amber-700",
-    description: "High conviction, concentrated bets.",
-    reflection: "A few big decisions made all the difference."
+    description: "High conviction, concentrated bets."
   },
   "The Visionary": {
     icon: Lightbulb,
     stampColor: "text-amber-600",
-    description: "Strong portfolio, smart timing.",
-    reflection: "You concentrated capital early and stayed patient."
+    description: "Strong portfolio, smart timing."
   },
   "The Shark": {
     icon: TrendingUp,
     stampColor: "text-blue-700",
-    description: "Aggressive but calculated.",
-    reflection: "You leaned into risk when others wouldn't."
+    description: "Aggressive but calculated."
   },
   "The Golden Touch": {
     icon: Zap,
     stampColor: "text-emerald-700",
-    description: "Exceptional winner-picking.",
-    reflection: "Most of your bets paid off. That's rare."
+    description: "Exceptional winner-picking."
   },
   "The Diversifier": {
     icon: Target,
     stampColor: "text-teal-700",
-    description: "Balanced, risk-managed portfolio.",
-    reflection: "Steady spreading across opportunities. Smart."
+    description: "Balanced, risk-managed portfolio."
   },
   "The Concentrated Player": {
     icon: Target,
     stampColor: "text-purple-700",
-    description: "High conviction, all-in approach.",
-    reflection: "You bet big on select opportunities."
+    description: "High conviction, all-in approach."
   },
   "The Angel Investor": {
     icon: Shield,
     stampColor: "text-stone-600",
-    description: "Balanced approach across deals.",
-    reflection: "Spread risk across diverse opportunities."
+    description: "Balanced approach across deals."
   },
   "The Optimist": {
     icon: Zap,
     stampColor: "text-green-700",
-    description: "Mostly winners.",
-    reflection: "You spotted potential before others did."
+    description: "Mostly winners."
   },
   "The Cautious Investor": {
     icon: Shield,
     stampColor: "text-orange-700",
-    description: "Conservative, measured bets.",
-    reflection: "Not all wins, but stable returns."
+    description: "Conservative, measured bets."
   },
   "The Learning Investor": {
     icon: Lightbulb,
     stampColor: "text-red-700",
-    description: "Early stage lessons.",
-    reflection: "The startup world is tougher than it looks. That's how you learn."
+    description: "Early stage lessons."
   }
 };
 
@@ -84,12 +82,50 @@ const formatMoney = (val: number) => {
   return `$${val.toLocaleString()}`;
 };
 
-export function ArchetypeBadge({ archetype, score }: ArchetypeBadgeProps) {
+export function ArchetypeBadge({ archetype, score, investments }: ArchetypeBadgeProps) {
   const details = archetypeDetails[archetype] || archetypeDetails["The Angel Investor"];
   const Icon = details.icon;
 
   const multiplier = Math.round((score / 100000) * 100) / 100;
   const profit = score - 100000;
+
+  const invested = investments.filter(i => i.amount > 0);
+  const wins = invested.filter(i => i.isWin);
+  const losses = invested.filter(i => !i.isWin);
+  const passes = investments.filter(i => i.amount === 0);
+  const missedWins = passes.filter(i => i.isWin);
+
+  const biggestWin = wins.length > 0 
+    ? wins.reduce((max, inv) => inv.outcome > max.outcome ? inv : max, wins[0])
+    : null;
+  const biggestLoss = losses.length > 0
+    ? losses.reduce((max, inv) => inv.amount > max.amount ? inv : max, losses[0])
+    : null;
+
+  const getReflection = () => {
+    if (biggestWin && biggestWin.outcome > score * 0.5) {
+      return `One aggressive bet carried the entire portfolio.`;
+    }
+    if (missedWins.length >= 2) {
+      return `Passing early cost more than the losses.`;
+    }
+    if (wins.length >= 4 && losses.length <= 2) {
+      return `Strong conviction led to strong returns.`;
+    }
+    if (losses.length >= 3) {
+      return `High risk tolerance, mixed results.`;
+    }
+    if (passes.length >= 4) {
+      return `Patience paid off. Fewer bets, cleaner portfolio.`;
+    }
+    if (multiplier > 3) {
+      return `A few big wins made all the difference.`;
+    }
+    if (multiplier < 0.5) {
+      return `The startup world is tougher than it looks.`;
+    }
+    return `Balanced approach across the portfolio.`;
+  };
 
   return (
     <motion.div
@@ -126,7 +162,7 @@ export function ArchetypeBadge({ archetype, score }: ArchetypeBadgeProps) {
               </motion.div>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-5">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -171,20 +207,111 @@ export function ArchetypeBadge({ archetype, score }: ArchetypeBadgeProps) {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
+                transition={{ delay: 0.6 }}
+                className="space-y-4"
+              >
+                <p className="text-xs uppercase tracking-widest text-stone-500 text-center">Portfolio Breakdown</p>
+                
+                <div className="flex justify-center gap-1">
+                  {investments.map((inv, i) => {
+                    const isPhase2 = i >= 5;
+                    const height = inv.amount > 0 
+                      ? Math.max(12, Math.min(40, (inv.outcome / (score || 1)) * 100)) 
+                      : 8;
+                    const color = inv.amount === 0 
+                      ? "bg-stone-300" 
+                      : inv.isWin 
+                        ? "bg-green-500" 
+                        : "bg-red-400";
+                    return (
+                      <motion.div 
+                        key={i}
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        transition={{ delay: 0.7 + i * 0.05 }}
+                        className="flex flex-col items-center gap-1"
+                        style={{ originY: 1 }}
+                      >
+                        <div 
+                          className={`w-4 rounded-t ${color}`}
+                          style={{ height: `${height}px` }}
+                        />
+                        <div className={`w-3 h-0.5 ${isPhase2 ? 'bg-stone-400' : 'bg-stone-300'}`} />
+                      </motion.div>
+                    );
+                  })}
+                </div>
+                
+                <div className="flex justify-center gap-4 text-[10px] text-stone-500">
+                  <span className="flex items-center gap-1">
+                    <Circle className="w-2 h-2 fill-green-500 text-green-500" /> wins
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Circle className="w-2 h-2 fill-red-400 text-red-400" /> losses
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Circle className="w-2 h-2 fill-stone-300 text-stone-300" /> passes
+                  </span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="grid grid-cols-3 gap-3 text-center"
+              >
+                <div className="bg-white/60 border border-stone-200 rounded p-2">
+                  <p className="text-lg font-bold text-green-700" style={{ fontFamily: "'Caveat', cursive" }}>
+                    {wins.length}
+                  </p>
+                  <p className="text-[10px] text-stone-500 uppercase">Big wins</p>
+                </div>
+                <div className="bg-white/60 border border-stone-200 rounded p-2">
+                  <p className="text-lg font-bold text-red-600" style={{ fontFamily: "'Caveat', cursive" }}>
+                    {losses.length}
+                  </p>
+                  <p className="text-[10px] text-stone-500 uppercase">Losses</p>
+                </div>
+                <div className="bg-white/60 border border-stone-200 rounded p-2">
+                  <p className="text-lg font-bold text-amber-600" style={{ fontFamily: "'Caveat', cursive" }}>
+                    {missedWins.length}
+                  </p>
+                  <p className="text-[10px] text-stone-500 uppercase">Missed</p>
+                </div>
+              </motion.div>
+
+              {biggestWin && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="text-center text-xs text-stone-500"
+                >
+                  Most impactful: <span className="font-medium text-stone-700">{biggestWin.pitch.startup.name}</span>
+                  {" "}({formatMoney(biggestWin.outcome)} return)
+                </motion.div>
+              )}
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.0 }}
                 className="bg-white/50 border border-stone-200 rounded p-4"
               >
                 <p 
                   className="text-stone-600 text-center italic text-lg"
                   style={{ fontFamily: "'Caveat', cursive" }}
                 >
-                  "{details.reflection}"
+                  "{getReflection()}"
                 </p>
               </motion.div>
 
-              <p className="text-xs text-center text-stone-400">
-                Based on outcomes from 10 investments
-              </p>
+              <div className="flex justify-center gap-6 text-[10px] text-stone-400 pt-2">
+                <span>Early Stage (1-5)</span>
+                <span className="text-stone-300">|</span>
+                <span>Later Stage (6-10)</span>
+              </div>
             </div>
           </CardContent>
         </Card>

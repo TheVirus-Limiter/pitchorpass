@@ -21,20 +21,34 @@ interface PitchCardProps {
   disabled: boolean;
   canInvestMore: boolean;
   totalInvestments: number;
+  phase2StartingCapital?: number;
 }
 
-export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments }: PitchCardProps) {
+export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, disabled, canInvestMore, totalInvestments, phase2StartingCapital }: PitchCardProps) {
   // Lock pitch data with useMemo to prevent immutability issues
   const lockedPitch = useMemo(() => pitch, [pitch.startup.name]);
   const { founder, startup, ask } = lockedPitch;
   
   // Game Balance: Phase 1 - first 2 rounds = 30k min, last 3 = 20k min to force at least one pass
-  // Phase 2 - higher minimums for later stage
-  // Clamp to never exceed the ask amount
+  // Phase 2 - dynamic minimums that sum to 115% of starting capital, forcing at least one pass
+  // Each company gets 25%-40% of Phase 2 starting capital as minimum
+  const getPhase2Minimum = () => {
+    const C = phase2StartingCapital || 150000;
+    const phaseRound = round - 5; // 1-5 for phase 2
+    // Distribute minimums: rounds 1,2 = 25%, rounds 3,4 = 23%, round 5 = 19%
+    // Total = 0.25 + 0.25 + 0.23 + 0.23 + 0.19 = 1.15 (115%)
+    const percentages = [0.28, 0.26, 0.24, 0.22, 0.20];
+    const percentage = percentages[phaseRound - 1] || 0.23;
+    return Math.round(C * percentage);
+  };
+  
   const requestedMin = phase === 1 
     ? (round <= 2 ? 30000 : 20000)
-    : (round <= 2 ? 150000 : 100000);
+    : getPhase2Minimum();
   const minInvestment = Math.min(requestedMin, ask);
+  
+  // Show capital squeeze warning for Phase 2
+  const capitalSqueeze = phase === 2 && minInvestment > maxInvest;
   
   const [investAmount, setInvestAmount] = useState(minInvestment);
   const [askedQuestion, setAskedQuestion] = useState(false);
@@ -405,12 +419,18 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
             </motion.div>
 
             {/* Error States */}
-            {!canInvestMore && (
-              <div className="mb-4 bg-amber-50 border border-amber-300 p-3 rounded text-sm text-amber-900 font-medium" style={{fontFamily: "'Caveat', cursive"}}>
-                You've reached your 7-investment limit. Choose wisely.
+            {capitalSqueeze && (
+              <div className="mb-4 bg-amber-100 border-2 border-amber-400 p-3 rounded text-sm text-amber-900" style={{fontFamily: "'Caveat', cursive"}}>
+                <p className="font-bold text-base mb-1">Capital squeeze</p>
+                <p>You don't have enough to back every late-stage deal. Concentration is now a requirement.</p>
               </div>
             )}
-            {investAmount < minInvestment && (
+            {!canInvestMore && (
+              <div className="mb-4 bg-amber-50 border border-amber-300 p-3 rounded text-sm text-amber-900 font-medium" style={{fontFamily: "'Caveat', cursive"}}>
+                You've reached your investment limit. Choose wisely.
+              </div>
+            )}
+            {investAmount < minInvestment && !capitalSqueeze && (
               <div className="mb-4 bg-red-50 border border-red-300 p-2 rounded text-xs text-red-800 font-medium">
                 Minimum check is {formatMoney(minInvestment)}
               </div>

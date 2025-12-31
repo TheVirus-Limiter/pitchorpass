@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Newspaper, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { HandDrawnGraph } from "./HandDrawnGraph";
 
 interface NewsClipping {
   source: string;
@@ -65,14 +66,13 @@ export function RevealCard({
     return `$${val}`;
   };
 
-  const chartData = valuationHistory.map((val, i) => ({
-    month: i === 0 ? "Start" : `Y${i}`,
-    valuation: val
-  }));
+  const [buttonEnabled, setButtonEnabled] = useState(false);
 
-  const getSourceIcon = (source: string) => {
-    return <Newspaper className="w-3 h-3" />;
-  };
+  useEffect(() => {
+    setButtonEnabled(false);
+    const timer = setTimeout(() => setButtonEnabled(true), 400);
+    return () => clearTimeout(timer);
+  }, [companyName]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 overflow-auto py-8">
@@ -163,50 +163,11 @@ export function RevealCard({
             </motion.div>
 
             {valuationHistory.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
-                className="bg-stone-50 rounded-lg p-3 border border-stone-200"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-gray-600 uppercase tracking-wide">Valuation Over Time</span>
-                  <span className="text-xs text-gray-500">
-                    {formatValuation(valuationHistory[0])} → {formatValuation(valuationHistory[valuationHistory.length - 1])}
-                  </span>
-                </div>
-                <div className="h-24">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData}>
-                      <defs>
-                        <linearGradient id={`gradient-${isWin ? 'success' : 'fail'}`} x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={isWin ? "#22c55e" : "#ef4444"} stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor={isWin ? "#22c55e" : "#ef4444"} stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <XAxis 
-                        dataKey="month" 
-                        tick={{ fontSize: 10, fill: '#9ca3af' }}
-                        axisLine={false}
-                        tickLine={false}
-                      />
-                      <YAxis 
-                        tick={false}
-                        axisLine={false}
-                        tickLine={false}
-                        width={0}
-                      />
-                      <Area
-                        type="monotone"
-                        dataKey="valuation"
-                        stroke={isWin ? "#22c55e" : "#ef4444"}
-                        strokeWidth={2}
-                        fill={`url(#gradient-${isWin ? 'success' : 'fail'})`}
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </motion.div>
+              <HandDrawnGraph 
+                valuationHistory={valuationHistory} 
+                isWin={isWin} 
+                invested={invested}
+              />
             )}
 
             {narrative && (
@@ -263,7 +224,8 @@ export function RevealCard({
               <Button 
                 onClick={onNext}
                 size="lg"
-                className="w-full bg-stone-800 hover:bg-stone-900 text-white"
+                disabled={!buttonEnabled}
+                className="w-full bg-stone-800 hover:bg-stone-900 text-white disabled:opacity-50"
                 data-testid="button-next-reveal"
               >
                 {isLast ? "See Final Results" : "Next Company"}
