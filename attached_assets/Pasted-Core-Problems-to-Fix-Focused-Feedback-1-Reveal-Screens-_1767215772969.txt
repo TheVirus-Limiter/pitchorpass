@@ -1,0 +1,189 @@
+Core Problems to Fix (Focused Feedback)
+1. Reveal Screens Feel Flat and Repetitive
+
+Right now, every reveal card follows the same emotional rhythm:
+
+Big number
+
+Simple line graph
+
+Paragraph explanation
+
+Headlines
+
+Next button
+
+This makes wins and losses feel mechanically identical.
+
+Change request
+
+Each reveal should emphasize a different failure or success pattern, not just a dollar outcome.
+
+Add one distinct visual cue per outcome type:
+
+Shutdown / Total Loss: faint cracked-paper texture, red pencil strike-through on the final year.
+
+Acqui-hire: dotted valuation line that stops early + handwritten “team acquired” note.
+
+Missed Opportunity: dashed green line with a ghosted final dot.
+
+Big Win: thicker pencil stroke at the end + subtle highlight behind final value.
+
+This keeps reveals emotionally distinct without adding new UI components.
+
+2. Graphs Still Don’t Feel Hand-Drawn Enough
+
+Even now, the charts look too clean and “library-generated.”
+
+Change request
+
+Replace perfectly straight segments with slightly uneven Bézier curves (small random offsets).
+
+Add micro jitter to data points so no two points align perfectly.
+
+Use soft pencil textures for strokes instead of solid vector lines.
+
+Reduce axis opacity further and slightly misalign tick labels to feel sketched.
+
+Important
+
+These graphs should be static snapshots, not interactive.
+
+Clicking or hovering must not mutate the graph or story text in any way.
+
+3. Remove Interactive Markers That Change the Narrative
+
+The circle, arrows, and clickable annotations are actively hurting the experience.
+
+Change request
+
+Remove:
+
+All clickable points
+
+Circles
+
+Arrows
+
+Tooltips
+
+The reveal screen is a post-mortem, not an analysis tool.
+
+Once revealed, the outcome must feel final and locked.
+
+4. Explanatory Paragraphs Are Too Long and Too Similar
+
+The narrative blocks read like generated summaries and blur together.
+
+Change request
+
+Cap reveal explanations at 3–4 short sentences max.
+
+Structure them like:
+
+What they tried to do
+
+Where it went wrong or right
+
+The specific reason for the outcome
+
+Example direction (not exact copy):
+
+“The idea showed early promise, but scaling costs rose faster than revenue.”
+
+“Regulatory delays drained cash before follow-on funding closed.”
+
+“A strong team made the tech valuable even after the business failed.”
+
+Avoid repeating phrases like “revolutionized,” “promising,” “leading to” across companies.
+
+5. “3 YEARS LATER” Needs Stronger Presence
+
+Right now it fades into the background instead of anchoring the moment.
+
+Change request
+
+Increase its visual weight slightly:
+
+Chalk or pencil lettering
+
+Larger size
+
+Slight diagonal placement
+
+It should feel like someone wrote it on the desk before revealing results.
+
+6. Valuation Progression Needs Clear Storytelling
+
+The valuation labels like “$250K → $0” help, but they’re too passive.
+
+Change request
+
+Add one short label above the graph:
+
+“Ran out of runway”
+
+“Acquired for talent”
+
+“Missed timing window”
+
+“Scaled faster than expected”
+
+This gives instant context before the user reads anything.
+
+7. Wins and Losses Should Feel Asymmetrical
+
+Losses currently feel almost as clean as wins.
+
+Change request
+
+For losses:
+
+Reduce card brightness slightly
+
+Increase contrast on the red loss number
+
+Slightly compress vertical spacing (feels tighter, more uncomfortable)
+
+For wins:
+
+More breathing room
+
+Softer shadows
+
+Slightly warmer tone
+
+The user should feel the difference immediately.
+
+8. End Screen Still Feels Empty
+
+The final portfolio screen is clean but emotionally underwhelming.
+
+Change request
+
+Add subtle background artifacts:
+
+faint scribbled arrows
+
+crossed-out numbers
+
+small margin notes like “big bet paid off” or “too cautious here”
+
+Include one sentence summary tied to playstyle:
+
+“A few big decisions shaped everything.”
+
+“Consistency beat instincts.”
+
+“Risk paid off, but timing mattered.”
+
+No charts needed here. This is reflection, not analysis.
+
+High-Level Direction (So They Don’t Drift Again)
+
+Guiding rule for reveal screens:
+
+These are not dashboards.
+They are receipts.
+
+Each reveal should feel like flipping over a card and seeing how a story ended, not inspecting data.

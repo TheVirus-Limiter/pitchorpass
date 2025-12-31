@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Target, Zap, Shield, Lightbulb, Star, Circle } from "lucide-react";
+import { useMemo } from "react";
 
 interface Investment {
   pitch: { startup: { name: string } };
@@ -82,6 +83,11 @@ const formatMoney = (val: number) => {
   return `$${val.toLocaleString()}`;
 };
 
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
 export function ArchetypeBadge({ archetype, score, investments }: ArchetypeBadgeProps) {
   const details = archetypeDetails[archetype] || archetypeDetails["The Angel Investor"];
   const Icon = details.icon;
@@ -98,33 +104,56 @@ export function ArchetypeBadge({ archetype, score, investments }: ArchetypeBadge
   const biggestWin = wins.length > 0 
     ? wins.reduce((max, inv) => inv.outcome > max.outcome ? inv : max, wins[0])
     : null;
-  const biggestLoss = losses.length > 0
-    ? losses.reduce((max, inv) => inv.amount > max.amount ? inv : max, losses[0])
-    : null;
 
-  const getReflection = () => {
-    if (biggestWin && biggestWin.outcome > score * 0.5) {
-      return `One aggressive bet carried the entire portfolio.`;
+  const marginNotes = useMemo(() => {
+    const notes: { text: string; position: 'left' | 'right'; top: number }[] = [];
+    const seed = score + investments.length;
+    
+    if (biggestWin && biggestWin.outcome > score * 0.4) {
+      notes.push({ text: "big bet paid off", position: 'right', top: 15 + seededRandom(seed) * 10 });
     }
     if (missedWins.length >= 2) {
-      return `Passing early cost more than the losses.`;
-    }
-    if (wins.length >= 4 && losses.length <= 2) {
-      return `Strong conviction led to strong returns.`;
+      notes.push({ text: "too cautious here?", position: 'left', top: 35 + seededRandom(seed + 1) * 10 });
     }
     if (losses.length >= 3) {
-      return `High risk tolerance, mixed results.`;
+      notes.push({ text: "rough stretch", position: 'right', top: 55 + seededRandom(seed + 2) * 10 });
     }
     if (passes.length >= 4) {
-      return `Patience paid off. Fewer bets, cleaner portfolio.`;
+      notes.push({ text: "selective", position: 'left', top: 70 + seededRandom(seed + 3) * 8 });
+    }
+    if (multiplier > 2.5) {
+      notes.push({ text: "strong finish", position: 'right', top: 80 + seededRandom(seed + 4) * 8 });
+    }
+    
+    return notes.slice(0, 3);
+  }, [score, investments, biggestWin, missedWins.length, losses.length, passes.length, multiplier]);
+
+  const getPlaystyleSummary = () => {
+    if (biggestWin && biggestWin.outcome > score * 0.5) {
+      return "A few big decisions shaped everything.";
+    }
+    if (missedWins.length >= 2 && losses.length <= 1) {
+      return "Caution cost more than the risks.";
+    }
+    if (wins.length >= 4 && losses.length <= 2) {
+      return "Strong instincts, well rewarded.";
+    }
+    if (losses.length >= 3 && wins.length >= 2) {
+      return "Risk paid off, but timing mattered.";
+    }
+    if (passes.length >= 4 && multiplier > 1.5) {
+      return "Patience beat instincts.";
     }
     if (multiplier > 3) {
-      return `A few big wins made all the difference.`;
+      return "Consistency beat luck.";
     }
     if (multiplier < 0.5) {
-      return `The startup world is tougher than it looks.`;
+      return "The startup world is tougher than it looks.";
     }
-    return `Balanced approach across the portfolio.`;
+    if (invested.length >= 7) {
+      return "Volume over conviction.";
+    }
+    return "A mixed bag. Some wins, some lessons.";
   };
 
   return (
@@ -136,6 +165,27 @@ export function ArchetypeBadge({ archetype, score, investments }: ArchetypeBadge
     >
       <div className="relative">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOCIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=')] rounded-lg" />
+        
+        {marginNotes.map((note, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.4 }}
+            transition={{ delay: 1.2 + i * 0.2 }}
+            className={`absolute ${note.position === 'left' ? '-left-2 -translate-x-full pr-3' : '-right-2 translate-x-full pl-3'} hidden md:block`}
+            style={{ top: `${note.top}%` }}
+          >
+            <span 
+              className="text-[10px] text-stone-500 whitespace-nowrap"
+              style={{ 
+                fontFamily: "'Caveat', cursive",
+                transform: `rotate(${note.position === 'left' ? -2 : 2}deg)`
+              }}
+            >
+              {note.text}
+            </span>
+          </motion.div>
+        ))}
         
         <Card className="border-2 border-stone-300 bg-amber-50/80 shadow-xl overflow-hidden relative">
           <CardContent className="p-0">
@@ -300,10 +350,10 @@ export function ArchetypeBadge({ archetype, score, investments }: ArchetypeBadge
                 className="bg-white/50 border border-stone-200 rounded p-4"
               >
                 <p 
-                  className="text-stone-600 text-center italic text-lg"
+                  className="text-stone-700 text-center text-xl"
                   style={{ fontFamily: "'Caveat', cursive" }}
                 >
-                  "{getReflection()}"
+                  {getPlaystyleSummary()}
                 </p>
               </motion.div>
 
