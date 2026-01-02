@@ -15,7 +15,9 @@ export default defineConfig({
     },
   },
   root: path.resolve(import.meta.dirname, "client"),
-  base: './',
+  base: process.env.GITHUB_REPOSITORY 
+    ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
+    : './',
   build: {
     outDir: path.resolve(import.meta.dirname, "dist-static"),
     emptyOutDir: true,
