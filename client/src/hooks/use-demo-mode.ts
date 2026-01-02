@@ -1,9 +1,12 @@
 import { useState, useCallback } from 'react';
 import { demoPitches, calculateDemoOutcome, getMissedOpportunity, type DemoPitch } from '@/data/demoData';
+import { hasClientOpenAI } from '@/lib/clientOpenAI';
 import type { Pitch } from '@shared/schema';
 
 export const isStaticMode = import.meta.env.VITE_STATIC_MODE === 'true' || 
   (typeof window !== 'undefined' && window.location.protocol === 'file:');
+
+export const useClientAI = isStaticMode && hasClientOpenAI;
 
 function demoPitchToGamePitch(demo: DemoPitch, phase: number): Pitch {
   const tractionParts = demo.startup.traction.split(',');

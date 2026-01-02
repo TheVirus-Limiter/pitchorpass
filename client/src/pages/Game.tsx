@@ -3,7 +3,8 @@ import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useGeneratePitch, useSaveResult, useGenerateOutcome } from "@/hooks/use-game-api";
-import { useDemoMode, isStaticMode } from "@/hooks/use-demo-mode";
+import { useDemoMode, isStaticMode, useClientAI } from "@/hooks/use-demo-mode";
+import { generatePitchClient, generateOutcomeClient } from "@/lib/clientOpenAI";
 import { PitchCard } from "@/components/game/PitchCard";
 import { RevealCard } from "@/components/game/RevealCard";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
@@ -51,15 +52,29 @@ export default function Game() {
     loadNextPitch(1);
   }, []);
 
-  const loadNextPitch = (currentPhase: number = phase) => {
+  const loadNextPitch = async (currentPhase: number = phase) => {
     setGameState("loading");
     
-    if (isStaticMode) {
+    if (isStaticMode && !useClientAI) {
       setTimeout(() => {
         const demoPitch = demoMode.getNextPitch(currentPhase);
         setCurrentPitch(demoPitch);
         setGameState("playing");
       }, 300);
+      return;
+    }
+    
+    if (useClientAI) {
+      try {
+        const pitch = await generatePitchClient(currentPhase);
+        setCurrentPitch(pitch);
+        setGameState("playing");
+      } catch (error) {
+        console.error("Client AI pitch generation failed:", error);
+        const demoPitch = demoMode.getNextPitch(currentPhase);
+        setCurrentPitch(demoPitch);
+        setGameState("playing");
+      }
       return;
     }
     
@@ -88,7 +103,7 @@ export default function Game() {
     let valuationHistory: number[] = [];
     let missedOpportunity = 0;
 
-    if (isStaticMode) {
+    if (isStaticMode && !useClientAI) {
       const demoResult = demoMode.calculateOutcome(currentPitch.startup.name, investAmount, ownership);
       const demoOutcome = demoMode.getDemoOutcome(currentPitch.startup.name, investAmount > 0, investAmount, ownership);
       isWin = demoResult.isWin;
@@ -142,8 +157,46 @@ export default function Game() {
       const startIndex = phase === 1 ? 0 : 5;
       setRevealIndex(startIndex);
       
-      if (isStaticMode) {
+      if (isStaticMode && !useClientAI) {
         setLoadingOutcomes(false);
+        return;
+      }
+      
+      if (useClientAI) {
+        const fetchClientOutcomes = async () => {
+          setLoadingOutcomes(true);
+          const endIndex = phase === 1 ? 5 : investments.length;
+          
+          for (let i = startIndex; i < endIndex; i++) {
+            const inv = investments[i];
+            if (!inv.narrative) {
+              try {
+                const outcomeData = await generateOutcomeClient({
+                  pitch: inv.pitch,
+                  invested: inv.amount > 0,
+                  investmentAmount: inv.amount,
+                  equity: inv.ownership,
+                  isWin: inv.isWin
+                });
+                
+                setInvestments(prev => prev.map((item, idx) => 
+                  idx === i ? {
+                    ...item,
+                    narrative: outcomeData.narrative,
+                    newsClippings: outcomeData.newsClippings || [],
+                    valuationHistory: outcomeData.valuationHistory || [],
+                    missedOpportunity: outcomeData.missedOpportunity || 0
+                  } : item
+                ));
+              } catch (error) {
+                console.error("Client AI outcome generation failed:", error);
+              }
+            }
+          }
+          setLoadingOutcomes(false);
+        };
+        
+        fetchClientOutcomes();
         return;
       }
       

@@ -1,16 +1,51 @@
 # Deploying Pitch or Pass to GitHub Pages
 
-This guide explains how to deploy the static demo version of Pitch or Pass to GitHub Pages.
+This guide covers deploying Pitch or Pass to GitHub Pages with full AI functionality.
 
-## What You Get
+## Option 1: Automatic Deployment with GitHub Actions (Recommended)
 
-The static version includes:
-- 10 pre-generated startup pitches (5 Early Stage + 5 Later Stage)
-- Full gameplay experience with reveal screens and outcome graphs
-- All visual features (hand-drawn graphs, archetype badges, etc.)
-- No server or API keys required
+This method automatically builds and deploys your app with AI features whenever you push to the main branch.
 
-## Quick Deploy (Download ZIP Method)
+### Step 1: Create a GitHub Repository
+
+1. Go to [github.com/new](https://github.com/new)
+2. Create a new repository (public or private)
+3. Don't initialize with README
+
+### Step 2: Add Your OpenAI API Key as a Secret
+
+1. Go to your repository's **Settings** > **Secrets and variables** > **Actions**
+2. Click **New repository secret**
+3. Name: `VITE_OPENAI_API_KEY`
+4. Value: Your OpenAI API key (starts with `sk-`)
+5. Click **Add secret**
+
+### Step 3: Push Your Code
+
+Download your code from Replit and push to GitHub:
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git push -u origin main
+```
+
+### Step 4: Enable GitHub Pages
+
+1. Go to your repository's **Settings** > **Pages**
+2. Under "Build and deployment", select **GitHub Actions** as the source
+3. The workflow will automatically run on push
+
+Your app will be live at: `https://YOUR_USERNAME.github.io/YOUR_REPO/`
+
+---
+
+## Option 2: Manual Deployment (Demo Mode)
+
+If you don't want to use your API key, the static build falls back to pre-generated demo data.
 
 ### Step 1: Build the Static Version
 
@@ -23,86 +58,63 @@ chmod +x scripts/build-static.sh
 
 This creates a `dist-static` folder with everything you need.
 
-### Step 2: Download the Build
+### Step 2: Download and Upload
 
 1. In Replit's file panel, right-click on `dist-static`
 2. Select "Download as ZIP"
-3. Save to your computer
+3. Create a new GitHub repository
+4. Upload all files from inside `dist-static` to your repo
 
-### Step 3: Upload to GitHub
-
-1. Create a new GitHub repository (or use an existing one)
-2. Extract the ZIP contents
-3. Upload all files from inside `dist-static` to your repo's root or a `docs` folder
-
-### Step 4: Enable GitHub Pages
+### Step 3: Enable GitHub Pages
 
 1. Go to your repository's **Settings** > **Pages**
-2. Under "Source", select:
-   - Branch: `main` (or your default branch)
-   - Folder: `/` (root) or `/docs` depending on where you uploaded
+2. Under "Source", select branch `main` and folder `/` (root)
 3. Click **Save**
 
-Your game will be live at: `https://[your-username].github.io/[repo-name]/`
+---
 
-## Alternative: Using gh-pages Branch
+## How It Works
 
-If you prefer the traditional gh-pages branch approach:
+| Mode | Startup Pitches | Outcome Narratives | Founder Q&A |
+|------|-----------------|-------------------|-------------|
+| **With API Key** | AI-generated unique startups | AI-written stories | Live AI responses |
+| **Demo Mode** | 10 pre-built pitches | Pre-written narratives | Not available |
 
-```bash
-# After building
-cd dist-static
-git init
-git add .
-git commit -m "Deploy Pitch or Pass"
-git branch -M gh-pages
-git remote add origin https://github.com/[your-username]/[repo-name].git
-git push -f origin gh-pages
-```
+Demo mode showcases different outcome types:
+- Big wins (8x-15x returns)
+- Modest exits (2-5x returns)
+- Acqui-hires (talent acquisitions)
+- Shutdowns (total losses)
+- Missed opportunities (when you pass on winners)
 
-Then in repository Settings > Pages, select the `gh-pages` branch.
+---
+
+## Security Note
+
+When using `VITE_OPENAI_API_KEY`, the key is embedded in the JavaScript bundle. This is acceptable for:
+- Personal projects
+- Demo/portfolio sites with low traffic
+- Educational purposes
+
+For production apps with many users, use Replit's built-in deployment which keeps API keys secure on the server.
+
+---
 
 ## Troubleshooting
 
-### Blank Page or 404 Errors
+### App shows 404 on refresh
+The `404.html` file handles SPA routing. Make sure it was copied during the build process.
 
-The build uses relative paths (`./`) so it should work in any subfolder. If you see issues:
+### API calls failing
+- Check that your `VITE_OPENAI_API_KEY` secret is correctly set
+- Verify the key has available credits
+- Check browser console for errors
 
-1. Make sure `404.html` is present (it's created automatically)
-2. Check that `.nojekyll` file exists (prevents Jekyll processing)
-3. Wait a few minutes for GitHub Pages to update
+### Build failing in GitHub Actions
+- Ensure all dependencies are committed
+- Check the Actions tab for detailed error logs
 
-### Assets Not Loading
-
-If images or fonts don't load:
-
-1. Clear your browser cache
-2. Check browser console for path errors
-3. Ensure all files from `dist-static` were uploaded
-
-## File Structure
-
-After building, `dist-static` contains:
-
-```
-dist-static/
-├── index.html          # Main app entry
-├── 404.html           # SPA fallback (copy of index.html)
-├── .nojekyll          # Tells GitHub not to use Jekyll
-└── assets/
-    ├── index-*.js     # App bundle
-    ├── index-*.css    # Styles
-    └── ...            # Other assets
-```
-
-## Demo Mode
-
-The static build automatically uses pre-generated demo data instead of calling OpenAI. The 10 startup pitches showcase different outcome types:
-
-- **Big wins** (8x-15x returns)
-- **Modest exits** (2-5x returns)  
-- **Acqui-hires** (talent acquisitions)
-- **Shutdowns** (total losses)
-- **Missed opportunities** (when you pass on winners)
-
-Each playthrough uses the same companies but your investment decisions determine your final score and investor archetype.
+### Blank page
+- Clear browser cache
+- Check that `.nojekyll` file exists
+- Wait a few minutes for GitHub Pages to update
