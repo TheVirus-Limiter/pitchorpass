@@ -94,7 +94,7 @@ export default function Home() {
               <br />
               A few turn out <u>better than expected.</u>
               <br /><br />
-              You’ll see which bets <u>paid off</u>
+              You’ll see which bets <u>paid off</u>{" "}
               and which ones didn’t.
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function Home() {
               <br />
               Or somewhere in between.
               <br /><br />
-              Your choices <u>start to add up</u>
+              Your choices <u>start to add up</u>{" "}
               and a pattern begins to show.
             </p>
           </div>

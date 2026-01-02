@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import { useGeneratePitch, useSaveResult, useGenerateOutcome } from "@/hooks/use-game-api";
+import { useDemoMode, isStaticMode } from "@/hooks/use-demo-mode";
 import { PitchCard } from "@/components/game/PitchCard";
 import { RevealCard } from "@/components/game/RevealCard";
 import { ArchetypeBadge } from "@/components/game/ArchetypeBadge";
@@ -43,6 +44,7 @@ export default function Game() {
   const generatePitch = useGeneratePitch();
   const saveResult = useSaveResult();
   const generateOutcome = useGenerateOutcome();
+  const demoMode = useDemoMode();
   const [loadingOutcomes, setLoadingOutcomes] = useState(false);
 
   useEffect(() => {
@@ -51,6 +53,16 @@ export default function Game() {
 
   const loadNextPitch = (currentPhase: number = phase) => {
     setGameState("loading");
+    
+    if (isStaticMode) {
+      setTimeout(() => {
+        const demoPitch = demoMode.getNextPitch(currentPhase);
+        setCurrentPitch(demoPitch);
+        setGameState("playing");
+      }, 300);
+      return;
+    }
+    
     generatePitch.mutate(currentPhase, {
       onSuccess: (data) => {
         setCurrentPitch(data);
@@ -65,11 +77,30 @@ export default function Game() {
   const handleDecision = (investAmount: number) => {
     if (!currentPitch) return;
 
-    const isWin = Math.random() > currentPitch.startup.risk;
-    const outcome = isWin ? investAmount * currentPitch.startup.upside : 0;
     const ownership = currentPitch.startup.valuation 
       ? (investAmount / currentPitch.startup.valuation) * 100 
       : 0;
+
+    let isWin: boolean;
+    let outcome: number;
+    let narrative = "";
+    let newsClippings: NewsClipping[] = [];
+    let valuationHistory: number[] = [];
+    let missedOpportunity = 0;
+
+    if (isStaticMode) {
+      const demoResult = demoMode.calculateOutcome(currentPitch.startup.name, investAmount, ownership);
+      const demoOutcome = demoMode.getDemoOutcome(currentPitch.startup.name, investAmount > 0, investAmount, ownership);
+      isWin = demoResult.isWin;
+      outcome = investAmount > 0 ? demoResult.outcome : 0;
+      narrative = demoOutcome.narrative;
+      newsClippings = demoOutcome.newsClippings;
+      valuationHistory = demoOutcome.valuationHistory;
+      missedOpportunity = demoOutcome.missedOpportunity;
+    } else {
+      isWin = Math.random() > currentPitch.startup.risk;
+      outcome = isWin ? investAmount * currentPitch.startup.upside : 0;
+    }
 
     const newInvestment: Investment = {
       pitch: currentPitch,
@@ -77,10 +108,10 @@ export default function Game() {
       ownership: Math.round(ownership * 100) / 100,
       outcome,
       isWin,
-      narrative: "",
-      newsClippings: [],
-      valuationHistory: [],
-      missedOpportunity: 0
+      narrative,
+      newsClippings,
+      valuationHistory,
+      missedOpportunity
     };
 
     setInvestments(prev => [...prev, newInvestment]);
@@ -110,6 +141,11 @@ export default function Game() {
       setDisplayedCapital(capital);
       const startIndex = phase === 1 ? 0 : 5;
       setRevealIndex(startIndex);
+      
+      if (isStaticMode) {
+        setLoadingOutcomes(false);
+        return;
+      }
       
       const fetchOutcomes = async () => {
         setLoadingOutcomes(true);
@@ -208,17 +244,19 @@ export default function Game() {
     else if (finalScore > 120000 && losses <= 2) archetype = "The Cautious Investor";
     else if (finalScore < 50000) archetype = "The Learning Investor";
 
-    saveResult.mutate({
-      score: Math.round(finalScore),
-      archetype,
-      details: JSON.stringify(investments.map(i => ({ 
-        name: i.pitch.startup.name, 
-        win: i.isWin, 
-        gain: i.outcome,
-        invested: i.amount
-      }))),
-      createdAt: new Date().toISOString()
-    });
+    if (!isStaticMode) {
+      saveResult.mutate({
+        score: Math.round(finalScore),
+        archetype,
+        details: JSON.stringify(investments.map(i => ({ 
+          name: i.pitch.startup.name, 
+          win: i.isWin, 
+          gain: i.outcome,
+          invested: i.amount
+        }))),
+        createdAt: new Date().toISOString()
+      });
+    }
 
     if (finalScore > 150000) {
       confetti({
