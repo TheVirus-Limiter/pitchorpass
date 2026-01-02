@@ -31,7 +31,9 @@ jobs:
         run: npm ci
 
       - name: Build for GitHub Pages
-        run: npm run build:static
+        run: |
+          chmod +x scripts/build-static.sh
+          ./scripts/build-static.sh
         env:
           VITE_OPENAI_API_KEY: ${{ secrets.VITE_OPENAI_API_KEY }}
 
