@@ -113,7 +113,12 @@ export default function Game() {
       valuationHistory = demoOutcome.valuationHistory;
       missedOpportunity = demoOutcome.missedOpportunity;
     } else {
-      isWin = Math.random() > currentPitch.startup.risk;
+      // Lumora Sleep easter egg always succeeds
+      if (currentPitch.isEasterEgg && currentPitch.startup.name === "Lumora Sleep") {
+        isWin = true;
+      } else {
+        isWin = Math.random() > currentPitch.startup.risk;
+      }
       outcome = isWin ? investAmount * currentPitch.startup.upside : 0;
     }
 
