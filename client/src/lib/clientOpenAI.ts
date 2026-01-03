@@ -121,7 +121,7 @@ Return JSON with this exact structure:
     "name": "Full Name",
     "photo": "",
     "country": "Country",
-    "gender": "male or female (matching the name)",
+    "gender": "${Math.random() > 0.5 ? 'male' : 'female'} (use this gender and pick a matching name)",
     "credentials": ["credential1", "credential2"]
   },
   "startup": {
@@ -229,7 +229,7 @@ Outcome: ${isWin ? 'SUCCESS' : 'FAILURE'}
 
 Return JSON:
 {
-  "narrative": "2-3 paragraph story of what happened over 3 years",
+  "narrative": "1-2 sentence summary of what happened (be specific with numbers and names)",
   "newsClippings": [
     {"source": "TechCrunch", "headline": "Headline about this startup"},
     {"source": "Forbes", "headline": "Another headline"}
