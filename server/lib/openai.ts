@@ -80,8 +80,13 @@ export async function generatePitch(phase: number = 1) {
   const convictionTraits = convictionTraitsByRisk[idea.riskProfile] || convictionTraitsByRisk.medium;
 
   const valuationRange = phase === 1 
-    ? "between 100000 and 400000 - THIS IS SEED STAGE" 
+    ? "between 150000 and 400000 - THIS IS SEED STAGE" 
     : "between 2000000 and 15000000 - THIS IS SERIES A/B LATER STAGE";
+  
+  // Phase 1: ask must be $30k-$60k minimum to meet game balance requirements
+  const askRange = phase === 1 
+    ? "between 30000 and 60000 - MUST be at least $30k for Phase 1"
+    : "between 100000 and 500000 for Phase 2";
   
   const prompt = `
     Generate a realistic startup pitch for an investment game. Create a JSON response ONLY.
@@ -108,7 +113,7 @@ export async function generatePitch(phase: number = 1) {
         "credentials": ["Short line 1", "Short line 2"]
       },
       "startup": {
-        "name": "Creative startup name (NOT generic)",
+        "name": "Creative startup name (NOT generic, NOT EcoPack or similar)",
         "pitch": "2-3 compelling sentences with specific details",
         "market": "${idea.market}",
         "traction": {
@@ -120,15 +125,15 @@ export async function generatePitch(phase: number = 1) {
         "upside": (${idea.riskProfile === 'low' ? '2-8' : idea.riskProfile === 'medium' ? '8-20' : '25-100'}),
         "valuation": (random ${valuationRange})
       },
-      "ask": (random 10% to 25% of valuation),
+      "ask": (random ${askRange}),
       "news": ["headline1", "headline2", "headline3"],
       "whiteboardNotes": ["Sentence 1", "Sentence 2", "Sentence 3", "Sentence 4"]
     }
     
     Rules:
     - Valuation MUST match the phase description.
+    - Ask MUST be ${askRange}.
     - Traction must match risk level and phase.
-    - Ask should be 10-25% of valuation.
     - News: 2-3 short snippets.
     - Credentials: ONLY 30% elite (Stanford/Google), 70% non-name/regional (ASU, local agency, freelancer, self-taught).
     - WhiteboardNotes: 3-4 short sentences. At least one MUST be negative/skeptical. High risk startups have more skeptical lines. Practical observations.
