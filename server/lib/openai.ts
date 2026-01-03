@@ -13,7 +13,7 @@ const openai = new OpenAI({
 const LUMORA_SLEEP_PITCH = {
   founder: {
     name: "Rehan & Ben",
-    photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.jpg",
+    photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.png",
     country: "United States",
     gender: "male",
     conviction: "Calm, data-backed",
@@ -104,7 +104,7 @@ const STARTUP_IDEAS = [
 const FOUNDER_LOCATIONS = [
   "San Francisco, CA", "Los Angeles, CA", "New York, NY", "Seattle, WA",
   "Austin, TX", "Denver, CO", "Boston, MA", "Miami, FL",
-  "Chicago, IL", "San Diego, CA", "Portland, OR", "Dallas, TX", "San Antonio, TX"
+  "Chicago, IL", "San Diego, CA", "Portland, OR", "Dallas, TX"
 ];
 
 export async function generatePitch(phase: number = 1) {
