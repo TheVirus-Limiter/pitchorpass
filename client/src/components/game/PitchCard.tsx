@@ -152,7 +152,7 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
                 <img 
                   src={founder.photo || (() => {
                     const hash = founder.name.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-                    const gender = hash % 2 === 0 ? 'men' : 'women';
+                    const gender = founder.gender === 'female' ? 'women' : 'men';
                     const num = hash % 100;
                     return `https://randomuser.me/api/portraits/${gender}/${num}.jpg`;
                   })()} 
@@ -160,7 +160,7 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
                   className="w-full aspect-square rounded-2xl object-cover border-4 border-primary/20"
                   onError={(e) => {
                     const hash = founder.name.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-                    const gender = hash % 2 === 0 ? 'men' : 'women';
+                    const gender = founder.gender === 'female' ? 'women' : 'men';
                     const num = (hash + 1) % 100;
                     e.currentTarget.src = `https://randomuser.me/api/portraits/${gender}/${num}.jpg`;
                   }}
