@@ -31,6 +31,7 @@ const LUMORA_SLEEP_PITCH = {
     risk: 0.2,
     upside: 12,
     valuation: 200000
+    
   },
   ask: 50000,
   equityPercentage: 25,
