@@ -133,7 +133,7 @@ export function RevealCard({
               ? 'border-green-300 bg-white/95 shadow-green-100/50'
               : 'border-stone-300 bg-white/95'
         }`}>
-          <CardContent className={`p-6 transition-all duration-300 ${isLoss ? 'space-y-4' : 'space-y-5'}`}>
+          <CardContent className={`p-4 transition-all duration-300 ${isLoss ? 'space-y-3' : 'space-y-4'}`}>
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -218,13 +218,13 @@ export function RevealCard({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8, duration: 0.3 }}
-                className={`rounded-lg p-4 ${
+                className={`rounded p-2 ${
                   isLoss 
                     ? 'bg-stone-100/50 border border-stone-200' 
                     : 'bg-amber-50/50 border border-amber-200'
                 }`}
               >
-                <p className="text-gray-700 text-sm leading-relaxed">
+                <p className="text-gray-700 text-xs leading-snug">
                   {narrative}
                 </p>
               </motion.div>
