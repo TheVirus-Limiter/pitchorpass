@@ -14,19 +14,25 @@ export async function generatePitchClient(phase: number): Promise<Pitch> {
   if (!openai) throw new Error('No OpenAI API key configured');
 
   const isEarlyStage = phase === 1;
+  // Phase 1: ask must be $30k-$60k (to meet $30k minimum in rounds 1-2)
+  // Phase 2: ask $100k-$500k for later stage
   const valuationRange = isEarlyStage ? '$100k-$400k' : '$2M-$15M';
-  const askRange = isEarlyStage ? '$10k-$50k' : '$100k-$500k';
+  const askRange = isEarlyStage ? '$30k-$60k' : '$100k-$500k';
+  const exampleAsk = isEarlyStage ? 35000 : 150000;
+  const exampleValuation = isEarlyStage ? 150000 : 5000000;
 
   const response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       {
         role: 'system',
-        content: `You are a startup pitch generator for an investment simulation game. Generate realistic, diverse startup pitches.`
+        content: `You are a startup pitch generator for an investment simulation game. Generate realistic, diverse startup pitches. Each pitch MUST have a unique company name - never repeat names like EcoPack.`
       },
       {
         role: 'user',
-        content: `Generate a ${isEarlyStage ? 'early-stage' : 'later-stage'} startup pitch with valuation ${valuationRange} and ask amount ${askRange}.
+        content: `Generate a ${isEarlyStage ? 'early-stage' : 'later-stage'} startup pitch.
+        
+IMPORTANT: The ask amount MUST be between ${askRange}. Valuation should be ${valuationRange}.
 
 Return JSON with this exact structure:
 {
@@ -47,9 +53,9 @@ Return JSON with this exact structure:
     },
     "risk": 0.4,
     "upside": 3.5,
-    "valuation": 150000
+    "valuation": ${exampleValuation}
   },
-  "ask": 25000,
+  "ask": ${exampleAsk},
   "equityPercentage": 16.67,
   "whiteboardNotes": ["note1", "note2", "note3"]
 }`
