@@ -21,6 +21,7 @@ export const founderSchema = z.object({
   name: z.string(),
   photo: z.string(),
   country: z.string(),
+  gender: z.enum(['male', 'female']).optional(),
   credentials: z.array(z.string()).optional(),
   conviction: z.string().optional(),
 });
