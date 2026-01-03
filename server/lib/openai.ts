@@ -9,6 +9,80 @@ const openai = new OpenAI({
   baseURL,
 });
 
+// Lumora Sleep easter egg (5% chance in Phase 1)
+const LUMORA_SLEEP_PITCH = {
+  founder: {
+    name: "Rehan & Ben",
+    photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.jpg",
+    country: "United States",
+    gender: "male",
+    conviction: "Calm, data-backed",
+    credentials: ["Sleep technology enthusiasts", "Product designers"]
+  },
+  startup: {
+    name: "Lumora Sleep",
+    pitch: "Lumora Sleep reimagines rest through a luxury sleep mask designed to solve modern sleep disruptions. By addressing overheating, noise, and harsh wake-ups, Lumora integrates adaptive thermal control, bone-conduction audio, and a gentle sunrise wake light into a personalized sleep ritual. Built for comfort, sustainability, and everyday use, Lumora turns better sleep into an intentional lifestyle choice rather than a nightly struggle.",
+    market: "Health Tech",
+    traction: {
+      users: 3200,
+      monthlyGrowth: 22,
+      revenue: 28000
+    },
+    risk: 0.2,
+    upside: 12,
+    valuation: 200000
+  },
+  ask: 50000,
+  equityPercentage: 25,
+  whiteboardNotes: [
+    "Premium positioning in crowded sleep market",
+    "Strong retention metrics - users become habitual",
+    "Hardware + wellness hybrid could attract acquirers",
+    "Unit economics look solid at current price point"
+  ],
+  news: [
+    "Sleep tech market projected to reach $32B by 2027",
+    "Wearable wellness devices see 40% YoY growth"
+  ],
+  isEasterEgg: true
+};
+
+export const LUMORA_SUCCESS_NARRATIVES = [
+  "Lumora became a staple for people who took sleep seriously, turning nightly routines into a premium habit.",
+  "What started as a sleep mask evolved into a daily ritual, with retention driven by comfort and habit, not hype.",
+  "Lumora's blend of hardware and wellness features resonated with users looking for better sleep without pills or gimmicks.",
+  "Lumora's loyal user base and proprietary sleep tech made it an attractive acquisition in the premium wellness space."
+];
+
+// Track sessions that have already seen Lumora (by session ID or simple in-memory flag per request context)
+const lumoraTriggeredSessions = new Set<string>();
+
+function shouldTriggerLumoraEasterEgg(phase: number, sessionId?: string): boolean {
+  // Only trigger in Phase 1, with 5% chance, and only once per session
+  if (phase !== 1) return false;
+  if (sessionId && lumoraTriggeredSessions.has(sessionId)) return false;
+  
+  const shouldTrigger = Math.random() < 0.05;
+  if (shouldTrigger && sessionId) {
+    lumoraTriggeredSessions.add(sessionId);
+    // Clean up old sessions after 1 hour to prevent memory leak
+    setTimeout(() => lumoraTriggeredSessions.delete(sessionId), 3600000);
+  }
+  return shouldTrigger;
+}
+
+function getLumoraPitch() {
+  // Random upside between 4x and 20x
+  const randomUpside = 4 + Math.random() * 16;
+  return { 
+    ...LUMORA_SLEEP_PITCH,
+    startup: {
+      ...LUMORA_SLEEP_PITCH.startup,
+      upside: Math.round(randomUpside * 10) / 10
+    }
+  };
+}
+
 const STARTUP_IDEAS = [
   { idea: "hyperlocal meals", description: "Ghost kitchen delivering restaurant-quality meals in 15 mins", market: "Food Tech", riskProfile: "medium" },
   { idea: "sleep tech", description: "AI sleep coach that optimizes your bedroom environment", market: "Health Tech", riskProfile: "low" },
@@ -34,6 +108,11 @@ const FOUNDER_LOCATIONS = [
 ];
 
 export async function generatePitch(phase: number = 1) {
+  // 5% chance for Lumora Sleep easter egg in Phase 1
+  if (shouldTriggerLumoraEasterEgg(phase)) {
+    return getLumoraPitch();
+  }
+
   const ideaIndex = Math.floor(Math.random() * STARTUP_IDEAS.length);
   const idea = STARTUP_IDEAS[ideaIndex];
   const location = FOUNDER_LOCATIONS[Math.floor(Math.random() * FOUNDER_LOCATIONS.length)];
@@ -213,6 +292,29 @@ export interface OutcomeData {
 
 // Generate outcome narratives based on company data
 export async function generateOutcome(pitch: any, invested: boolean, investmentAmount: number, equity: number, isWin: boolean): Promise<OutcomeData> {
+  // Handle Lumora Sleep easter egg - always success
+  if (pitch.isEasterEgg && pitch.startup.name === "Lumora Sleep") {
+    const lumoraMultiple = pitch.startup.upside || 12;
+    const lumoraInitialValuation = pitch.startup.valuation || 200000;
+    const lumoraFinalValuation = lumoraInitialValuation * lumoraMultiple;
+    const lumoraValuationHistory = generateValuationHistory(lumoraInitialValuation, lumoraFinalValuation, true);
+    const lumoraNarrative = LUMORA_SUCCESS_NARRATIVES[Math.floor(Math.random() * LUMORA_SUCCESS_NARRATIVES.length)];
+    const lumoraAskAmount = pitch.ask || 50000;
+    const lumoraMissedOpportunity = !invested ? Math.round(lumoraAskAmount * lumoraMultiple) : 0;
+    
+    return {
+      narrative: lumoraNarrative,
+      newsClippings: [
+        { source: "TechCrunch", headline: "Lumora Sleep raises Series A to expand luxury sleep mask line" },
+        { source: "Forbes", headline: "How Lumora turned better sleep into a $2.4M exit" },
+        { source: "Fast Company", headline: "The sleep tech startup that grew through habit, not hype" }
+      ],
+      valuationHistory: lumoraValuationHistory,
+      missedOpportunity: lumoraMissedOpportunity,
+      exitValuation: lumoraFinalValuation
+    };
+  }
+
   const multiple = pitch.startup.upside || 5;
   const initialValuation = pitch.startup.valuation || 100000;
   const finalValuation = isWin ? initialValuation * multiple : 0;
