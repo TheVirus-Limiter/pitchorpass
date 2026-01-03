@@ -5,7 +5,8 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   define: {
-    'import.meta.env.VITE_STATIC_MODE': JSON.stringify('true')
+    'import.meta.env.VITE_STATIC_MODE': JSON.stringify('true'),
+    'import.meta.env.VITE_OPENAI_API_KEY': JSON.stringify(process.env.VITE_OPENAI_API_KEY || '')
   },
   resolve: {
     alias: {
