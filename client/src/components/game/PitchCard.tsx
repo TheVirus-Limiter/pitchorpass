@@ -10,6 +10,8 @@ import { ValuationGraph } from "./ValuationGraph";
 import { FounderConviction } from "./FounderConviction";
 import { ExitMath } from "./ExitMath";
 import { ExposureWarning } from "./ExposureWarning";
+import { useClientAI } from "@/hooks/use-demo-mode";
+import { askFounderClient } from "@/lib/clientOpenAI";
 
 interface PitchCardProps {
   pitch: Pitch;
@@ -107,13 +109,21 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
     if (question.trim() && !answering) {
       setAnswering(true);
       try {
-        const res = await fetch("/api/game/answer-question", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pitch: lockedPitch, question })
-        });
-        const data = await res.json();
-        setAnswer(data.answer || "We're focused on execution and expect strong results soon.");
+        let answerText: string;
+        
+        if (useClientAI) {
+          answerText = await askFounderClient(question, lockedPitch);
+        } else {
+          const res = await fetch("/api/game/answer-question", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pitch: lockedPitch, question })
+          });
+          const data = await res.json();
+          answerText = data.answer || "We're focused on execution and expect strong results soon.";
+        }
+        
+        setAnswer(answerText);
         setAskedQuestion(true);
       } catch (error) {
         console.error("Failed to get answer:", error);
