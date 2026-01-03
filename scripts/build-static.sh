@@ -2,7 +2,16 @@
 
 echo "Building Pitch or Pass for GitHub Pages..."
 
-# Build with static config
+# Debug: show if API key is available (masked)
+if [ -n "$VITE_OPENAI_API_KEY" ]; then
+  echo "VITE_OPENAI_API_KEY is set (${#VITE_OPENAI_API_KEY} chars)"
+else
+  echo "WARNING: VITE_OPENAI_API_KEY is not set - will use demo mode"
+fi
+
+# Build with static config, ensuring env vars are passed to Vite
+VITE_OPENAI_API_KEY="$VITE_OPENAI_API_KEY" \
+GITHUB_REPOSITORY="$GITHUB_REPOSITORY" \
 npx vite build --config vite.static.config.ts
 
 # Copy index.html to 404.html for SPA routing
