@@ -16,6 +16,7 @@ const LUMORA_SLEEP_PITCH: Pitch = {
     name: "Rehan & Ben",
     photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.jpg",
     country: "United States",
+    gender: "male",
     credentials: ["Sleep technology enthusiasts", "Product designers"],
     conviction: "Calm, data-backed"
   },
@@ -120,6 +121,7 @@ Return JSON with this exact structure:
     "name": "Full Name",
     "photo": "",
     "country": "Country",
+    "gender": "male or female (matching the name)",
     "credentials": ["credential1", "credential2"]
   },
   "startup": {
