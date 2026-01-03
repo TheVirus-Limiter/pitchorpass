@@ -14,7 +14,7 @@ const openai = apiKey ? new OpenAI({
 const LUMORA_SLEEP_PITCH: Pitch = {
   founder: {
     name: "Rehan & Ben",
-    photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.jpg",
+    photo: "https://thevirus-limiter.github.io/filestorage/IMG_3945.png",
     country: "United States",
     gender: "male",
     credentials: ["Sleep technology enthusiasts", "Product designers"],
