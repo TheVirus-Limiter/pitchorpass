@@ -150,11 +150,11 @@ export function PitchCard({ pitch, round, phase, maxInvest, onInvest, onPass, di
             <motion.div variants={item} className="mb-6">
               <div className="relative mb-4">
                 <img 
-                  src={founder.photo} 
+                  src={founder.photo || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(founder.name)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`} 
                   alt={founder.name}
                   className="w-full aspect-square rounded-2xl object-cover border-4 border-primary/20"
                   onError={(e) => {
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop&q=80";
+                    e.currentTarget.src = `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(founder.name)}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf`;
                   }}
                 />
               </div>
